@@ -33,16 +33,15 @@ export class LoginPage implements OnInit {
   }
 
   Login(){
-    console.log("login");
     this.cargando = true;
 
     this.authService.login(this.correo, this.clave).then(() => {
-      
+      this.router.navigate(['/home']);
     })
     .catch(() => {
       this.toastCtlr.create({
         message: 'Error, por favor verifique que los campos sean correctos',
-        position: 'bottom',
+        position: 'top',
         duration: 2000,
         color: 'danger',
         
@@ -55,7 +54,7 @@ export class LoginPage implements OnInit {
   }
 
 
-  private tooglePassword() {
+  tooglePassword() {
     if(this.passwordShown){
       this.passwordShown = false;
       this.passwordType = 'password';
@@ -69,30 +68,14 @@ export class LoginPage implements OnInit {
   }
 
   usuarioSeleccionado({currentTarget}) {
-    
     switch(currentTarget.value) {
-      case 0:
-        this.correo = 'duenio@duenio.com';
-        this.clave = '123123';
+      case 'duenio':
+        this.correo = 'duenio01@duenio.com';
+        this.clave = '111111';
       break;
-      case 1:
-        this.correo = 'supervisor@supervisor.com';
-        this.clave = '123123';
-      break;
-
-      case 2:
-        this.correo = 'invitado@invitado.com';
-        this.clave = '222222';
-      break;
-
-      case 3:
-        this.correo = 'anonimo@anonimo.com';
-        this.clave = '444444';
-      break;
-
-      case 4:
-        this.correo = 'usuario@usuario.com';
-        this.clave = '333333';
+      case 'empleado':
+        this.correo = 'empleado01@empleado.com';
+        this.clave = '111111';
       break;
     }
   }

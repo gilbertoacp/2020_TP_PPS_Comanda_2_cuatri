@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { Usuario } from '../models/usuario';
 
 @Injectable({
@@ -40,6 +40,10 @@ export class AuthService {
 
   register(correo: string, clave: string): Promise<firebase.auth.UserCredential> {
     return this.auth.createUserWithEmailAndPassword(correo, clave);
+  }
+
+  getCurrentUser(): Observable<firebase.User> {
+    return this.auth.authState.pipe(first());
   }
 
   logout(): void {

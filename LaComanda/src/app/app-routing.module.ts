@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CheckLoginGuard } from './guards/check-login.guard';
 
 const routes: Routes = [
   {
@@ -17,18 +18,9 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
+    canActivate: [CheckLoginGuard]
   },
-  {
-    path: 'alta-empleado',
-    loadChildren: () => import('./pages/alta-empleado/alta-empleado.module').then( m => m.AltaEmpleadoPageModule)
-  },
-  {
-    path: 'duenio',
-    loadChildren: () => import('./pages/duenio/duenio.module').then( m => m.DuenioPageModule)
-  },
-
-
 ];
 
 @NgModule({

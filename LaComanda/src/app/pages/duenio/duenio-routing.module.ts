@@ -13,6 +13,10 @@ const routes: Routes = [
     path: 'alta',
     component: AltaDuenioComponent,
   },
+  {
+    path: 'alta-empleado',
+    loadChildren: () => import('../alta-empleado/alta-empleado.module').then( m => m.AltaEmpleadoPageModule)
+  },
 ];
 
 @NgModule({

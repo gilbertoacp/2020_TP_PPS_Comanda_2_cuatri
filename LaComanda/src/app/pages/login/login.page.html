@@ -25,11 +25,11 @@
                 <ion-label>Inicio Rapido</ion-label>
                 <ion-select placeholder="Seleccionar" name="perfil" [(ngModel)]="perfil"
                     (ionChange)="usuarioSeleccionado($event)">
-                    <ion-select-option value="0">Dueño</ion-select-option>
-                    <ion-select-option value="1">Supervisor</ion-select-option>
-                    <ion-select-option value="2">Empleado</ion-select-option>
-                    <ion-select-option value="3">Cliente</ion-select-option>
-                    <ion-select-option value="4">Anonimo</ion-select-option>
+                    <ion-select-option value="duenio">Dueño</ion-select-option>
+                    <ion-select-option value="empleado">Empleado</ion-select-option>
+                    <ion-select-option value="supervisor">Supervisor</ion-select-option>
+                    <ion-select-option value="cliente">Cliente</ion-select-option>
+                    <ion-select-option value="anonimo">Anónimo</ion-select-option>
                 </ion-select>
             </ion-item>
 
