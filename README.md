@@ -13,12 +13,13 @@
 
 ---
 
-## Splash 
-<img src="./docs/gif/splash.gif" width="200" height="400">
+<div align="center">
 
-## Spinner
+| Splash  | Spinner  |
+|---------|----------|
+|<img src="./docs/gif/splash.gif" width="200" height="400">  |   <img src="./docs/gif/spinner.gif" width="200" height="400" style="margin:0 auto">
 
-<img src="./docs/gif/spinner.gif" width="200" height="400" style="margin:0 auto">
+</div>
 
 ---
 
@@ -41,7 +42,7 @@
 - Alta mesa - No competado :x:
 - Qr mesa - No completado :x:
 
-<hr>
+---
 
 #####  Tareas Secundarias Sprint #1 :clipboard:
 
@@ -55,7 +56,7 @@
 - Estilos y Colores :white_check_mark:
 - Diseño logo y splash :white_check_mark:
 
-<hr>
+--- 
 
 ##### Motivo de la falta de Lautaro Aubele :interrobang:
 * PC Dañada
