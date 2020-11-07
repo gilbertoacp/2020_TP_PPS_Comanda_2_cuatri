@@ -38,10 +38,11 @@
     <div class="fin">
         <ion-button class="boton" expand="block" color="primary" *ngIf=" !cargando " (click)="Login() ">Ingresar
         </ion-button>
-        <ion-button class="boton" expand="block" color="danger " *ngIf="cargando ">
-            <ion-spinner name="crescent "></ion-spinner>
-            Cargando...
+        <ion-button class="boton" expand="block" color="danger" disabled *ngIf="cargando ">
+            Cargando&nbsp;
+            <!-- <ion-spinner name="crescent"></ion-spinner>  -->
         </ion-button>
         <ion-button class="boton" expand="block" color="warning" (click)="Register()">Registro</ion-button>
     </div>
 </ion-content>
+<app-spinner *ngIf="cargando"></app-spinner>

@@ -13,7 +13,7 @@ export class LoginPage implements OnInit {
   clave:string;
   perfil:string;
   correo:string;
-  cargando:boolean=false;
+  cargando:boolean=true;
   passwordType:string = 'password';
   eyeType:string = 'eye-off-outline';
   passwordShown:boolean = false;
