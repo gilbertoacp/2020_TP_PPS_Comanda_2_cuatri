@@ -15,6 +15,7 @@
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
@@ -112,4 +113,5 @@
         <icon src="resources/windows/icon/StoreLogo.png" target="StoreLogo" />
         <splash src="resources/windows/splash/Splash.png" target="SplashScreen" />
     </platform>
+    <allow-navigation href="http://localhost:8100" sessionid="0e2c38a8" />
 </widget>

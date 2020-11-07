@@ -10,8 +10,8 @@ ion-app {
 }
 
 .splash__img {
-  -webkit-animation: bounce-in-top 1.1s both;
-  animation: bounce-in-top 1.1s both;
+  -webkit-animation: bounce-in-top 1.5s both;
+  animation: bounce-in-top 1.5s both;
   width: 100%;
   height: 350px;
   margin-top: 90px;
@@ -20,8 +20,8 @@ ion-app {
 .splash__text {
   text-align: center;
   font-size: 25px;
-  -webkit-animation: text-focus-in 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
-  animation: text-focus-in 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  -webkit-animation: text-focus-in 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  animation: text-focus-in 2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
   color: white;
 }
 

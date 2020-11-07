@@ -12,7 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
 
   // a false para debuggear
-  splash = false;
+  splash = true;
 
   constructor(
     private platform: Platform,
@@ -27,7 +27,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      setTimeout(() => this.splash = false, 3000);
+      setTimeout(() => this.splash = false, 4000);
     });
   }
 }
