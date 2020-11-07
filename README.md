@@ -1,37 +1,26 @@
-<h1 style="text-align:center"> :fork_and_knife: Grupo Ionic | La comanda :fork_and_knife: </h1>
+<h1 align="center"> :fork_and_knife: Grupo Ionic | La comanda :fork_and_knife: </h1>
 <hr>
-<div style="text-align: center"> 
+<p align="center"> 
 	<img src="./docs/img/imgicon.jpg" style="margin:0 auto" width="400">
-</div>
+</p>
 
-<hr>
-<h4>Integrantes: </h4>
-<ul>
-  <li><a href="https://github.com/gilbertocp" style="font-size:22px">Gilberto Calderón (Alpha)</a></li>
-  <li><a href="https://github.com/aubelelautaro" style="font-size:22px">Lautaro Aubele (Beta)</a></li>
-  <li><a href="https://github.com/nicohnavarro"  style="font-size:22px">Nicolás Navarro (Gamma)</a></li>
-<ul>
+--- 
 
-<hr>
+# Integrantes :computer:
+- Gilberto Calderón
+- Nicolás Navarro
+- Lautaro Aubele
 
-<table style="width:100%">
-  <thead>
-    <th>SPLASH</th>
-    <th>SPINNER</th>
-  </thead>
-  <tbody>
-    <tr>
-    <td style="text-align:center">
-      <img src="./docs/gif/splash.gif" width="200" height="400" style="margin:0 auto">
-    </td>
-    <td style="text-align:center">
-      <img src="./docs/gif/spinner.gif" width="200" height="400" style="margin:0 auto">
-    </td>
-    </tr>
-  </tbody>
-</table>
+---
 
-<hr>
+## Splash 
+<img src="./docs/gif/splash.gif" width="200" height="400">
+
+## Spinner
+
+<img src="./docs/gif/spinner.gif" width="200" height="400" style="margin:0 auto">
+
+---
 
 # Sprint # 1 :pushpin:
 
@@ -58,13 +47,13 @@
 
 #### GILBERTO CALDERÓN
 
-- Splash Animado
-- Spinner
+- Splash Animado :white_check_mark:
+- Spinner :white_check_mark:
 
 #### Nicolás Navarro
 
-- Estilos y Colores
-- Diseño logo y splash
+- Estilos y Colores :white_check_mark:
+- Diseño logo y splash :white_check_mark:
 
 <hr>
 
