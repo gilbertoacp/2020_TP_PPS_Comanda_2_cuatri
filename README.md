@@ -6,18 +6,3 @@
   <li><a href="https://github.com/aubelelautaro" style="font-size:22px">Lautaro Aubele</a></li>
   <li><a href="https://github.com/nicohnavarro"  style="font-size:22px">Nicolás Navarro</a></li>
 <ul>
-
-<table style="width:100%">
- <thead>
- 	<th>Logo</th>
-    <th>Splash<th>
-    <th>Spinner</th>
- </thead>
- <tbody>
- 	<td>
-      <img src="./docs/img/splash.png" width="100" style="margin:0 auto">
-    </td>
- </tbody>
-</table>
-
-
