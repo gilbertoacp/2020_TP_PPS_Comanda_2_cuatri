@@ -13,11 +13,10 @@ export class LoginPage implements OnInit {
   clave:string;
   perfil:string;
   correo:string;
-  cargando:boolean=true;
+  cargando:boolean=false;
   passwordType:string = 'password';
   eyeType:string = 'eye-off-outline';
   passwordShown:boolean = false;
-  public splash = true;
 
   constructor(
     private authService: AuthService,
@@ -37,6 +36,7 @@ export class LoginPage implements OnInit {
 
     this.authService.login(this.correo, this.clave).then(() => {
       this.router.navigate(['/home']);
+      setTimeout(() => this.cargando = false, 2500);
     })
     .catch(() => {
       this.toastCtlr.create({
@@ -46,10 +46,10 @@ export class LoginPage implements OnInit {
         color: 'danger',
         
       })
-      .then(t => t.present());
-    })
-    .finally(() => {
-      this.cargando = false;
+      .then(t => {
+        this.cargando = false;
+        t.present();
+      });
     });
   }
 

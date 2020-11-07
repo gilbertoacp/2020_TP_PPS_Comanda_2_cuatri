@@ -1,10 +1,13 @@
 .icon {
   position:absolute;
-  top: 30%;
-  left: 30%;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
   border-radius: 120px;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 	-webkit-animation: ping 2s ease-in-out infinite both;
 	animation: ping 2s ease-in-out infinite both;
 }
