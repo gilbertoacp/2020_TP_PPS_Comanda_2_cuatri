@@ -12,7 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
 
   // a false para debuggear
-  splash = true;
+  splash = false;
 
   constructor(
     private platform: Platform,

@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
         this.clave = '111111';
       break;
       case 'empleado':
-        this.correo = 'empleado01@empleado.com';
+        this.correo = 'empleadotest@empleadostest.com';
         this.clave = '111111';
       break;
     }

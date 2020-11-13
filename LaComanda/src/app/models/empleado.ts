@@ -8,5 +8,6 @@ export interface Empleado {
   dni: string;
   cuil: string;
   foto: string;
-  tipo: TipoEmpleado;
+  tipo: TipoEmpleado,
+  correo: string,
 }

@@ -9,7 +9,8 @@
   width: 200px;
   height: 200px;
 	-webkit-animation: ping 2s ease-in-out infinite both;
-	animation: ping 2s ease-in-out infinite both;
+  animation: ping 2s ease-in-out infinite both;
+  z-index: 999;
 }
 
 @-webkit-keyframes ping {
