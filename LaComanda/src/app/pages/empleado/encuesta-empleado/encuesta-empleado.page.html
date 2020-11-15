@@ -2,19 +2,19 @@
   <ion-toolbar color="warning">
     <ion-title><ion-text >Encuesta empleado</ion-text></ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="cerrarEncuesta()">
-        <ion-icon name="close-circle-outline"></ion-icon>
+      <ion-button routerLink="/home/empleado" slot="icon-only">
+        <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
+<!-- close-circle-outline -->
 <ion-content>
   <form>
     <ion-row>
       <ion-label style="margin-left: 10px;" 
-                 class="ion-margin-top">Estado de las instalaciones del local?</ion-label>
+                class="ion-margin-top">Estado de las instalaciones del local?</ion-label>
     </ion-row>
     <ion-radio-group name="estadoInstalaciones" 
                     [(ngModel)]="estadoInstalaciones">

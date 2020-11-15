@@ -47,10 +47,15 @@ export class EncuestaEmpleadoPage implements OnInit {
       this.presentToast('Se ha cargado la encuesta!');
     } catch(err) {
       this.presentToast('Error, No se ha podido cargar la encuesta!');
+
       console.log(err);
     } finally {
       this.enEspera = false;
-      this.cerrarEncuesta();
+
+      this.feedback = null;
+      this.estadoInstalaciones = null;
+      this.calificacionGrupoTrabajo = null;
+      this.cerrar();
     }
   }
 
@@ -62,7 +67,7 @@ export class EncuestaEmpleadoPage implements OnInit {
     toast.present();
   }
 
-  cerrarEncuesta(): void {
-    this.router.navigate(['..']);
+  cerrar(): void {
+    this.router.navigate(['/home/empleado']);
   }
 }
