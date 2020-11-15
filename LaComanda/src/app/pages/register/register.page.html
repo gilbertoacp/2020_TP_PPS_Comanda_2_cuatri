@@ -1,9 +1,99 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>register</ion-title>
+  <ion-toolbar style="--background: #e03a00">
+    <ion-buttons slot="start">
+      <ion-button color="primary" fill="outline" routerLink="/login">
+        <ion-icon style="color: white" name="arrow-undo-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
-</ion-content>
+<form class="form" [formGroup]="form" (ngSubmit)="registro(form.value)">
+  <ion-button class="botonDNI" color="primary" (click)="scan()"><ion-icon name="qr-code"> </ion-icon>  Escanear DNI  <ion-icon name="qr-code-outline"> </ion-icon></ion-button>
+
+  <ion-item *ngIf="mostrarNombre || modoRegistro">
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="nombre" type="text" formControlName="nombre" ></ion-input>
+  </ion-item>
+  <div class="validation-errors">
+    <ng-container *ngFor="let validation of mensajesValidacion.nombre">
+      <small *ngIf="form.get('nombre').hasError(validation.type) && 
+             (form.get('nombre').dirty || form.get('nombre').touched)">
+             {{ validation.message }}
+      </small>
+    </ng-container>
+  </div>
+
+  <ion-item *ngIf="modoRegistro">
+    <ion-label position="floating">Apellido</ion-label>
+    <ion-input [(ngModel)]="apellido" type="text" formControlName="apellido"></ion-input>
+  </ion-item>
+  <div class="validation-errors" *ngIf="anonimo">
+    <ng-container *ngFor="let validation of mensajesValidacion.apellido">
+      <small *ngIf="form.get('apellido').hasError(validation.type) &&
+           (form.get('apellido').dirty || form.get('apellido').touched)">
+           {{ validation.message }}
+      </small>
+    </ng-container>
+  </div>
+
+  <ion-item *ngIf="modoRegistro">
+    <ion-label position="floating">DNI</ion-label>    
+    <ion-input [(ngModel)]="dni" type="number" formControlName="dni" maxlength='8' ></ion-input>
+  </ion-item>
+  <div class="validation-errors" *ngIf="anonimo">
+    <ng-container *ngFor="let validation of mensajesValidacion.dni">
+      <small *ngIf="form.get('dni').hasError(validation.type) && 
+      (form.get('dni').dirty || form.get('dni').touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+  </div>
+
+  <ion-item *ngIf="modoRegistro">
+    <ion-label position="floating">Correo electrónico</ion-label>
+    <ion-input [(ngModel)]="email" type="text" formControlName="email" ></ion-input>
+  </ion-item>
+  <div class="validation-errors" *ngIf="anonimo">
+    <ng-container *ngFor="let validation of mensajesValidacion.email">
+      <small *ngIf="form.get('email').hasError(validation.type) && 
+        (form.get('email').dirty || form.get('email').touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+  </div>
+
+  <ion-item *ngIf="modoRegistro">
+    <ion-label position="floating">Contraseña</ion-label>
+    <ion-input [(ngModel)]="clave" type="password"  formControlName="password" ></ion-input>
+  </ion-item>
+  <div class="validation-errors" *ngIf="anonimo">
+    <ng-container *ngFor="let validation of mensajesValidacion.password">
+      <small *ngIf="form.get('password').hasError(validation.type) &&
+         (form.get('password').dirty || form.get('password').touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+  </div>
+
+  <ion-item *ngIf="modoRegistro">
+    <ion-label position="floating">Confirme su contraseña</ion-label>
+    <ion-input [(ngModel)]="claveConfirmada" type="password" formControlName="passConfirmada"></ion-input>
+  </ion-item>
+  <div class="validation-errors" *ngIf="anonimo">
+    <ng-container *ngFor="let validation of mensajesValidacion.passConfirmada">
+      <small
+        *ngIf="form.get('passConfirmada').hasError(validation.type) && 
+        (form.get('passConfirmada').dirty || form.get('passConfirmada').touched)">
+        {{ validation.message }}
+      </small>
+    </ng-container>
+  </div>
+
+  <ion-button class="botones" [disabled]="!form.valid" (click)="sacarFoto()">Sacar Foto</ion-button>
+  <img [src]="imagenPrevista" alt="imagen" width="160" height="160">
+  <ion-button class="botones" [disabled]="!form.valid || !fotoCargada" (click)="register()">Registrar</ion-button>
+
+</form>

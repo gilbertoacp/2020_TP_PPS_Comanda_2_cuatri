@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 
+import { Vibration } from '@ionic-native/vibration/ngx';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -21,14 +23,15 @@ export class LoginPage implements OnInit {
   constructor(
     private authService: AuthService,
     private toastCtlr: ToastController,
-    private router: Router 
+    private router: Router,
+    private vibration: Vibration
   ) { }
 
   ngOnInit() {
   }
   
-  Register(){
-    this.router.navigate(['duenio'])
+  Register(cliente : string){
+    this.router.navigate(["/register"], {state : {modo: cliente}});
   }
 
   Login(){
@@ -37,8 +40,18 @@ export class LoginPage implements OnInit {
     this.authService.login(this.correo, this.clave).then(() => {
       this.router.navigate(['/home']);
       setTimeout(() => this.cargando = false, 2500);
+
+      let audio = new Audio();
+      audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
+      audio.play();
     })
     .catch(() => {
+
+      let audio = new Audio();
+      audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
+      audio.play();
+      this.vibration.vibrate(2000);
+
       this.toastCtlr.create({
         message: 'Error, por favor verifique que los campos sean correctos',
         position: 'top',
@@ -68,6 +81,11 @@ export class LoginPage implements OnInit {
   }
 
   usuarioSeleccionado({currentTarget}) {
+
+    let audio = new Audio();
+        audio.src = 'assets/audio/bubble.mp3';
+        audio.play();
+
     switch(currentTarget.value) {
       case 'duenio':
         this.correo = 'duenio01@duenio.com';

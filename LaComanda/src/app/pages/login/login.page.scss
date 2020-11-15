@@ -46,7 +46,7 @@ ion-badge {
 .inicio {
     margin: 1rem;
     background-color: transparent;
-    height: 50%;
+    height: 40%;
     width: 100%;
 }
 
@@ -60,8 +60,15 @@ ion-badge {
     margin: 0.2rem;
     margin-top: 0;
     padding: 0.2rem;
-    height: 4rem;
+    height: 3rem;
     color: white;
+}
+
+.botonRegistro
+{
+    font: oblique bold 80% cursive;
+    color: white;
+    width: 48%;
 }
 
 .comun {
@@ -91,4 +98,20 @@ ion-button {
     color: white;
     font-weight: 400;
     background-color: #e24825;
+}
+
+ion-label {
+    font: oblique bold 80% cursive;
+}
+
+ion-title {
+    font: oblique bold 120% cursive;
+}
+
+ion-select{
+    font: oblique bold 80% cursive;
+}
+
+ion-select-option{
+    font: oblique bold 80% cursive;
 }

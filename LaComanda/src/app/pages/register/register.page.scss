@@ -1,0 +1,40 @@
+ion-title{
+    color:rgb(255, 255, 255);
+    font: oblique bold 120% cursive;
+    text-align: center;
+}
+
+.botonDNI{
+    font: oblique bold 80% cursive;
+    text-align: center;
+    margin-left: 25%;
+    align-items: center;
+}
+
+.botones
+{
+    font: oblique bold 80% cursive;
+}
+
+form{
+    width: 100%;
+    height: 100%;
+    padding: 0 10%;
+}
+
+.validation-errors{
+    color:red;
+    text-transform:none;
+}
+
+ion-item-group {
+    text-align: center;
+}
+
+ion-item{
+    margin-top:0.5%;
+    ion-label{
+        color: #741f00;
+        font: oblique bold 80% cursive;
+    }   
+}

@@ -13,7 +13,10 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
-import { FormsModule } from '@angular/forms';
+
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
@@ -34,6 +37,7 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
     AngularFireAuthModule,
     AngularFireStorageModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     StatusBar,
@@ -43,7 +47,9 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
     Camera,
     File,
     Base64ToGallery,
-    MediaCapture
+    MediaCapture,
+    LocalNotifications,
+    Vibration
   ],
   bootstrap: [AppComponent]
 })
