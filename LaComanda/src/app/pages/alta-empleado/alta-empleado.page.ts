@@ -10,11 +10,9 @@ import { File } from '@ionic-native/file/ngx';
 import { Router } from '@angular/router';
 import { Empleado } from 'src/app/models/empleado';
 import { AuthService } from 'src/app/services/auth.service';
-import { EmpleadoService } from '../../services/empleado.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { PerfilUsuario } from '../../models/perfil-usuario.enum';
-import { ThrowStmt } from '@angular/compiler';
-import { FirebaseApp } from '@angular/fire';
+import { EmpleadosService } from 'src/app/services/empleado/empleados.service';
 
 @Component({
   selector: 'app-alta-empleado',
@@ -44,7 +42,7 @@ export class AltaEmpleadoPage implements OnInit {
     public alertController: AlertController,
     public loadingController: LoadingController,
     private authService: AuthService,
-    private empleadoService: EmpleadoService,
+    private empleadoService: EmpleadosService,
     private usuariosService: UsuariosService,
   ) { }
 

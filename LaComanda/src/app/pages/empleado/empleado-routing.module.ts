@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: EmpleadoPage
+  },
+  {
+    path: 'encuesta-empleado',
+    loadChildren: () => import('./encuesta-empleado/encuesta-empleado.module').then( m => m.EncuestaEmpleadoPageModule)
   }
 ];
 

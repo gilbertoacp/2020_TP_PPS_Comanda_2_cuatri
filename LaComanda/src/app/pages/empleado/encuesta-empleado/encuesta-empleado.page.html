@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-title><ion-text >Encuesta empleado</ion-text></ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrarEncuesta()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <form>
+    <ion-row>
+      <ion-label style="margin-left: 10px;" 
+                 class="ion-margin-top">Estado de las instalaciones del local?</ion-label>
+    </ion-row>
+    <ion-radio-group name="estadoInstalaciones" 
+                    [(ngModel)]="estadoInstalaciones">
+      <ion-item>
+        <ion-label>Buena</ion-label>
+        <ion-radio value="buena"></ion-radio>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Regular</ion-label>
+        <ion-radio value="regular"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Malo</ion-label>
+        <ion-radio value="malo"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+
+    <br>
+
+    <ion-row>
+      <ion-label style="margin-left: 10px;">Calificación del grupo de trabajo?</ion-label>
+    </ion-row>
+    <ion-row>
+      <ion-range min="1" 
+                max="10" 
+                step="1" 
+                pin 
+                value="1" 
+                snaps 
+                color="danger" 
+                name="calificacionGrupoTrabajo" 
+                [(ngModel)]="calificacionGrupoTrabajo">
+
+        <ion-icon name="thumbs-down-outline" 
+                  color="danger" 
+                  slot="start"></ion-icon>
+
+        <ion-icon name="thumbs-up-outline" 
+                  color="danger" 
+                  slot="end"></ion-icon>
+      </ion-range>
+    </ion-row>
+    <ion-item lines="none">
+      <ion-label position="floating">
+        Algún FeedBack? 
+      </ion-label>
+      <ion-textarea name="feedback" 
+                    [(ngModel)]="feedback"></ion-textarea>
+    </ion-item>
+
+    <br>
+
+    <ion-button expand="block" 
+                class="boton" 
+                (click)="registrarEncuesta()">Enviar encuesta</ion-button>
+  </form>
+</ion-content>
+
+<app-spinner *ngIf="enEspera"></app-spinner>

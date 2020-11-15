@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { NavigationExtras } from '@angular/router';
+import { ActionSheetController, ModalController } from '@ionic/angular';
+import { User } from 'firebase';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -9,12 +11,17 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class EmpleadoPage implements OnInit {
 
+  authUser: User;
+
   constructor(
     private actionSheetCtlr: ActionSheetController,
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
+    this.authService.getCurrentUser().subscribe(u => {
+      console.log(u);
+    })
   }
 
   presentActionSheet(): void {

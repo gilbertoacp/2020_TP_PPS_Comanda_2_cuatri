@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Empleado</ion-title>
+  <ion-toolbar color="warning">
+    <ion-title><ion-text >Empleado</ion-text></ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentActionSheet()">
         <ion-icon name="person-circle" size="large"></ion-icon>
@@ -9,6 +9,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="background">
+  <ion-button class="boton" color="primary" expand="block" routerLink="encuesta-empleado">
+    Cargar encuesta de trabajo&nbsp;
+    <ion-icon name="checkbox-outline"></ion-icon>
+  </ion-button>
 </ion-content>
