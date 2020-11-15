@@ -12,6 +12,7 @@
 
 <form class="form" [formGroup]="form" (ngSubmit)="registro(form.value)">
   <ion-button class="botonDNI" color="primary" (click)="scan()"><ion-icon name="qr-code"> </ion-icon>  Escanear DNI  <ion-icon name="qr-code-outline"> </ion-icon></ion-button>
+  <img class="img" [src]="imagenPrevista" alt="imagen" width="100" height="100">
 
   <ion-item *ngIf="mostrarNombre || modoRegistro">
     <ion-label position="floating">Nombre</ion-label>
@@ -93,7 +94,6 @@
   </div>
 
   <ion-button class="botones" [disabled]="!form.valid" (click)="sacarFoto()">Sacar Foto</ion-button>
-  <img [src]="imagenPrevista" alt="imagen" width="160" height="160">
   <ion-button class="botones" [disabled]="!form.valid || !fotoCargada" (click)="register()">Registrar</ion-button>
 
 </form>
