@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-cliente',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClientePage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authService : AuthService
+  ) { }
 
   ngOnInit() {
+  }
+
+  
+  salir(){
+    this.authService.logout();
   }
 
 }

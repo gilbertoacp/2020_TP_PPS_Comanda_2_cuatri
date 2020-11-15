@@ -36,11 +36,20 @@ export class AuthService {
   }
 
   login(correo: string, clave: string): Promise<firebase.auth.UserCredential> {
-    return this.auth.signInWithEmailAndPassword(correo, clave);
+    
+    return new Promise((resolve, reject) => {
+   
+      this.auth.signInWithEmailAndPassword(correo, clave)
+       .then(respuesta => {  
+    
+          resolve(respuesta);
+        }).catch(error => {reject(error)});
+    })    
   }
 
   register(correo: string, clave: string): Promise<firebase.auth.UserCredential> {
     return this.auth.createUserWithEmailAndPassword(correo, clave);
+    
   }
 
   getCurrentUser(): Observable<firebase.User> {

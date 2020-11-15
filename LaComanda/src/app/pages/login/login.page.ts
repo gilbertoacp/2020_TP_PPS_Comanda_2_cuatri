@@ -4,6 +4,11 @@ import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { Vibration } from '@ionic-native/vibration/ngx';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { Usuario } from 'src/app/models/usuario';
+import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum'
+import { Subscription } from 'rxjs';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +21,15 @@ export class LoginPage implements OnInit {
   perfil:string;
   correo:string;
   cargando:boolean=false;
+  usuario: Usuario;
   passwordType:string = 'password';
   eyeType:string = 'eye-off-outline';
   passwordShown:boolean = false;
+  suscripcion:Subscription;
 
   constructor(
+    private userService : UsuariosService,
+    private clienteService : ClientesService,
     private authService: AuthService,
     private toastCtlr: ToastController,
     private router: Router,
@@ -34,23 +43,67 @@ export class LoginPage implements OnInit {
     this.router.navigate(["/register"], {state : {modo: cliente}});
   }
 
-  Login(){
+  async Login(){
+
+    const respuesta = await this.authService.login(this.correo, this.clave);
     this.cargando = true;
 
-    this.authService.login(this.correo, this.clave).then(() => {
-      this.router.navigate(['/home']);
-      setTimeout(() => this.cargando = false, 2500);
 
-      let audio = new Audio();
-      audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
-      audio.play();
-    })
-    .catch(() => {
+    if(respuesta)
+    {
+      let asd = this.userService.getUser(respuesta.user.uid).subscribe(async usuario =>
+        {
+          if(usuario.perfil == PerfilUsuario.CLIENTE && this.clienteService.correoRepetidoFB(usuario.correo))
+          {
+            this.router.navigate(['/home']);
+            setTimeout(() => this.cargando = false, 2500);
+  
+            let audio = new Audio();
+            audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
+            audio.play();
+          }
+          else if(usuario.perfil == PerfilUsuario.CLIENTE && !this.clienteService.correoRepetidoFB(usuario.correo))
+          {
+            let audio = new Audio();
+            audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
+            audio.play();
+            this.vibration.vibrate(2000);
+      
+            this.toastCtlr.create({
+              message: 'Error, todavía no se aprobo su registro',
+              position: 'top',
+              duration: 2000,
+              color: 'danger',
 
-      let audio = new Audio();
-      audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
-      audio.play();
-      this.vibration.vibrate(2000);
+            }).then(t => {
+              this.cargando = false;
+              t.present();
+            });
+
+          }else
+          {
+
+            this.toastCtlr.create({
+              message: 'Error, todavía no se aprobo su registro',
+              position: 'top',
+              duration: 2000,
+              color: 'danger',
+
+            })
+
+            this.router.navigate(['/home']);
+            setTimeout(() => this.cargando = false, 2500);
+  
+            let audio = new Audio();
+            audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
+            audio.play();
+          }
+          
+        })
+      
+    }
+    else
+    {
 
       this.toastCtlr.create({
         message: 'Error, por favor verifique que los campos sean correctos',
@@ -63,7 +116,8 @@ export class LoginPage implements OnInit {
         this.cargando = false;
         t.present();
       });
-    });
+    }
+      
   }
 
 
@@ -94,6 +148,10 @@ export class LoginPage implements OnInit {
       case 'empleado':
         this.correo = 'empleadotest@empleadostest.com';
         this.clave = '111111';
+      break;
+      case 'cliente':
+        this.correo = 'laucha190499@gmail.com';
+        this.clave = '123456';
       break;
     }
   }

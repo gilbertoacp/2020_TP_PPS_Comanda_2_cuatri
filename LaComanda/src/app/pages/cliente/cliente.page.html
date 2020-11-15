@@ -1,9 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>cliente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="salir()">
+        <ion-icon style="color: white" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Bienvenido</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-card (click)="scanQr()"  class="ion-text-center ion-padding" color="000">
+    <ion-icon class="icono" name="list"></ion-icon>
+    <h2 class="long-name"><br>Ir a Lista de Espera</h2>
+  </ion-card>
 
 </ion-content>

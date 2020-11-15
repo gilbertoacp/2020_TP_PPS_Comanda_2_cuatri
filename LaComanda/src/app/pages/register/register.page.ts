@@ -154,7 +154,8 @@ export class RegisterPage implements OnInit {
             correo: cred.user.email,
             contraseña: this.clave,
             foto: await task.ref.getDownloadURL(),
-            tipo : this.tipo
+            tipo : this.tipo,
+            estado : false
           };
 
         this.cliente.registrarCliente(cliente);
@@ -194,7 +195,8 @@ export class RegisterPage implements OnInit {
             correo: "",
             contraseña: "",
             foto: await task.ref.getDownloadURL(),
-            tipo : this.tipo
+            tipo : this.tipo,
+            estado : false
           };
 
         this.cliente.registrarCliente(cliente);

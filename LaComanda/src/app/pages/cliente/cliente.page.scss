@@ -1,0 +1,37 @@
+ion-toolbar {
+    --ion-toolbar-background: linear-gradient(to right, #000000, #434343);
+    --ion-toolbar-color: white;
+}
+
+
+ion-title{
+    color:rgb(255, 255, 255);
+    font: oblique bold 120% cursive;
+    text-align: center;
+}
+
+ion-content{
+    --background: url(../../../assets/img/mesas.jpg) center no-repeat;
+}
+
+.icono{
+    font-size: 5em;
+}
+
+
+ion-card {
+    margin-top: 50%;
+    height: 200px;
+    background-color: #e8af37;
+    color: black;
+}
+.ion-color.sc-ion-card-md-h{
+    background-color: #e8af37
+}
+h2 {
+    margin: 0;
+}
+
+.long-name {
+    font-size: 2em
+}

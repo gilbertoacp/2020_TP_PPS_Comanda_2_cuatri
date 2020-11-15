@@ -30,17 +30,17 @@ export class ClientesService {
   }
 
   registroPendiente(){
-    return this.db.collection("clientes", ref => ref.where("aprobado", "==", false)).stateChanges(["added"]);
+    return this.db.collection("clientes", ref => ref.where("estado", "==", false)).stateChanges(["added"]);
   }
 
   clienteSinAprobar(){
-    return this.db.collection("clientes", ref => ref.where("aprobado", "==", false)).valueChanges();
+    return this.db.collection("clientes", ref => ref.where("estado", "==", false)).valueChanges();
   }
 
   correoRepetidoFB(mail: string): boolean{
     let existe = false;
     this.registrados.forEach(c => {
-      if(c.correo == mail && !c.aprobado){
+      if(c.correo == mail && !c.estado){
         existe = true;
       }
     });
@@ -50,19 +50,16 @@ export class ClientesService {
   correoRepetidoAFS(correo: string){
     let existe = false;
     this.registrados.forEach(c => {
-      if(c.correo == correo && c.aprobado){
+      if(c.correo == correo && c.estado){
         existe = true;
       }
     });
     return existe;
   }
 
-  
-  
-
   actualizarRegistros(id)
   {
-    return this.db.collection("clientes").doc(id).update({aprobado: true});
+    return this.db.collection("clientes").doc(id).update({estado: true});
   }
 
   eliminarCliente(id){

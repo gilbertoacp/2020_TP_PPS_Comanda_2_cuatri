@@ -10,5 +10,6 @@ export interface Cliente {
   contraseña: string,
   foto: string,
   tipo: TipoCliente,
+  estado : boolean
   
 }
