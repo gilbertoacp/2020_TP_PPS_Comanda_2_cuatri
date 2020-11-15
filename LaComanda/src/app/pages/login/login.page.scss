@@ -101,10 +101,15 @@ ion-button {
 }
 
 ion-label {
-    font: oblique bold 80% cursive;
+    --font: oblique bold 80% cursive;
 }
 
 ion-title {
+    font: oblique bold 120% cursive;
+}
+
+ion-input{
+
     font: oblique bold 120% cursive;
 }
 

@@ -10,11 +10,11 @@
 <ion-content padding scroll="false" padding class="background">
 
     <ion-item lines="none" class="campos">
-        <ion-label autocomplete="on" position="floating">Correo electrónico</ion-label>
+        <ion-label autocomplete="on" position="floating" style="font: oblique bold 120% cursive;">Correo electrónico</ion-label>
         <ion-input type="email" name="correo" [(ngModel)]="correo" required></ion-input>
     </ion-item>
     <ion-item lines="none" class="campos">
-        <ion-label position="floating">Contraseña</ion-label>
+        <ion-label position="floating" style="font: oblique bold 120% cursive;">Contraseña</ion-label>
         <ion-input [type]="passwordType" name="contrasena" [(ngModel)]="clave" required></ion-input>
         <ion-icon slot="end" [name]="eyeType" color="white" (click)="tooglePassword()" style="zoom:1.2;"></ion-icon>
     </ion-item>
@@ -22,7 +22,7 @@
     <div class="inicio">
         <div class="cajaImagen">
             <ion-item>
-                <ion-label>Inicio Rapido</ion-label>
+                <ion-label style="font: oblique bold 120% cursive;">Inicio Rapido</ion-label>
                 <ion-select placeholder="Seleccionar" name="perfil" [(ngModel)]="perfil"
                     (ionChange)="usuarioSeleccionado($event)">
                     <ion-select-option value="duenio">Dueño</ion-select-option>
