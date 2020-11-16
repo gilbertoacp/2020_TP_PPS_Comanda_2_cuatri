@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="warning">
     <ion-title>Dueño</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentActionSheet()">
@@ -10,10 +10,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-button expand="full" routerLink="alta">
-    <ion-text color="light">Alta Dueño / Supervisor</ion-text>
+  <ion-button class="boton"
+   expand="block" routerLink="alta">
+    <ion-text >Alta Dueño / Supervisor</ion-text>
   </ion-button>
-  <ion-button expand="full" routerLink="alta-empleado">
-    <ion-text color="light">Alta Empleado</ion-text>
+  <ion-button expand="block" routerLink="alta-empleado" class="boton">
+    <ion-text >Alta Empleado</ion-text>
   </ion-button>
 </ion-content>
