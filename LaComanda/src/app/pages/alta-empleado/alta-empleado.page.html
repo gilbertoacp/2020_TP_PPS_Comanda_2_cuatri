@@ -10,54 +10,51 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
       <ion-row class="ion-justify-content-center ion-no-margin">
         <img [src]="imagenVista" alt="imagen" width="160" height="160">
       </ion-row>
-    </ion-card-header>
 
     <ion-row class="ion-no-margin">
       <ion-col>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label position="floating">Correo</ion-label>
           <ion-input type="email" name="correo" [(ngModel)]="correo"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label position="floating">Clave</ion-label>
           <ion-input type="password" name="clave" [(ngModel)]="clave"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-item>
+    <ion-item lines="none">
       <ion-label position="floating">Nombre</ion-label>
       <ion-input type="text" name="nombre" [(ngModel)]="nombre"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item lines="none">
       <ion-label position="floating">Apellido</ion-label>
       <ion-input type="text" name="apellido" [(ngModel)]="apellido"></ion-input>
     </ion-item>
 
     <ion-row class="ion-no-margin">
       <ion-col>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label position="floating">DNI</ion-label>
           <ion-input type="text" name="dni" [(ngModel)]="dni"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label position="floating">CUIL</ion-label>
           <ion-input type="text" name="cuil" [(ngModel)]="cuil"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-item>
+    <ion-item lines="none">
       <ion-label>Tipo Empleado</ion-label>
       <ion-select placeholder="Seleccionar" name="tipo" [(ngModel)]="tipo">
         <ion-select-option value="0">Mozo</ion-select-option>
@@ -66,18 +63,26 @@
       </ion-select>
     </ion-item>
 
-    <ion-row class="ion-justify-content-around">
-      <ion-button class="ion-text-center" color="secondary" (click)="tomarFoto()">
+    <!-- <div class="icons">
+      <div class="contenedor">
+        <app-qr-lector title='Carga tu DNI' (info_escaneada)=datosDNI($event)></app-qr-lector>
+      </div>
+      <div class="contenedor">
+        <app-camera-selector title='Carga tu foto' [imagen_cargada]=foto_perfil (image_data)=recibir_data($event) (image_taken)=recibir_foto($event)></app-camera-selector>
+      </div>
+    </div> -->
+
+    <ion-row class="ion-justify-content-around ion-margin-top">
+      <ion-button class="ion-text-center" color="danger" (click)="tomarFoto()">
         <ion-icon slot="icon-only" name="camera"></ion-icon>
       </ion-button>
 
-      <ion-button class="ion-text-center" color="secondary" (click)="escanear()">
+      <ion-button class="ion-text-center" color="danger" (click)="escanear()">
         <ion-icon slot="icon-only" name="scan-circle"></ion-icon>
       </ion-button>
     </ion-row>
 
-    <ion-button color="primary" expand="full" (click)="registrar()">Registrar</ion-button>
-  </ion-card>
+    <ion-button color="warning" expand="block" class="boton" (click)="registrar()">Registrar</ion-button>
 </ion-content>
 
 <app-spinner *ngIf="enEspera"></app-spinner>

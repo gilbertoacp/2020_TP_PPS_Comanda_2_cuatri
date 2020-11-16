@@ -123,7 +123,7 @@ export class AltaEmpleadoPage implements OnInit {
 
   async registrar(): Promise<void> {
     if(!this.validarForm()) {
-      this.presentAlert(this.errMsj);
+      this.presentAlert('Error en el formulario!');
       return;
     }
 
