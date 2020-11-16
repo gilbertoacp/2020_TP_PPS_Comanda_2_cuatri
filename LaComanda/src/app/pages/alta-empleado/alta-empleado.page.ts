@@ -121,50 +121,50 @@ export class AltaEmpleadoPage implements OnInit {
 
   }
 
-  registrar(): void {
-
+  async registrar(): Promise<void> {
     if(!this.validarForm()) {
       this.presentAlert(this.errMsj);
       return;
     }
+
     this.enEspera = true;
-    this.file.readAsArrayBuffer(Utils.getDirectory(this.img), Utils.getFilename(this.img))
-    .then(arrayBuffer => {
-      const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
-      const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
 
-      this.authService.register(this.correo, this.clave).then(cred => {
+    const aB = await this.file.readAsArrayBuffer(Utils.getDirectory(this.img), Utils.getFilename(this.img));
+    const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`
+    const blob = new Blob([aB], {type: 'image/jpg'});
 
-        this.usuariosService.agregarUsuarioConAuthId(cred.user.uid, {
-          correo: this.correo,
-          clave: this.clave,
-          perfil: PerfilUsuario.EMPLEADO
-        });
+    try {
+      const {data}: any = await this.authService.registerWhithoutPersistance(this.correo, this.clave);
+      console.log('cred', data);
+      
+      this.usuariosService.agregarUsuarioConAuthId(data.uid, {
+        correo: this.correo,
+        clave: this.clave,
+        perfil: PerfilUsuario.EMPLEADO
+      });
 
-        this.storage.upload(storagePath, blob).then(async task => {
-          const empleado: Empleado = {
-            correo: cred.user.email,
-            authId: cred.user.uid,
-            nombre: this.nombre,
-            apellido: this.apellido,
-            dni: this.dni,
-            foto: await task.ref.getDownloadURL(),
-            tipo : this.tipo as TipoEmpleado,
-            cuil: this.cuil
-          };
-          this.empleadoService.agregarEmpleado(empleado);
+      const task = await this.storage.upload(storagePath, blob);
 
-          this.enEspera = false;
-          this.router.navigate(['..']);
-        })
-        .catch(() => {
-          this.errorFirebase();
-        });
-      })
-      .catch(() => {
-        this.errorFirebase();
-      })
-    });
+      const empleado: Empleado = {
+        correo: this.correo,
+        authId: data.uid,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        dni: this.dni,
+        foto: await task.ref.getDownloadURL(),
+        tipo : this.tipo as TipoEmpleado,
+        cuil: this.cuil
+      };
+
+      this.empleadoService.agregarEmpleado(empleado);
+
+      this.router.navigate(['/home']);
+    } catch(err) {
+      console.log(err);
+      this.errorFirebase();
+    } finally {
+      this.enEspera = false;
+    }
   }
 
   private errorFirebase(): void {

@@ -25,6 +25,9 @@ import { File } from '@ionic-native/file/ngx';
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { MediaCapture } from '@ionic-native/media-capture/ngx';
 
+import { HttpClientModule } from '@angular/common/http';
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -38,6 +41,7 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
     AngularFireStorageModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [
     StatusBar,

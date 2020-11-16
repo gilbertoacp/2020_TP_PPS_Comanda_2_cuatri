@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -5,6 +6,7 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Usuario } from '../models/usuario';
 
 @Injectable({
@@ -17,7 +19,8 @@ export class AuthService {
   constructor(
     private auth: AngularFireAuth,
     private db: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) { 
     this.user$ = this.auth.authState.pipe(
       switchMap((user) => {
@@ -33,6 +36,7 @@ export class AuthService {
         return of(null);
       })
     );
+
   }
 
   login(correo: string, clave: string): Promise<firebase.auth.UserCredential> {
@@ -54,6 +58,10 @@ export class AuthService {
 
   getCurrentUser(): Observable<firebase.User> {
     return this.auth.authState.pipe(first());
+  }
+
+  registerWhithoutPersistance(correo: string, clave: string) {
+    return this.http.post(environment.authRegister,{correo, clave}).toPromise();
   }
 
   logout(): void {

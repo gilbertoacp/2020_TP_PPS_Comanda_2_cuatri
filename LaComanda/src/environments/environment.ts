@@ -12,7 +12,8 @@ export const environment = {
     storageBucket: "lacomanda-4960e.appspot.com",
     messagingSenderId: "1010262992102",
     appId: "1:1010262992102:web:75ff51f9840fb728848727"
-  }
+  },
+  authRegister: 'https://us-central1-lacomanda-4960e.cloudfunctions.net/registrarUsuario'
 };
 
 /*

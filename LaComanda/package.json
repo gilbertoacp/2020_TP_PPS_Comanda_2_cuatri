@@ -36,6 +36,7 @@
     "@ionic/angular": "^5.0.0",
     "@schematics/angular": "^10.2.0",
     "firebase": "^7.13.1",
+    "firebase-admin": "^9.4.1",
     "ngx-qrcode2": "^9.0.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
