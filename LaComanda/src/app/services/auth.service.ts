@@ -8,6 +8,11 @@ import { Observable, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Usuario } from '../models/usuario';
+import { PerfilUsuario } from '../models/perfil-usuario.enum';
+import { User } from 'firebase';
+import { Cliente } from '../models/cliente';
+import { Duenio } from '../models/duenio';
+import { Empleado } from '../models/empleado';
 
 @Injectable({
   providedIn: 'root'
@@ -52,12 +57,49 @@ export class AuthService {
     return this.auth.authState.pipe(first());
   }
 
+  getCurrentUserData(tipoUsuario: PerfilUsuario): Observable<any> {
+    return this.auth.authState.pipe(
+      switchMap((user: User) => {
+        if(user) {
+          if(tipoUsuario === PerfilUsuario.CLIENTE) {
+            return this.db.collection<Cliente>('clientes',
+              ref => ref.where('authId', '==', user.uid)
+            ).valueChanges({idField: 'docId'});
+          }
+
+          if(tipoUsuario === PerfilUsuario.DUENIO) {
+            return this.db.collection<Duenio>('duenios',
+              ref => ref.where('authId', '==', user.uid)
+            ).valueChanges({idField: 'docId'});
+          }
+
+          if(tipoUsuario === PerfilUsuario.EMPLEADO) {
+            return this.db.collection<Empleado>('empleados',
+              ref => ref.where('authId', '==', user.uid)
+            ).valueChanges({idField: 'docId'});
+          }
+
+          if(tipoUsuario === PerfilUsuario.SUPERVISOR) {
+            return this.db.collection('supervisores',
+              ref => ref.where('authId', '==', user.uid)
+            ).valueChanges({idField: 'docId'});
+          }
+        }
+        return of(null);
+      })
+    )
+  }
+
   registerWhithoutPersistance(correo: string, clave: string) {
     return this.http.post(environment.authRegister,{correo, clave}).toPromise();
   }
 
-  logout(): void {
-    this.auth.signOut();
+  async logout(): Promise<void> {
+    try {
+      await this.auth.signOut();
+    }catch (err) {
+      console.log(err);
+    }
     this.router.navigate(['/login']);
   }
 }

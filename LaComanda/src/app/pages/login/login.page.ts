@@ -131,7 +131,6 @@ export class LoginPage implements OnInit {
       this.passwordType = 'text';
       this.eyeType = 'eye-outline';
     }
-
   }
 
   usuarioSeleccionado({currentTarget}) {
@@ -142,16 +141,23 @@ export class LoginPage implements OnInit {
 
     switch(currentTarget.value) {
       case 'duenio':
-        this.correo = 'duenio01@duenio.com';
+        this.correo = 'pepito@pepito.com';
         this.clave = '111111';
       break;
+
       case 'empleado':
-        this.correo = 'empleadotest@empleadostest.com';
+        this.correo = 'antonio@antonio.com';
         this.clave = '111111';
       break;
+
       case 'cliente':
         this.correo = 'laucha190499@gmail.com';
         this.clave = '123456';
+      break;
+
+      case 'supervisor':
+        this.correo = 'miguel@miguel.com';
+        this.clave = '111111';
       break;
     }
   }

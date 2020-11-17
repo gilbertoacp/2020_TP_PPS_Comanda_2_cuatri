@@ -7,6 +7,9 @@ import { Duenio } from 'src/app/models/duenio';
 import { DuenioSupervisorService } from 'src/app/services/duenio-supervisor.service';
 import { Supervisor } from 'src/app/models/supervisor';
 import { ToastController } from '@ionic/angular';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-alta-duenio',
@@ -28,7 +31,10 @@ export class AltaDuenioComponent implements OnInit {
     private authService:AuthService,
     private storage:AngularFireStorage,
     private duenio_supervisor_svc:DuenioSupervisorService,
-    private toastController:ToastController) { }
+    private toastController:ToastController,
+    private usuariosService: UsuariosService,
+    private router: Router
+  ) { }
 
   ngOnInit() { }
 
@@ -56,18 +62,19 @@ export class AltaDuenioComponent implements OnInit {
   registrar(): void {
     try{
       this.file.readAsArrayBuffer(Utils.getDirectory(this.imagen_data), Utils.getFilename(this.imagen_data))
-      .then(arrayBuffer => {
+      .then(async arrayBuffer => {
         const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
         const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
-  
-        this.authService.register(this.correo, this.clave).then(cred => {
-          this.storage.upload(storagePath, blob).then(async task => {
-            await this.cargar_perfil(this.perfil,cred,task);
-            this.presentToast('Cargado con exito','success')
-          })
-          .catch(err => {
-            this.presentToast(err,'danger')
-          });
+        
+        const {data}: any = await this.authService.registerWhithoutPersistance(this.correo, this.clave);
+
+        this.storage.upload(storagePath, blob).then(async task => {
+          await this.cargar_perfil(this.perfil,data,task);
+          this.presentToast('Cargado con exito','success')
+          this.router.navigate(['/home']);
+        })
+        .catch(err => {
+          this.presentToast(err,'danger')
         });
       });
     }
@@ -80,27 +87,40 @@ export class AltaDuenioComponent implements OnInit {
   async cargar_perfil(perfil:string,cred:any,task:any){
     if(perfil === 'DUEÑO'){
       const duenio: Duenio = {
-        authId: cred.user.uid,
+        authId: cred.uid,
         nombre: this.nombre,
         apellido: this.apellido,
         dni: this.dni.toString(),
         foto: await task.ref.getDownloadURL(),
         cuil: this.cuil
       };
+
+      this.usuariosService.agregarUsuarioConAuthId(cred.uid, {
+        correo: this.correo,
+        clave: this.clave,
+        perfil: PerfilUsuario.DUENIO
+      });
+
       this.duenio_supervisor_svc.agregarDuenio(duenio);
     }
     else{
       const supervisor: Supervisor = {
-        authId: cred.user.uid,
+        authId: cred.uid,
         nombre: this.nombre,
         apellido: this.apellido,
         dni: this.dni.toString(),
         foto: await task.ref.getDownloadURL(),
         cuil: this.cuil
       };
+
+      this.usuariosService.agregarUsuarioConAuthId(cred.uid, {
+        correo: this.correo,
+        clave: this.clave,
+        perfil: PerfilUsuario.SUPERVISOR
+      });
+
       this.duenio_supervisor_svc.agregarSupervisor(supervisor);
     }
-
   }
 
   async presentToast(msg: string, color: string) {
