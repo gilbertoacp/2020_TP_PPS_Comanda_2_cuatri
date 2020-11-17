@@ -17,7 +17,6 @@ export class EmpleadoGuard implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this.authService.user$.pipe(map(user => {
-      console.log('Guard empleado');
       
       if(user.perfil === PerfilUsuario.EMPLEADO) return true;
 

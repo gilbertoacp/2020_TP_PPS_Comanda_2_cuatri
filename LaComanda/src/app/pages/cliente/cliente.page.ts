@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { Cliente } from '../../models/cliente';
 
 @Component({
   selector: 'app-cliente',
@@ -10,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class ClientePage implements OnInit, OnDestroy {
 
+  cliente: Cliente;
   private subscription: Subscription;
 
   constructor(
@@ -18,9 +20,13 @@ export class ClientePage implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
-      console.log(cliente[0]);
-    })
+    this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE)
+    .subscribe(cliente => {
+      if(cliente) {
+        this.cliente = cliente[0];
+        console.log(this.cliente);
+      }
+    });
   }
 
   ngOnDestroy(): void {

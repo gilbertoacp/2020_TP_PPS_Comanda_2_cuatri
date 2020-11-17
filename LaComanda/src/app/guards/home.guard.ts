@@ -15,8 +15,6 @@ export class HomeGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.authService.user$.pipe(map(user => {
 
-      console.log(user?'logueado': 'no logueado');
-
       if(!user) return false;
 
       switch(user.perfil) {

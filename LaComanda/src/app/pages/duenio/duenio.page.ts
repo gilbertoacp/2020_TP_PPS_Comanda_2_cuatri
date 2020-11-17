@@ -3,6 +3,7 @@ import { ActionSheetController, ModalController } from '@ionic/angular';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { Duenio } from '../../models/duenio';
 
 @Component({
   selector: 'app-duenio',
@@ -11,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class DuenioPage implements OnInit, OnDestroy {
 
+  duenio: Duenio;
   subscription: Subscription;
 
   constructor(
@@ -22,7 +24,10 @@ export class DuenioPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.authService.getCurrentUserData(PerfilUsuario.DUENIO)
     .subscribe(duenio => {
-      console.log(duenio[0]);
+      if(duenio) {
+        this.duenio = duenio[0];
+        console.log(this.duenio);
+      }
     });
   }
 

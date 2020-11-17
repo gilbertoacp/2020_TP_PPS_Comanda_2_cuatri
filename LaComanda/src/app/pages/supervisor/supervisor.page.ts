@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { ActionSheetController } from '@ionic/angular';
+import { Supervisor } from '../../models/supervisor';
 
 @Component({
   selector: 'app-supervisor',
@@ -11,14 +12,18 @@ import { ActionSheetController } from '@ionic/angular';
 })
 export class SupervisorPage implements OnInit, OnDestroy {
 
+  supervisor: Supervisor;
   private subscription: Subscription;
 
   constructor(private authService: AuthService, private actionSheetCtlr:ActionSheetController) { }
   
   ngOnInit() {
     this.subscription = this.authService.getCurrentUserData(PerfilUsuario.SUPERVISOR)
-    .subscribe(supervisor => {
-      console.log(supervisor[0]);
+    .subscribe((supervisor) => {
+      if(supervisor) {
+        this.supervisor = supervisor[0];
+        console.log(this.supervisor);
+      }
     });
   }
   
