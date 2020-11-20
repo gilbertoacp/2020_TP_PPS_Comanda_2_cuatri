@@ -26,5 +26,4 @@ export const registrarUsuario = functions.https.onRequest((req, res) => {
       });
     }
   });
- 
 });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -28,4 +28,7 @@ export class EncuestasService {
     });
   }
 
+  guardarEncuestaEmpleado(encuesta): Promise<DocumentReference> {
+    return this.db.collection('encuestasEmpleados').add(encuesta);
+  }
 }

@@ -12,7 +12,7 @@ import { Empleado } from 'src/app/models/empleado';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { PerfilUsuario } from '../../models/perfil-usuario.enum';
-import { EmpleadosService } from 'src/app/services/empleado/empleados.service';
+import { EmpleadosService } from 'src/app/services/empleados.service';
 
 @Component({
   selector: 'app-alta-empleado',

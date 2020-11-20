@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { EmpleadoPage } from './empleado.page';
+import { AltaProductoComponent } from './alta-producto/alta-producto.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'encuesta-empleado',
     loadChildren: () => import('./encuesta-empleado/encuesta-empleado.module').then( m => m.EncuestaEmpleadoPageModule)
+  },
+  {
+    path: 'alta-producto',
+    component: AltaProductoComponent
   }
 ];
 

@@ -9,9 +9,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="background">
-  <ion-button class="boton" color="primary" expand="block" routerLink="encuesta-empleado">
+<ion-content class="background" *ngIf="empleado">
+  <ion-button class="boton" 
+              color="primary" 
+              expand="block" 
+              (click)="irALaEncuesta(empleado)"
+  >
     Cargar encuesta de trabajo&nbsp;
     <ion-icon name="checkbox-outline"></ion-icon>
+  </ion-button>
+  <ion-button class="boton" 
+              color="primary" 
+              expand="block" 
+              (click)="IrAgregarProducto(empleado)"
+              *ngIf="esBartenderOCocinero(empleado)"
+  >
+      Agregar Producto&nbsp;
+      <ion-icon name="pizza-outline"></ion-icon>&nbsp;
+      <ion-icon name="beer-outline"></ion-icon>
   </ion-button>
 </ion-content>

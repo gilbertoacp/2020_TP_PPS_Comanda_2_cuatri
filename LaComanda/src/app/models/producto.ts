@@ -2,8 +2,8 @@ export interface Producto {
   docId?: string,
   descripcion: string,
   tiempoElaboracion: string,
-  precio: number,
+  precio: string,
   fotos: any,
-  qrImg: string,
-  id: string
+  id: string,
+  tipoProducto: 'plato' | 'bebida'
 }

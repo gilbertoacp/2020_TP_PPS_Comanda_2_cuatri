@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
-import { User } from 'firebase';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Empleado } from '../../models/empleado';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 
 @Component({
   selector: 'app-empleado',
@@ -19,6 +20,8 @@ export class EmpleadoPage implements OnInit, OnDestroy {
   constructor(
     private actionSheetCtlr: ActionSheetController,
     private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
   
   ngOnInit() {
@@ -33,6 +36,24 @@ export class EmpleadoPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  irALaEncuesta(empleado: Empleado): void {
+    this.router.navigate(['encuesta-empleado'], {
+      state: {empleado},
+      relativeTo: this.route
+    });
+  }
+
+  esBartenderOCocinero(empleado: Empleado): boolean {
+    return empleado.tipo == TipoEmpleado.BARTENDER || empleado.tipo == TipoEmpleado.COCINERO;
+  }
+
+  IrAgregarProducto(empleado: Empleado): void {
+    this.router.navigate(['alta-producto'], {
+      state: {empleado},
+      relativeTo: this.route
+    });
   }
 
   presentActionSheet(): void {

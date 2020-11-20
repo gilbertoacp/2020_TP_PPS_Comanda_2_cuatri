@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { EncuestaEmpleadoService } from 'src/app/services/empleado/encuesta-empleado.service';
+import { EncuestasService } from '../../../services/encuestas.service';
+import { EmpleadosService } from '../../../services/empleados.service';
+import { Empleado } from '../../../models/empleado';
 
 @Component({
   selector: 'app-encuesta-empleado',
@@ -10,6 +12,7 @@ import { EncuestaEmpleadoService } from 'src/app/services/empleado/encuesta-empl
 })
 export class EncuestaEmpleadoPage implements OnInit {
 
+  empleado: Empleado;
   estadoInstalaciones: string;
   calificacionGrupoTrabajo: number;
   feedback: string;
@@ -18,8 +21,13 @@ export class EncuestaEmpleadoPage implements OnInit {
   constructor(
     private router: Router,
     private toastCtrl: ToastController,
-    private encuestasEmpleadoService: EncuestaEmpleadoService,
-  ) { }
+    private encuestasService: EncuestasService,
+    private empleadosService: EmpleadosService
+  ) { 
+    if(this.router.getCurrentNavigation().extras.state.empleado) {
+      this.empleado = this.router.getCurrentNavigation().extras.state.empleado;
+    }
+  }
 
   ngOnInit() {
   }
@@ -37,12 +45,16 @@ export class EncuestaEmpleadoPage implements OnInit {
     this.enEspera = true;
 
     try {
-      await this.encuestasEmpleadoService.agregarEncuesta({
-        // docIdEmpleado: '213213',
+      const encuesta = {
+        docIdEmpleado: this.empleado.docId,
         estadoInstalaciones: this.estadoInstalaciones,
         calificacionGrupoTrabajo: this.calificacionGrupoTrabajo,
         feedback: this.feedback
-      });
+      };
+
+      this.encuestasService.guardarEncuestaEmpleado(encuesta);
+      
+      this.empleadosService.agregarEncuesta(encuesta);
 
       this.presentToast('Se ha cargado la encuesta!');
     } catch(err) {
@@ -51,7 +63,6 @@ export class EncuestaEmpleadoPage implements OnInit {
       console.log(err);
     } finally {
       this.enEspera = false;
-
       this.feedback = null;
       this.estadoInstalaciones = null;
       this.calificacionGrupoTrabajo = null;
