@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Producto } from '../models/producto';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class ProductoService {
 
   constructor(private db: AngularFirestore) { }
 
-  agregarProducto(producto: Producto): void {
-    this.db.collection<Producto>('productos').add(producto);
+  agregarProducto(producto: Producto): Promise<DocumentReference> {
+    return this.db.collection<Producto>('productos').add(producto);
   }
 }

@@ -2,7 +2,7 @@
   <ion-toolbar color="warning">
     <ion-title><ion-text >Agregar {{empleado.tipo == 1? 'Plato': 'Bebida'}}</ion-text></ion-title>
     <ion-buttons slot="start">
-      <ion-button routerLink="/home/empleado" slot="icon-only">
+      <ion-button routerLink="/home/empleado" slot="icon-only" [disabled]="enEspera">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -43,22 +43,33 @@
     <ion-input type="text" name="precio" [(ngModel)]="precio"></ion-input>
   </ion-item>
 
+  <ion-item lines="none">
+    <ion-label style="font: oblique bold 120% cursive;">Tipo</ion-label>
+    <ion-select placeholder="Seleccionar" name="perfil" [(ngModel)]="tipo">
+        <ion-select-option value="plato" disabled>Plato</ion-select-option>
+        <ion-select-option value="bebida" disabled>Bebida</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-row class="ion-justify-content-around ion-margin-vertical">
     <ion-button class="ion-text-center" color="danger" (click)="tomarFoto()">
       <ion-icon slot="icon-only" name="camera"></ion-icon>
+    </ion-button>
+    
+    <ion-button class="ion-text-center" color="danger" (click)="subirFotoGaleria()">
+      <ion-icon name="image-outline"></ion-icon>
     </ion-button>
 
     <ion-button class="ion-text-center" color="danger" (click)="escanear()">
       <ion-icon slot="icon-only" name="scan-circle"></ion-icon>
     </ion-button>
 
-    <ion-button class="ion-text-center" color="danger" (click)="deshacerFotos()">
+    <ion-button class="ion-text-center" color="danger" (click)="limpiarForm()">
       <ion-icon name="trash-outline"></ion-icon>
     </ion-button>
-
-    
   </ion-row>
 
-  <ion-button color="warning" expand="block" class="boton" (click)="agregar()">Registrar</ion-button>
+  <ion-button color="warning" expand="block" class="boton" (click)="registrar()" [disabled]="enEspera">Registrar</ion-button>
 </ion-content>
+<app-spinner *ngIf="enEspera"></app-spinner>
 

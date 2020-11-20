@@ -1,5 +1,6 @@
 export interface Producto {
   docId?: string,
+  nombre: string
   descripcion: string,
   tiempoElaboracion: string,
   precio: string,

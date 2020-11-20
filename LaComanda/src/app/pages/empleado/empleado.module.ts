@@ -8,6 +8,7 @@ import { EmpleadoPageRoutingModule } from './empleado-routing.module';
 
 import { EmpleadoPage } from './empleado.page';
 import { AltaProductoComponent } from './alta-producto/alta-producto.component';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { AltaProductoComponent } from './alta-producto/alta-producto.component';
     IonicModule,
     EmpleadoPageRoutingModule
   ],
-  declarations: [EmpleadoPage, AltaProductoComponent]
+  declarations: [EmpleadoPage, AltaProductoComponent, SpinnerComponent]
 })
 export class EmpleadoPageModule {}
