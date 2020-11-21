@@ -3,8 +3,9 @@ export interface Producto {
   nombre: string
   descripcion: string,
   tiempoElaboracion: string,
-  precio: string,
+  precio: number,
   fotos: any,
   id: string,
   tipoProducto: 'plato' | 'bebida'
+  cantidad? : number
 }

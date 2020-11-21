@@ -28,7 +28,7 @@ export class AltaProductoComponent implements OnInit {
   nombre: string;
   descripcion: string;
   tiempoPreparacion: string;
-  precio: string;
+  precio: number;
   imagenDefault =  'assets/img/noimage.png';
   preVistaFotos = [this.imagenDefault, this.imagenDefault, this.imagenDefault];
   enEspera: boolean = false;
@@ -112,7 +112,7 @@ export class AltaProductoComponent implements OnInit {
         this.nombre = productoData[1];
         this.descripcion = productoData[2];
         this.tiempoPreparacion = productoData[3];
-        this.precio = productoData[4];
+        this.precio = parseInt(productoData[4]);
       }
     })
     .catch(err => {
@@ -155,7 +155,7 @@ export class AltaProductoComponent implements OnInit {
     if(Utils.isEmpty(this.descripcion) &&
        Utils.isEmpty(this.tiempoPreparacion) &&
        Utils.isEmpty(this.nombre) &&
-       Utils.isEmpty(this.precio)) {
+       !this.precio) {
         return false; 
        }    
     return true;

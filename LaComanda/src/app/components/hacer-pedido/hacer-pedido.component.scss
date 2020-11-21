@@ -1,0 +1,71 @@
+// ion-header {
+//   --background: linear-gradient(to right, #000000, #434343);
+//   padding-bottom: 2%;
+//   ion-toolbar {
+//     padding: 0 10px;
+//     border-bottom-left-radius: 15px;
+//     border-bottom-right-radius: 15px;
+//     ion-title {
+//       font-weight: 800;
+//     }
+//   }
+// }
+
+ion-button {
+  --border-radius	: 55px
+}
+
+ion-content {
+  --background: linear-gradient(to right, #000000, #434343);
+  --color: white;
+  ion-item {
+      --background: transparent;
+      --color: white;
+      --border-color: var(ion-color-secondary);
+      --border-width: 2px solid;
+      --border-radius: 5rem;
+      margin-top: 3%;
+
+      ion-input{
+          font-size: 1.3rem;
+      }
+      //--border-style: 2px solid #273B7A;
+  }
+}
+
+ion-content.background {
+  --background: url(../../../assets/img/menu_hamburguesa.jpg) 0 0/100% 100% no-repeat;
+  // --background: #e03a00;
+}
+
+.boton {
+  margin: 0.2rem;
+  margin-top: 0;
+  padding: 0.2rem;
+  height: 4rem;
+  color: white;
+}
+
+.category-block {
+  margin-bottom: 4px;
+}
+
+.category-banner {
+  border-left: 8px solid var(--ion-color-secondary);
+  background: var(--ion-color-light);
+  height: 48px;
+  padding: 10px;
+  font-weight: 500;
+}
+
+.tarjeta {
+  border-radius: 46px;
+  border: 4px solid var(--ion-color-secondary);
+}
+
+.lista {
+  border-radius: 46px;
+  max-height: 400px;
+  overflow:scroll;
+  border: 4px solid var(--ion-color-secondary);
+}

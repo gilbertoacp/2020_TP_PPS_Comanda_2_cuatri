@@ -53,7 +53,7 @@ import { HttpClientModule } from '@angular/common/http';
     Base64ToGallery,
     MediaCapture,
     LocalNotifications,
-    Vibration
+    Vibration,
   ],
   bootstrap: [AppComponent]
 })

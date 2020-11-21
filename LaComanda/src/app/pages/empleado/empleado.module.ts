@@ -9,6 +9,8 @@ import { EmpleadoPageRoutingModule } from './empleado-routing.module';
 import { EmpleadoPage } from './empleado.page';
 import { AltaProductoComponent } from './alta-producto/alta-producto.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { TipoEmpleadoPipe } from '../../pipes/tipo-empleado.pipe';
+import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 
 @NgModule({
   imports: [
@@ -17,6 +19,12 @@ import { SpinnerComponent } from '../../components/spinner/spinner.component';
     IonicModule,
     EmpleadoPageRoutingModule
   ],
-  declarations: [EmpleadoPage, AltaProductoComponent, SpinnerComponent]
+  declarations: [
+    EmpleadoPage, 
+    AltaProductoComponent, 
+    SpinnerComponent, 
+    TipoEmpleadoPipe, 
+    HacerPedidoComponent
+  ]
 })
 export class EmpleadoPageModule {}

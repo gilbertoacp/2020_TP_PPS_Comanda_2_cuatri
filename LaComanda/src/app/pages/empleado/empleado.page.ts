@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Empleado } from '../../models/empleado';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
+import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 
 @Component({
   selector: 'app-empleado',
@@ -21,7 +22,8 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     private actionSheetCtlr: ActionSheetController,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalCtrl: ModalController
   ) { }
   
   ngOnInit() {
@@ -49,11 +51,27 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     return empleado.tipo == TipoEmpleado.BARTENDER || empleado.tipo == TipoEmpleado.COCINERO;
   }
 
+  esMozoOMetre(empleado: Empleado): boolean {
+    return empleado.tipo == TipoEmpleado.METRE || empleado.tipo == TipoEmpleado.MOZO;
+  }
+
   IrAgregarProducto(empleado: Empleado): void {
     this.router.navigate(['alta-producto'], {
       state: {empleado},
       relativeTo: this.route
     });
+  }
+
+  async hacerPedido(): Promise<void> {
+    const m = await this.modalCtrl.create({
+      component: HacerPedidoComponent,
+      componentProps: {
+        empleado: this.empleado,
+        cliente: null
+      }
+    });
+
+    m.present();
   }
 
   presentActionSheet(): void {
