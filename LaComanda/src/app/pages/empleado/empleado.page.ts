@@ -7,6 +7,7 @@ import { Empleado } from '../../models/empleado';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
+import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
 
 @Component({
   selector: 'app-empleado',
@@ -55,11 +56,35 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     return empleado.tipo == TipoEmpleado.METRE || empleado.tipo == TipoEmpleado.MOZO;
   }
 
+  esMetre(empleado: Empleado): boolean {
+    return empleado.tipo == TipoEmpleado.METRE;
+  }
+
+  esMozo(empleado: Empleado): boolean {
+    return empleado.tipo == TipoEmpleado.MOZO;
+  }
+
+  esBartender(empleado: Empleado): boolean {
+    return empleado.tipo == TipoEmpleado.BARTENDER;
+  }
+
+  esCocinero(empleado: Empleado): boolean {
+    return empleado.tipo == TipoEmpleado.COCINERO;
+  }
+
   IrAgregarProducto(empleado: Empleado): void {
     this.router.navigate(['alta-producto'], {
       state: {empleado},
       relativeTo: this.route
     });
+  }
+
+  async irAlaListaDeEspera(): Promise<void> {
+    const m = await this.modalCtrl.create({
+      component: ListaDeEsperaMetreClienteComponent,
+    });
+
+    m.present();
   }
 
   async hacerPedido(): Promise<void> {

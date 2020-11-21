@@ -11,6 +11,7 @@ import { AltaProductoComponent } from './alta-producto/alta-producto.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { TipoEmpleadoPipe } from '../../pipes/tipo-empleado.pipe';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
+import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido
     AltaProductoComponent, 
     SpinnerComponent, 
     TipoEmpleadoPipe, 
-    HacerPedidoComponent
+    HacerPedidoComponent,
+    ListaDeEsperaMetreClienteComponent
   ]
 })
 export class EmpleadoPageModule {}

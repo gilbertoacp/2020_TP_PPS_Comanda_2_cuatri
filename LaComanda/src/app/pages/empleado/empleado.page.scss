@@ -45,3 +45,10 @@ ion-content.background {
   height: 4rem;
   color: white;
 }
+
+.imagen {
+  width: 300px;
+  height: 300px;
+  border-radius: 55px;
+  border: 3px solid var(--ion-color-warning);
+}
