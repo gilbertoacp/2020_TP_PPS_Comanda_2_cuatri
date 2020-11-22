@@ -1,29 +1,45 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title text-center slot="start">Iniciar sesión</ion-title>
-        <ion-avatar slot="end" class="avatar">
-            <img src="../../../assets/img/imgicon.jpg">
-        </ion-avatar>
+<ion-header class="page-header ion-no-border ion-padding">
+    <ion-toolbar class="bg-none">
+        <ion-icon (click)="navCtrl.navigateForward('/')" class="back-button" name="arrow-back-outline"></ion-icon>
+        <div class="welcome-message">
+            <h1>¡Buenas! <br>Ingresa con tus datos.</h1>
+        </div>
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding scroll="false" padding class="background">
-
-    <ion-item lines="none" class="campos">
-        <ion-label autocomplete="on" position="floating" style="font: oblique bold 120% cursive;">Correo electrónico</ion-label>
+<ion-content scroll="false" class="background campos">
+    <div class="espacio">
+        
+    </div>
+    <ion-item lines="none">
+        <ion-label autocomplete="on" position="floating">Correo electrónico</ion-label>
         <ion-input type="email" name="correo" [(ngModel)]="correo" required></ion-input>
     </ion-item>
-    <ion-item lines="none" class="campos">
-        <ion-label position="floating" style="font: oblique bold 120% cursive;">Contraseña</ion-label>
+    <ion-item lines="none">
+        <ion-label position="floating">Contraseña</ion-label>
         <ion-input [type]="passwordType" name="contrasena" [(ngModel)]="clave" required></ion-input>
         <ion-icon slot="end" [name]="eyeType" color="white" (click)="tooglePassword()" style="zoom:1.2;"></ion-icon>
     </ion-item>
-
+    <div class="espacio">
+        
+    </div>
+    
+    <div class="fin">
+        <ion-button class="boton" expand="block" *ngIf=" !cargando " (click)="Login() ">Ingresar
+        </ion-button>
+        <ion-button class="boton" expand="block" color="danger" disabled *ngIf="cargando ">
+            Cargando&nbsp;
+            <!-- <ion-spinner name="crescent"></ion-spinner>  -->
+        </ion-button>
+        <ion-button class="botonRegistro" color="tertiary" shape="round" (click)="Register(true)">Registrarse
+        </ion-button>
+        <ion-button class="botonRegistro" color="tertiary" shape="round" (click)="Register(false)">Cliente Anónimo
+        </ion-button>
+    </div>
     <div class="inicio">
-        <div class="cajaImagen">
-            <ion-item>
-                <ion-label style="font: oblique bold 120% cursive;">Inicio Rapido</ion-label>
-                <ion-select placeholder="Seleccionar" name="perfil" [(ngModel)]="perfil"
+        <ion-item>
+            <ion-label>Inicio Rapido</ion-label>
+           <ion-select placeholder="Seleccionar" name="perfil" [(ngModel)]="perfil"
                     (ionChange)="usuarioSeleccionado($event)">
                     <ion-select-option value="duenio">Dueño</ion-select-option>
                     <ion-select-option value="mozo">Mozo</ion-select-option>
@@ -33,19 +49,7 @@
                     <ion-select-option value="metre">Metre</ion-select-option>
                     <ion-select-option value="cliente">Cliente</ion-select-option>
                 </ion-select>
-            </ion-item>
-
-        </div>
-    </div>
-    <div class="fin">
-        <ion-button class="boton" expand="block" color="primary" *ngIf=" !cargando " (click)="Login() ">Ingresar
-        </ion-button>
-        <ion-button class="boton" expand="block" color="danger" disabled *ngIf="cargando ">
-            Cargando&nbsp;
-            <!-- <ion-spinner name="crescent"></ion-spinner>  -->
-        </ion-button>
-        <ion-button class="botonRegistro" color="tertiary" shape="round" (click)="Register(true)">Registrarse</ion-button>
-        <ion-button class="botonRegistro" color="tertiary" shape="round" (click)="Register(false)">Cliente Anónimo</ion-button>
+        </ion-item>
     </div>
 </ion-content>
 <app-spinner *ngIf="cargando"></app-spinner>

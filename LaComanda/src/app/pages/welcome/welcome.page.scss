@@ -1,0 +1,120 @@
+//header
+.bg-none{
+    --background: black;
+    padding: 0
+}
+.page-header{
+    border-radius: 0 0 0 40px;
+    background: transparent;
+}
+.back-button{
+    font-size: 2rem;
+    margin-left: -5px;
+    color: white;
+}
+.welcome-message{
+    color: white;
+}
+ion-slides{    
+    border-radius: 0 0 0 40px;
+    height: 65vh;
+    margin-top:-5px;
+}
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.logo {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    z-index: 9;
+    background: #33333361;
+    height: 100%;
+    width: 100%;
+    border-radius: 0 0 0 40px;
+}
+.logo ion-icon{
+    font-size: 15rem; 
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);   
+}
+ion-content{
+    --background:black;
+    --color:white;
+}
+//content
+.enter{
+    --background: #d35f00;
+    margin-top: 10px;
+}
+
+.welcome {
+    margin-left: 10px;
+}
+.welcome h1{
+    margin: 0;
+}
+.welcome ion-icon{
+    font-size: 6rem;
+    margin: 0;
+    position: absolute;
+    top: -22px;
+    margin-left: 10px;
+}
+.welcome span{
+    color: #d35f00;
+    font-weight: 600;
+}
+ion-item{
+    --background: black;
+    color:white;
+}
+.signup ion-icon{
+    background-color: black;
+    font-size: 2rem;
+    color: #d35f00;
+}
+
+//SPLASH
+#custom-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100000;
+    width:100%;
+    background-color: black;
+}
+
+.flb {
+    background-color: #efefef;
+    height:100%;
+    width:100%;
+    animation: pulse 1s linear forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flb .name{
+    position: absolute;
+    bottom: 5%;
+}
+#custom-overlay img {
+    animation: animation 3100ms linear infinite both;
+    animation-delay: 1s;
+}
+
+
+//fade out
+
+.fade-out {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
+}

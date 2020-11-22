@@ -1,124 +1,113 @@
-.icon {
-    display: block;
-    margin: auto;
-    width: 50%;
+//header
+.bg-none {
+  --background: transparent;
 }
-
-ion-toolbar {
-    --ion-toolbar-background: linear-gradient(to right, #000000, #434343);
-    --ion-toolbar-color: white;
+.page-header {
+  border-radius: 0 0 0 40px;
+  padding: 20px 30px;
+  color: black;
+  background: #ff8008; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ffc837,
+    #ff8008
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffc837,
+    #ff8008
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
-.avatar {
-    border: 1px solid white;
-    margin: 3px;
+.back-button {
+  font-size: 2rem;
+  margin-left: -5px;
+  color: black;
+}
+.welcome-message {
+  color: black;
 }
 
 ion-item {
-    --background: transparent;
-    --color: white;
-    --border-color: #e03a00;
-    --border-width: 2px solid;
-    --border-radius: 5rem;
-    //--border-style: 2px solid #273B7A;
-    ion-select{
-        padding: 0.4rem;
-    }
+  border-radius: 12px;
+  color: white;
+  --background: transparent;
+  box-shadow: 8px 8px 16px #050505, -8px -8px 16px #131515;
+  margin:1rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  ion-label {
+    font-size: large;
+  }
+  ion-input {
+    font-size: large;
+  }
+  ion-select {
+    font-size: large;
+  }
 }
 
 ion-content {
-    --background: transparent;
+  --background: transparent;
 }
 
 ion-content.background {
-    --background: url(../../../assets/img/menu_hamburguesa.jpg) 0 0/100% 100% no-repeat;
-    
-    // --background: #e03a00;
+  background: #0c0d0d;
 }
 
 ion-alert {
-    --background: #e03a00!important;
+  --background: #e03a00 !important;
 }
 
-ion-badge {
-    margin: 2px;
+.campos{
+  height: 60vh;
+  min-height: 40%;
 }
-
-.inicio {
-    margin: 1rem;
-    background-color: transparent;
-    height: 40%;
-    width: 100%;
+.espacio{
+  height: 100px;
 }
 
 .fin {
-    margin: 0;
-    padding: 0;
-    background-color: transparent;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
 }
 
-.boton {
-    margin: 0.2rem;
-    margin-top: 0;
-    padding: 0.2rem;
-    height: 3rem;
-    color: white;
-    font: oblique bold 80% cursive;
+.boton{
+  margin: 0.2rem;
+  margin-top: 0;
+  padding: 0.2rem;
+  height: 4rem;
+  color: black;
+  font-size: large;font-weight: 700;
 }
 
-.botonRegistro
-{
-    font: oblique bold 80% cursive;
-    color: white;
-    width: 48%;
+.botonRegistro {
+  color: white;
+  width: 48%;
+height: 3rem;
 }
 
 .comun {
-    width: 60%;
+  width: 60%;
 }
 
 .btn-img {
-    width: 30%;
+  width: 30%;
 }
 
 ion-button {
-    --border-radius: 25px;
+  --border-radius: 12px;
 }
 
 .recordarme {
-    //padding: 1rem;
-    margin: 1rem 3rem;
-    font-size: 1em;
-    background-color: #e03a00;
-}
-
-.campos {
-    margin: 1rem;
+  //padding: 1rem;
+  margin: 1rem 3rem;
+  font-size: 1em;
+  background-color: #e03a00;
 }
 
 .error_toast {
-    color: white;
-    font-weight: 400;
-    background-color: #e24825;
-}
-
-ion-label {
-    --font: oblique bold 80% cursive;
-}
-
-ion-title {
-    font: oblique bold 120% cursive;
-}
-
-ion-input{
-
-    font: oblique bold 120% cursive;
-}
-
-ion-select{
-    font: oblique bold 80% cursive;
-}
-
-ion-select-option{
-    font: oblique bold 80% cursive;
+  color: white;
+  font-weight: 400;
+  background-color: #e24825;
 }

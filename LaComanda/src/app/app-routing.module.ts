@@ -6,7 +6,7 @@ import { NoLoginGuard } from './guards/no-login.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'welcome',
     pathMatch: 'full'
   },
   {
@@ -23,6 +23,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
     canActivate: [CheckLoginGuard]
   },
+  {
+    path: 'welcome',
+    loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
+  },
+
 ];
 
 @NgModule({
