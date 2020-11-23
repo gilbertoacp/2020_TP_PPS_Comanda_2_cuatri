@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { Empleado } from '../../models/empleado';
 import { Cliente } from '../../models/cliente';
 import { ProductoService } from '../../services/producto.service';
 import { Producto } from '../../models/producto';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @Component({
   selector: 'app-hacer-pedido',
@@ -28,7 +29,9 @@ export class HacerPedidoComponent implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     private navParams: NavParams,
-    private productosService: ProductoService
+    private productosService: ProductoService,
+    private bs: BarcodeScanner,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -50,11 +53,12 @@ export class HacerPedidoComponent implements OnInit {
   }
   
   agregarAlPedido(producto: Producto): void {
-    if(!this.pedido.includes(producto)) {
+    if(!this.estaEnElPedido(producto)) {
       producto.cantidad = 1;
       this.pedido.push(producto);
     } else {
-      producto.cantidad += 1;
+      const p = this.pedido.filter(p => p.id === producto.id);
+      p[0].cantidad++;
     }
 
     this.calcularPrecio();
@@ -82,7 +86,84 @@ export class HacerPedidoComponent implements OnInit {
     }, 0);
   }
 
-  confirmarPedido(): void {
+  estaEnElPedido(producto: Producto): boolean {
+    return this.pedido.some(p => p.id === producto.id);
+  }
 
+  escanearProducto(): void {
+    this.bs.scan({formats: 'QR_CODE'}).then(data => {
+      if(data.text) {
+        console.log(data.text);
+        const productoData = data.text.split('@');
+        if(productoData[5] === 'bebida' || productoData[5] === 'plato') {
+
+          const producto: Producto = {
+            id: productoData[0],
+            nombre: productoData[1],
+            descripcion: productoData[2],
+            tiempoElaboracion: productoData[3],
+            precio: parseInt(productoData[4]),
+            tipoProducto: productoData[5],
+            fotos: productoData[5] === 'bebida' ?
+                  this.bebidas.filter(p => p.id === productoData[0])[0].fotos: 
+                  this.platos.filter(p => p.id === productoData[0])[0].fotos
+          }
+
+          this.agregarAlPedido(producto);
+        }
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  confirmarPedido(): void {
+    let htmlTemplate = `
+    <ion-list>
+    `;
+
+    this.pedido.forEach(p => {
+      htmlTemplate += `
+      <ion-item>
+        <ion-label>${p.nombre}</ion-label>
+        <ion-text color="light" slot="end">${p.cantidad * p.precio}$</ion-text>
+      </ion-item>
+      `;
+    });
+    
+    htmlTemplate += `
+    <ion-item>
+      <ion-label>Precio Total: ${this.precioTotal}$</ion-label>
+    </ion-item>
+    </ion-list>`;
+
+
+    this.mostrarConfirm('Resumen del pedido', htmlTemplate);
+  }
+
+  async mostrarConfirm(header?: string, msj?: string) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'alerta',
+      header: header,
+      message: msj,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
 }
