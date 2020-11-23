@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { Vibration } from '@ionic-native/vibration/ngx';
@@ -33,7 +33,8 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private toastCtlr: ToastController,
     private router: Router,
-    private vibration: Vibration
+    private vibration: Vibration,
+    public navCtrl: NavController
   ) { }
 
   ngOnInit() {
