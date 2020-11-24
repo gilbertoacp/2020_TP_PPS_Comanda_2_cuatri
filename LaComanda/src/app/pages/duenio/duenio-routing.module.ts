@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AltaDuenioComponent } from './alta-duenio/alta-duenio.component';
 
 import { DuenioPage } from './duenio.page';
+import { RegistrosPendientesComponent } from './registros-pendientes/registros-pendientes.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
     path: 'alta-empleado',
     loadChildren: () => import('../alta-empleado/alta-empleado.module').then( m => m.AltaEmpleadoPageModule)
   },
+  {
+    path: 'registros-pendientes',
+    component: RegistrosPendientesComponent
+  }
 ];
 
 @NgModule({
