@@ -18,9 +18,9 @@ export class RegistrosPendientesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.clientesService.clienteSinAprobar().subscribe(clientes => {
-      this.clientesSinAprobar = clientes;
-    });
+    if(this.router.getCurrentNavigation().extras.state.clientes) {
+      this.clientesSinAprobar = this.router.getCurrentNavigation().extras.state.clientes;
+    }
   }
 
   cambiarEstado(cliente: Cliente, aceptado: boolean): void {
