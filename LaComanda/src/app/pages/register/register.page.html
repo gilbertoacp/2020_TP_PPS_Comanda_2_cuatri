@@ -10,7 +10,7 @@
 </ion-header>
 
 
-<form class="form" [formGroup]="form" (ngSubmit)="registro(form.value)">
+<form class="form" [formGroup]="form">
   <ion-button class="botonDNI" color="primary" (click)="scan()"><ion-icon name="qr-code"> </ion-icon>  Escanear DNI  <ion-icon name="qr-code-outline"> </ion-icon></ion-button>
   <img class="img" [src]="imagenPrevista" alt="imagen" width="100" height="100">
 

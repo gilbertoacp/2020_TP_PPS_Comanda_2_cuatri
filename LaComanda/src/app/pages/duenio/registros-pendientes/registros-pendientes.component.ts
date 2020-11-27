@@ -14,13 +14,11 @@ export class RegistrosPendientesComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private clientesService: ClientesService
+    private clientesService: ClientesService,
   ) { }
 
   ngOnInit() {
-    if(this.router.getCurrentNavigation().extras.state.clientes) {
-      this.clientesSinAprobar = this.router.getCurrentNavigation().extras.state.clientes;
-    }
+    this.clientesService.clienteSinAprobar().subscribe(clientes => this.clientesSinAprobar = clientes);
   }
 
   cambiarEstado(cliente: Cliente, aceptado: boolean): void {

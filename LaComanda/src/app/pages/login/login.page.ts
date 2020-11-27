@@ -44,11 +44,11 @@ export class LoginPage implements OnInit {
     this.router.navigate(["/register"], {state : {modo: cliente}});
   }
 
-  async Login(){
+  async Login() {
 
-    const respuesta = await this.authService.login(this.correo, this.clave);
     this.cargando = true;
 
+    const respuesta = await this.authService.login(this.correo, this.clave);
 
     if(respuesta)
     {

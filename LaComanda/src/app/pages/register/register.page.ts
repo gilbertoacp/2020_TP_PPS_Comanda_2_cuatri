@@ -3,7 +3,6 @@ import { BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
 import { FormControl,ValidatorFn, FormGroup, FormBuilder, Validators } from '@angular/forms'; 
 import { Router } from '@angular/router';
 import { Camera, Direction } from '@ionic-native/camera/ngx';
-import * as firebase from 'firebase';
 import { TipoCliente } from 'src/app/models/tipo-cliente.enum';
 import { Cliente } from 'src/app/models/cliente';
 import { File } from '@ionic-native/file/ngx';
@@ -115,7 +114,6 @@ export class RegisterPage implements OnInit {
       if (isValidPassword || okPass == "") return null;
 
       return { "passwordError": true }
-
     }
     return passw;
   }
@@ -124,7 +122,6 @@ export class RegisterPage implements OnInit {
     let audio = new Audio();
     audio.src = 'assets/audio/bubble.mp3';
     audio.play();
-
 
     if(this.foto != "")
     {
@@ -155,7 +152,7 @@ export class RegisterPage implements OnInit {
             contraseña: this.clave,
             foto: await task.ref.getDownloadURL(),
             tipo : this.tipo,
-            estado : false
+            estado : 'enEspera'
           };
 
         this.cliente.registrarCliente(cliente);
@@ -196,7 +193,7 @@ export class RegisterPage implements OnInit {
             contraseña: "",
             foto: await task.ref.getDownloadURL(),
             tipo : this.tipo,
-            estado : false
+            estado : 'enEspera'
           };
 
         this.cliente.registrarCliente(cliente);
@@ -208,7 +205,7 @@ export class RegisterPage implements OnInit {
         audio.play();
 
         this.limpiarInputs();
-        
+
         this.router.navigate(["/login"]);
         //this.router.navigate(["/home/" + user]);
         }).catch((error) => {

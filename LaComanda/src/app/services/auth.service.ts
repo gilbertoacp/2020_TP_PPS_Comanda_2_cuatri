@@ -53,6 +53,10 @@ export class AuthService {
     
   }
 
+  loginAnonymously(): Promise<firebase.auth.UserCredential> {
+    return this.auth.signInAnonymously();
+  }
+
   getCurrentUser(): Observable<firebase.User> {
     return this.auth.authState.pipe(first());
   }

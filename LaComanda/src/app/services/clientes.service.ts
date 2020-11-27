@@ -37,7 +37,10 @@ export class ClientesService {
   }
 
   clienteSinAprobar(): Observable<Cliente[]> {
-    return this.db.collection<Cliente>("clientes", ref => ref.where("estado", "==", false)).valueChanges({idField: 'docId'});
+    return this.db.collection<Cliente>("clientes", 
+      ref => ref.where("estado", "==", 'enEspera')
+    )
+    .valueChanges({idField: 'docId'});
   }
 
   correoRepetidoFB(mail: string): boolean{
@@ -78,14 +81,14 @@ export class ClientesService {
     const correo = {
       to: cliente.correo,
       message: aceptado? 
-              'Se ha aprobado su solicitud de ingreso a la aplicación, ya puede acceder a los servicios que le ofrece LaComanda App.':
-              'Se ha rechazado su solicitud de ingreso a la aplicación, por favor contactese con el equipo de administración para analizar su situación.',
+        'Se ha aprobado su solicitud de ingreso a la aplicación, ya puede acceder a los servicios que le ofrece LaComanda App.':
+        'Se ha rechazado su solicitud de ingreso a la aplicación, por favor contactese con el equipo de administración para analizar su situación.',
       subject: 'Estado del registro.'
     }
     
     this.db.collection<Cliente>('clientes')
     .doc(cliente.docId)
-    .set({estado: true}, {merge: true})
+    .set({estado: aceptado? 'aceptado': 'rechazado'}, {merge: true})
     .then(() => this.enviarCorreo(correo));
   }
 
