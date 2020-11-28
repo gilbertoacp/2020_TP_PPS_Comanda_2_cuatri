@@ -10,5 +10,6 @@ export interface Cliente {
   contraseña: string,
   foto: string,
   tipo: TipoCliente,
-  estado : 'enEspera' | 'rechazado' | 'aceptado'
+  estado : 'enEspera' | 'rechazado' | 'aceptado',
+  atendido: 'esperando' | 'enLaMesa' | 'rechazado'
 }

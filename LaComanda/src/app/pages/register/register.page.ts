@@ -152,7 +152,8 @@ export class RegisterPage implements OnInit {
             contraseña: this.clave,
             foto: await task.ref.getDownloadURL(),
             tipo : this.tipo,
-            estado : 'enEspera'
+            estado : 'enEspera',
+            atendido: 'esperando'
           };
 
         this.cliente.registrarCliente(cliente);
@@ -193,7 +194,8 @@ export class RegisterPage implements OnInit {
             contraseña: "",
             foto: await task.ref.getDownloadURL(),
             tipo : this.tipo,
-            estado : 'aceptado'
+            estado : 'aceptado',
+            atendido: 'esperando'
           };
 
         this.cliente.registrarCliente(cliente);
@@ -267,7 +269,7 @@ export class RegisterPage implements OnInit {
     ],
     'password': [
       { type: 'required', message: 'La contraseña es requerida.' },
-      { type: 'minlength', message: 'La password debe contener al menos 6 catacteres.' }
+      { type: 'minlength', message: 'La contraseña debe contener al menos 6 catacteres.' }
     ],
     'passConfirmada': [
       { type: 'required', message: 'La contraseña es requerida.' },

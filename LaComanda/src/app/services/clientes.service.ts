@@ -43,20 +43,18 @@ export class ClientesService {
     .valueChanges({idField: 'docId'});
   }
 
+  clientesEnListaDeEspera():Observable<Cliente[]>
+  {
+    return this.db.collection<Cliente>("clientes", 
+      ref => ref.where("atendido", "==", 'esperando')
+    )
+    .valueChanges({idField: 'docId'});
+  }
+
   correoRepetidoFB(mail: string): boolean{
     let existe = false;
     this.registrados.forEach(c => {
-      if(c.correo == mail && !c.estado){
-        existe = true;
-      }
-    });
-    return existe;
-  }
-
-  correoRepetidoAFS(correo: string){
-    let existe = false;
-    this.registrados.forEach(c => {
-      if(c.correo == correo && c.estado){
+      if(c.correo == mail && c.estado == "aceptado"){
         existe = true;
       }
     });
@@ -90,6 +88,13 @@ export class ClientesService {
     .doc(cliente.docId)
     .set({estado: aceptado? 'aceptado': 'rechazado'}, {merge: true})
     .then(() => this.enviarCorreo(correo));
+  }
+
+  cambiarEstadoDelCliente(cliente: Cliente, aceptado: boolean): void {
+    
+    this.db.collection<Cliente>('clientes')
+    .doc(cliente.docId)
+    .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
   }
 
   enviarCorreo(correo: any): void {

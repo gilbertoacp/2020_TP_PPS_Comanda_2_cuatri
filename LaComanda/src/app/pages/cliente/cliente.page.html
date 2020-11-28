@@ -5,15 +5,25 @@
         <ion-icon style="color: white" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Bienvenido</ion-title>
+    <ion-title>Bienvenido {{cliente?.nombre}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card (click)="scanQr()"  class="ion-text-center ion-padding" color="000">
-    <ion-icon class="icono" name="list"></ion-icon>
+  <ion-card (click)="scanQr()" *ngIf="pedidosActivos && pedidosActivos.length === 0" class="ion-text-center ion-padding" color="000">
+    <ion-icon  class="icono" name="qr-code"></ion-icon>
     <h2 class="long-name"><br>Ir a Lista de Espera</h2>
+  </ion-card>
+
+  <ion-card (click)="scanQr()" *ngIf="pedidosActivos && pedidosActivos.length > 0" class="ion-text-center ion-padding" color="000">
+    <ion-icon  class="icono" name="qr-code"></ion-icon>
+    <h2 class="long-name"><br>Ver pedido</h2>
+  </ion-card>
+
+  <ion-card routerLink="finalizados" class="ion-text-center ion-padding" color="000">
+    <ion-icon  class="icono" name="list"></ion-icon>
+    <h2 class="long-name"><br>Ver pedidos finalizados</h2>
   </ion-card>
 
 </ion-content>
