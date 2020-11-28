@@ -4,6 +4,12 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Cliente } from '../../models/cliente';
 import { ClienteAnonimo } from 'src/app/models/clienteAnonimo';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
+import { ToastController } from '@ionic/angular';
+import { Usuario } from 'src/app/models/usuario';
+import { PedidosService } from 'src/app/services/pedidos.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cliente',
@@ -13,10 +19,16 @@ import { ClienteAnonimo } from 'src/app/models/clienteAnonimo';
 export class ClientePage implements OnInit, OnDestroy {
 
   cliente: Cliente | ClienteAnonimo;
+  pedidosActivos: any = [];
   private subscription: Subscription;
 
   constructor(
-    private authService : AuthService
+    private authService : AuthService,
+    public barcodeScanner: BarcodeScanner,
+    public vibration : Vibration,
+    private toastCtlr: ToastController,
+    private pedidoService : PedidosService,
+    private router: Router
   ) { }
 
 
@@ -29,7 +41,15 @@ export class ClientePage implements OnInit, OnDestroy {
         /** CLiente anónimo */
         this.cliente = cliente;
       }
+      this.obtenerPedidosActivos();
       console.log(this.cliente);
+    });
+  }
+
+  obtenerPedidosActivos() {
+    this.pedidoService.obtenerPedidosActivos(this.cliente).subscribe(datos => {
+      this.pedidosActivos = datos;
+      console.log(datos);
     });
   }
 
@@ -42,5 +62,50 @@ export class ClientePage implements OnInit, OnDestroy {
   salir(){
     this.authService.logout();
   }
+
+  irListaEspera(): void {
+    this.router.navigate(['cliente/lista-espera'])
+  }
+
+  irPedidoActivo(): void {
+    this.router.navigate(['cliente/pedidos'])
+  }
+
+  irFinalizados(): void {
+    this.router.navigate(['/finalizados'])
+  }
+
+  scanQR(): void {
+    this.barcodeScanner.scan({ formats: 'QR_CODE' }).then((data) => {
+      if (data && !data.cancelled) {
+        if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
+          this.irListaEspera();
+        }
+        else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.id) {
+         // Si tiene pedidos activos y coincide con el codigo de qr de la mesa asignada lo llevamos al pedido
+          this.irPedidoActivo();
+        } else {
+          // No existe QR o no es de la mesa asignada
+          let audio = new Audio();
+            audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
+            audio.play();
+            this.vibration.vibrate(2000);
+
+            this.toastCtlr.create({
+              message: 'Error, no es la mesa asignada',
+              position: 'top',
+              duration: 2000,
+              color: 'danger',
+
+            })
+        }
+      }
+    }, (err) => this.toastCtlr.create({
+      message: err ,
+      position: 'top',
+      duration: 2000,
+      color: 'danger',
+    }));
+ }
 
 }

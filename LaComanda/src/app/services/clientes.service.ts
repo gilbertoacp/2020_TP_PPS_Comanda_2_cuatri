@@ -53,6 +53,14 @@ export class ClientesService {
     return existe;
   }
 
+  clientesEnListaDeEspera():Observable<Cliente[]>
+  {
+    return this.db.collection<Cliente>("clientes", 
+      ref => ref.where("atendido", "==", 'esperando')
+    )
+    .valueChanges({idField: 'docId'});
+  }
+
   actualizarRegistros(id)
   {
     return this.db.collection("clientes").doc(id).update({estado: true});
@@ -84,6 +92,13 @@ export class ClientesService {
     .doc(cliente.docId)
     .set({estado: aceptado? 'aceptado': 'rechazado'}, {merge: true})
     .then(() => this.enviarCorreo(correo));
+  }
+
+  cambiarEstadoDelCliente(cliente: Cliente, aceptado: boolean): void {
+    
+    this.db.collection<Cliente>('clientes')
+    .doc(cliente.docId)
+    .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
   }
 
   enviarCorreo(correo: any): void {

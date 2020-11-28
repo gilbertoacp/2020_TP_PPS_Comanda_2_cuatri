@@ -171,6 +171,11 @@ export class LoginPage implements OnInit {
         this.clave = '123456';
       break;
 
+      case 'anonimo':
+        this.correo = 'anonimo@anonimo.com';
+        this.clave = '111111';
+      break;
+
       case 'supervisor':
         this.correo = 'miguel@miguel.com';
         this.clave = '111111';
