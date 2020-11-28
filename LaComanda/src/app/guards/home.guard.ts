@@ -29,9 +29,13 @@ export class HomeGuard implements CanActivate {
         case PerfilUsuario.EMPLEADO:
           this.router.navigate(['home/empleado']);
         break;
-    
+
         case PerfilUsuario.SUPERVISOR:
           this.router.navigate(['home/supervisor']);
+        break;
+
+        default: 
+          this.router.navigate(['home/cliente']);
         break;
       }
 

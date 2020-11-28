@@ -97,3 +97,5 @@
   <ion-button class="botones" [disabled]="!form.valid || !fotoCargada" (click)="register()">Registrar</ion-button>
 
 </form>
+
+<app-spinner *ngIf="mostrarSpinner"></app-spinner>

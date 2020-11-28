@@ -18,7 +18,7 @@ export class ClienteGuard implements CanActivate {
   canActivate(): Observable<boolean>{
     return this.authService.user$.pipe(map(user => {
       
-      if(user.perfil === PerfilUsuario.CLIENTE) return true;
+      if(user.perfil === PerfilUsuario.CLIENTE || !user.perfil) return true;
 
       console.log('Acceso denegado no es cliente');
       // this.router.navigate(['/home']);

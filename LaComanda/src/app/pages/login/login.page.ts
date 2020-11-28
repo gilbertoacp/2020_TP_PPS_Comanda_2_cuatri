@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
 
     if(respuesta)
     {
-      let asd = this.userService.getUser(respuesta.user.uid).subscribe(async usuario =>
+      this.userService.getUser(respuesta.user.uid).subscribe(async usuario =>
         {
           if(usuario.perfil == PerfilUsuario.CLIENTE && this.clienteService.correoRepetidoFB(usuario.correo))
           {

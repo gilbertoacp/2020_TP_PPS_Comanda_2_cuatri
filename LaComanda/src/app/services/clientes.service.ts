@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
+import { ClienteAnonimo } from '../models/clienteAnonimo';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,15 @@ export class ClientesService {
 
   constructor(
     private db:AngularFirestore,
-    private storage: AngularFireStorage,
     private http: HttpClient
   ) {
     this.getClientes().subscribe(data => this.registrados = data);
   }
 
-  registrados = new Array();
+  registrados: Cliente[] = [];
 
-  getClientes(){
-    return this.db.collection("clientes").valueChanges();
+  getClientes(): Observable<Cliente[]>{
+    return this.db.collection<Cliente>("clientes").valueChanges();
   }
 
   getCliente(id: string){
@@ -46,17 +46,7 @@ export class ClientesService {
   correoRepetidoFB(mail: string): boolean{
     let existe = false;
     this.registrados.forEach(c => {
-      if(c.correo == mail && !c.estado){
-        existe = true;
-      }
-    });
-    return existe;
-  }
-
-  correoRepetidoAFS(correo: string){
-    let existe = false;
-    this.registrados.forEach(c => {
-      if(c.correo == correo && c.estado){
+      if(c.correo == mail && c.estado === 'aceptado'){
         existe = true;
       }
     });
@@ -70,6 +60,10 @@ export class ClientesService {
 
   eliminarCliente(id){
     return this.db.collection("clientes").doc(id).delete();
+  }
+
+  registrarClienteAnonimo(docId: string,cliente: ClienteAnonimo): Promise<void> {
+    return this.db.collection<ClienteAnonimo>('clientesAnonimos').doc(docId).set(cliente);
   }
 
   /*

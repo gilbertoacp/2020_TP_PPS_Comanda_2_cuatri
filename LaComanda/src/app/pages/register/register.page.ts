@@ -43,7 +43,6 @@ export class RegisterPage implements OnInit {
 
   imagenPrevista = "../assets/img/cliente.png";
 
-
   //private dbStorage: StorageService
 
   constructor(
@@ -118,7 +117,8 @@ export class RegisterPage implements OnInit {
     return passw;
   }
 
-  register() {
+  async register() {
+    this.mostrarSpinner = true;
     let audio = new Audio();
     audio.src = 'assets/audio/bubble.mp3';
     audio.play();
@@ -126,100 +126,107 @@ export class RegisterPage implements OnInit {
     if(this.foto != "")
     {
 
-    if(this.modoRegistro == true) {
+      if(this.modoRegistro == true) {
 
-      this.tipo = TipoCliente.REGISTRADO;
-      this.file.readAsArrayBuffer(Utils.getDirectory(this.foto), Utils.getFilename(this.foto))
-    .then(arrayBuffer => {
-      const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
-      const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
+        this.tipo = TipoCliente.REGISTRADO;
 
-      this.authService.register(this.email, this.clave).then(cred => {
-
-        this.usuariosService.agregarUsuarioConAuthId(cred.user.uid, {
-          correo: this.email,
-          clave: this.clave,
-          perfil: PerfilUsuario.CLIENTE
-        });
-
-        this.storage.upload(storagePath, blob).then(async task => {
-          const cliente: Cliente = {
-            authId: cred.user.uid,
-            nombre: this.nombre,
-            apellido: this.apellido,
-            dni: this.dni,
-            correo: cred.user.email,
-            contraseña: this.clave,
-            foto: await task.ref.getDownloadURL(),
-            tipo : this.tipo,
-            estado : 'enEspera'
-          };
-
-        this.cliente.registrarCliente(cliente);
+        this.file.readAsArrayBuffer(Utils.getDirectory(this.foto), Utils.getFilename(this.foto)).then(arrayBuffer => {
           
-        this.presentToastConMensajeYColor("Se está procesando su solicitud.", "success");
+          const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
+          const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
 
-        let audio = new Audio();
-        audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
-        audio.play();
+          this.authService.register(this.email, this.clave).then(cred => {
+            this.usuariosService.agregarUsuarioConAuthId(cred.user.uid, {
+              correo: this.email,
+              clave: this.clave,
+              perfil: PerfilUsuario.CLIENTE
+            });
+            this.storage.upload(storagePath, blob).then(async task => {
 
-        this.limpiarInputs();
+              const cliente: Cliente = {
+                authId: cred.user.uid,
+                nombre: this.nombre,
+                apellido: this.apellido,
+                dni: this.dni,
+                correo: cred.user.email,
+                contraseña: this.clave,
+                foto: await task.ref.getDownloadURL(),
+                tipo : this.tipo,
+                estado : 'enEspera'
+              };
+
+              this.cliente.registrarCliente(cliente);
+                
+              this.presentToastConMensajeYColor("Se está procesando su solicitud.", "success");
+
+              let audio = new Audio();
+              audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
+              audio.play();
+
+              this.limpiarInputs();
+
+              this.mostrarSpinner = false;
+
+              this.router.navigate(["/login"]); //......
+            }).catch((error) => {
+              this.presentToastConMensajeYColor(error.message, "danger");
+            })
+            .finally(() => {
+              this.mostrarSpinner = false;
+            });
+          }).catch((e) => {
+            this.presentToastConMensajeYColor(e.message, "danger");
+          })
+          .finally(() => {
+            this.mostrarSpinner = false;
+          });
+        });
+      } else {
+        const directorio = Utils.getDirectory(this.foto);
+        const archivo = Utils.getFilename(this.foto);
         
-        this.router.navigate(["/login"]); //......
-
-        }).catch((error) => {
-          this.presentToastConMensajeYColor(error.message, "danger");
-        });
-      }).catch((e) => {
-        this.presentToastConMensajeYColor(e.message, "danger");
-      })
-    });
-      }else{
-        this.tipo = TipoCliente.ANONIMO;
-
-        this.file.readAsArrayBuffer(Utils.getDirectory(this.foto), Utils.getFilename(this.foto))
-    .then(arrayBuffer => {
-      const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
-      const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
-
-
-
-        this.storage.upload(storagePath, blob).then(async task => {
-          const cliente: Cliente = {
-            nombre: this.nombre,
-            apellido: "",
-            dni: null,
-            correo: "",
-            contraseña: "",
-            foto: await task.ref.getDownloadURL(),
-            tipo : this.tipo,
-            estado : 'aceptado'
-          };
-
-        this.cliente.registrarCliente(cliente);
+        try {
+          const arrayBuffer = await this.file.readAsArrayBuffer(directorio, archivo);
+          const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
           
-        this.presentToastConMensajeYColor("Se agregó al cliente", "success");
+          const storagePath = `images/anonimos/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
+          const uploadTask = await this.storage.upload(storagePath, blob);
 
-        let audio = new Audio();
-        audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
-        audio.play();
+          const credentials = await this.authService.loginAnonymously()
 
-        this.limpiarInputs();
+          await this.cliente.registrarClienteAnonimo(
+            credentials.user.uid,
+            {
+              nombre: this.nombre,
+              foto: await uploadTask.ref.getDownloadURL(),
+            }
+          );
 
-        this.router.navigate(["/login"]);
-        //this.router.navigate(["/home/" + user]);
-        }).catch((error) => {
-          this.presentToastConMensajeYColor(error.message, "danger");
-        });
-      }).catch((e) => {
-        this.presentToastConMensajeYColor(e.message, "danger");
-      })
+          this.reproducirAudio();
+          this.router.navigate(['/home']);
+        } 
+        catch(err) {  
+          this.reproducirAudio(true);
+          this.presentToastConMensajeYColor(err.message, "danger");
+        }
+        finally { 
+          this.mostrarSpinner = false;
+        }
       }
-    }else
-    {
+    }else {
       this.presentToastConMensajeYColor("Debe subir una foto!", "danger");
     }
-    
+  }
+
+  /** Debería ponerse en un servicio */
+  reproducirAudio(error?: boolean): void {
+    let audio = new Audio();
+    if(!error) {
+      audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
+    } else {
+      audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
+    }
+    audio.play();
   }
 
   scan() {
@@ -312,9 +319,9 @@ export class RegisterPage implements OnInit {
   
         this.file.readAsDataURL(Utils.getDirectory(imageData), Utils.getFilename(imageData))
         .then(base64Url => {
-        this.imagenPrevista = base64Url;
-        this.fotoCargada = true;
-      }).catch(console.log)
+          this.imagenPrevista = base64Url;
+          this.fotoCargada = true;
+        }).catch(console.log);
       });
     }
   }
@@ -325,13 +332,14 @@ export class RegisterPage implements OnInit {
       position: 'bottom',
       duration: 3000,
       color: color,
-    buttons: [
-      {
-        text: 'Aceptar',
-        role: 'cancel',
-      }
-    ]
-  });
-  toast.present();
+      buttons: [
+        {
+          text: 'Aceptar',
+          role: 'cancel',
+        }
+      ]
+    });
+
+    toast.present();
   }
 }

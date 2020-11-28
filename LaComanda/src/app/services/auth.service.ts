@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
@@ -13,6 +13,7 @@ import { User } from 'firebase';
 import { Cliente } from '../models/cliente';
 import { Duenio } from '../models/duenio';
 import { Empleado } from '../models/empleado';
+import { ClienteAnonimo } from '../models/clienteAnonimo';
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +28,23 @@ export class AuthService {
     private router: Router,
     private http: HttpClient
   ) { 
+
+    // se usa para los guards 
     this.user$ = this.auth.authState.pipe(
       switchMap((user) => {
         if (user) {
-          return this.db.doc<Usuario>('usuarios/' + user.uid).snapshotChanges().pipe(map(actions => {
+          let doc: AngularFirestoreDocument = null;
+
+          if(user.isAnonymous) {
+            doc = this.db.doc<Cliente>('clientesAnonimos/' + user.uid);
+          } else {
+            doc = this.db.doc<Usuario>('usuarios/' + user.uid);
+          }
+
+          return doc.snapshotChanges().pipe(map(actions => {
             const obj: Usuario = {
               docId: user.uid,
-              ...actions.payload.data() 
+              ...(actions.payload.data() as Usuario)
             }
             return obj;
           }));
@@ -50,7 +61,6 @@ export class AuthService {
 
   register(correo: string, clave: string): Promise<firebase.auth.UserCredential> {
     return this.auth.createUserWithEmailAndPassword(correo, clave);
-    
   }
 
   loginAnonymously(): Promise<firebase.auth.UserCredential> {
@@ -65,10 +75,27 @@ export class AuthService {
     return this.auth.authState.pipe(
       switchMap((user: User) => {
         if(user) {
+
           if(tipoUsuario === PerfilUsuario.CLIENTE) {
-            return this.db.collection<Cliente>('clientes',
-              ref => ref.where('authId', '==', user.uid)
-            ).valueChanges({idField: 'docId'});
+
+            if(user.isAnonymous) {
+
+              return this.db.doc<ClienteAnonimo>('clientesAnonimos/' + user.uid).snapshotChanges().pipe(map(actions => {
+                const obj: ClienteAnonimo = {
+                  docId: user.uid,
+                  ...(actions.payload.data() as ClienteAnonimo)
+                }
+                return obj;
+              }));
+
+            } else  {
+
+              return this.db.collection<Cliente>('clientes',
+                ref => ref.where('authId', '==', user.uid)
+              ).valueChanges({idField: 'docId'});
+
+            }
+
           }
 
           if(tipoUsuario === PerfilUsuario.DUENIO) {
@@ -88,6 +115,7 @@ export class AuthService {
               ref => ref.where('authId', '==', user.uid)
             ).valueChanges({idField: 'docId'});
           }
+
         }
         return of(null);
       })
