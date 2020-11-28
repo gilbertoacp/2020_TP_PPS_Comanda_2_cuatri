@@ -157,7 +157,7 @@ export class RegisterPage implements OnInit {
 
         this.cliente.registrarCliente(cliente);
           
-        this.presentToastConMensajeYColor("Se agregó al cliente", "success");
+        this.presentToastConMensajeYColor("Se está procesando su solicitud.", "success");
 
         let audio = new Audio();
         audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
@@ -193,7 +193,7 @@ export class RegisterPage implements OnInit {
             contraseña: "",
             foto: await task.ref.getDownloadURL(),
             tipo : this.tipo,
-            estado : 'enEspera'
+            estado : 'aceptado'
           };
 
         this.cliente.registrarCliente(cliente);
