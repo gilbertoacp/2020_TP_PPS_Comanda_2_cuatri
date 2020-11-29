@@ -7,6 +7,7 @@ import { Duenio } from '../../models/duenio';
 import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import { Cliente } from 'src/app/models/cliente';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { distinctUntilChanged, distinctUntilKeyChanged, first, last, map } from 'rxjs/operators';
 
 
 @Component({
@@ -32,7 +33,11 @@ export class DuenioPage implements OnInit, OnDestroy {
       this.authService.getCurrentUserData(PerfilUsuario.DUENIO).subscribe(duenio => {
         if(duenio) this.duenio = duenio[0];
       }),
-      this.clientesService.clienteSinAprobar().subscribe(clientes => {
+      this.clientesService.clienteSinAprobar().pipe(
+        distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
+          return prev && prev.length > curr.length
+        })
+      ).subscribe(clientes => {
         if(clientes.length > 0) {
           this.localNotifications.schedule({
             title: 'Clientes en espera!.',
@@ -41,7 +46,7 @@ export class DuenioPage implements OnInit, OnDestroy {
             trigger: { in: 0.5, unit: ELocalNotificationTriggerUnit.SECOND }
           });
         }
-      }),
+      })
     );
   }
 
