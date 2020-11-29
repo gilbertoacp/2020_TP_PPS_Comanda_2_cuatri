@@ -26,6 +26,12 @@ export class LoginPage implements OnInit {
   eyeType:string = 'eye-off-outline';
   passwordShown:boolean = false;
   suscripcion:Subscription;
+  
+  options = {
+    cssClass: 'popover-usuarios',
+    mode: 'ios',
+    translucent: true,
+  }
 
   constructor(
     private userService : UsuariosService,

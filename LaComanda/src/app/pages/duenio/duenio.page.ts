@@ -4,10 +4,10 @@ import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Duenio } from '../../models/duenio';
-import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
+import { ELocalNotificationTriggerUnit, LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Cliente } from 'src/app/models/cliente';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { distinctUntilChanged, distinctUntilKeyChanged, first, last, map } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 
 @Component({
@@ -51,7 +51,6 @@ export class DuenioPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('On destroy');
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
