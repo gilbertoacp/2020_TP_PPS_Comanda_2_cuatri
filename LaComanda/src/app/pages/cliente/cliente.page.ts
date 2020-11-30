@@ -10,6 +10,7 @@ import { ToastController } from '@ionic/angular';
 import { Usuario } from 'src/app/models/usuario';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { Router } from '@angular/router';
+import { ClientesService } from 'src/app/services/clientes.service';
 
 @Component({
   selector: 'app-cliente',
@@ -28,6 +29,7 @@ export class ClientePage implements OnInit, OnDestroy {
     public vibration : Vibration,
     private toastCtlr: ToastController,
     private pedidoService : PedidosService,
+    private clienteService : ClientesService,
     private router: Router
   ) { }
 
@@ -41,7 +43,7 @@ export class ClientePage implements OnInit, OnDestroy {
         /** CLiente anónimo */
         this.cliente = cliente;
       }
-      this.obtenerPedidosActivos();
+      //this.obtenerPedidosActivos();
       console.log(this.cliente);
     });
   }
@@ -64,41 +66,40 @@ export class ClientePage implements OnInit, OnDestroy {
   }
 
   irListaEspera(): void {
-    this.router.navigate(['cliente/lista-espera'])
+    this.router.navigate(["/lista-espera"])
   }
 
   irPedidoActivo(): void {
-    this.router.navigate(['cliente/pedidos'])
+    this.router.navigate(["/pedidos"])
   }
 
   irFinalizados(): void {
-    this.router.navigate(['/finalizados'])
+    this.router.navigate(["/finalizados"])
   }
 
   scanQR(): void {
     this.barcodeScanner.scan({ formats: 'QR_CODE' }).then((data) => {
-      if (data && !data.cancelled) {
-        if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
-          this.irListaEspera();
-        }
-        else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.id) {
-         // Si tiene pedidos activos y coincide con el codigo de qr de la mesa asignada lo llevamos al pedido
-          this.irPedidoActivo();
-        } else {
-          // No existe QR o no es de la mesa asignada
-          let audio = new Audio();
-            audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
-            audio.play();
-            this.vibration.vibrate(2000);
+      if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
+        this.clienteService.ponerEnListaDeEspera(this.cliente);
+        this.irListaEspera();
+      }
+      else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.qr) {
+        // Si tiene pedidos activos y coincide con el codigo de qr de la mesa asignada lo llevamos al pedido
+        this.irPedidoActivo();
+      } else {
+        // No existe QR o no es de la mesa asignada
+        let audio = new Audio();
+        audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
+        audio.play();
+        this.vibration.vibrate(2000);
 
-            this.toastCtlr.create({
-              message: 'Error, no es la mesa asignada',
-              position: 'top',
-              duration: 2000,
-              color: 'danger',
+        this.toastCtlr.create({
+          message: 'Error, no es la mesa asignada',
+          position: 'top',
+          duration: 2000,
+          color: 'danger',
 
-            })
-        }
+        })
       }
     }, (err) => this.toastCtlr.create({
       message: err ,

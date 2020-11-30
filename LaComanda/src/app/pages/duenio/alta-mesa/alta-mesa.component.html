@@ -1,11 +1,11 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color='primary'>
     <ion-buttons slot="start">
-      <ion-button color="primary" fill="outline" routerLink="/duenio">
-        <ion-icon style="color: white" name="arrow-undo-outline"></ion-icon>
+      <ion-button routerLink="../">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Alta de Mesa</ion-title>
+      <ion-title text-center slot="start">Alta de Mesa</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,32 +14,35 @@
 
   <ion-item>
     <ion-label position="floating">Número de mesa</ion-label>
-    <ion-input [(ngModel)]="numeroDeMesa" type="number" [formControl]="form.controls.numeroDeMesa"></ion-input>
+    <ion-input type="number" [(ngModel)]="numeroDeMesa" formControlName="numeroDeMesa" ></ion-input>  
   </ion-item>
-  <ion-label *ngIf="form.controls.numeroDeMesa.invalid && (form.controls.numeroDeMesa.touched || form.controls.numeroDeMesa.dirty)">
-    <b>{{ mostrarError('numeroDeMesa') }}</b>
-  </ion-label>  
+
+  <!--
+    <small *ngIf="numeroNoValido" class="validation-errors">
+      Ingrese numero de Mesa.
+    </small>-->
 
   <ion-item >
     <ion-label position="floating">Cantidad de comensales</ion-label>    
-    <ion-input [(ngModel)]="comensales" type="number" [formControl]="form.controls.comensales" maxlength='2' ></ion-input>
+    <ion-input type="number" maxlength='2' [(ngModel)]='comensales' formControlName="comensales"></ion-input>
   </ion-item>
-  <ion-label *ngIf="form.controls.comensales.invalid && (form.controls.comensales.touched || form.controls.comensales.dirty)">
-    <b>{{ mostrarError('comensales') }}</b>
-  </ion-label>
 
+  <!-- <small *ngIf="comensalesNoValido" class="validation-errors">
+      Ingrese cantidad de comensales(Mínimo 2).
+    </small>-->
 
   <ion-item>
     <ion-label>Tipo de mesa</ion-label>
-    <ion-select placeholder="Seleccionar" name="tipo" [(ngModel)]="tipo" [formControl]="form.controls.tipo">
+    <ion-select placeholder="Seleccionar" name="tipo" [(ngModel)]='tipo' formControlName="tipo">
       <ion-select-option value="NORMAL">NORMAL</ion-select-option>
       <ion-select-option value="VIP">VIP</ion-select-option>
       <ion-select-option value="DISCAPACITADOS">DISCAPACITADOS</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-label class="validation-errors" *ngIf="form.controls.tipo.invalid && (form.controls.tipo.touched || form.controls.tipo.dirty)">
-    <b>{{ mostrarError('tipo') }}</b> 
-  </ion-label>
+  <!--
+  <small *ngIf="tipoNoValido" class="validation-errors">
+    Ingrese un tipo de mesa.
+  </small>-->
 
   <ion-button class="boton" (click)="sacarFoto()">Sacar Foto</ion-button>
   <ion-button class="boton" expand="block" color="warning" [disabled]="!fotoCargada" (click)="registrar()">Registrar</ion-button>

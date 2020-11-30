@@ -16,7 +16,7 @@
     <h2 class="long-name"><br>Ir a Lista de Espera</h2>
   </ion-card>
 
-  <ion-card (click)="scanQR()" *ngIf="pedidosActivos && pedidosActivos.length > 0" class="ion-text-center ion-padding" color="000">
+  <ion-card *ngIf="pedidosActivos && pedidosActivos.length > 0" class="ion-text-center ion-padding" color="000">
     <ion-icon  class="icono" name="qr-code"></ion-icon>
     <h2 class="long-name"><br>Ver pedido</h2>
   </ion-card>

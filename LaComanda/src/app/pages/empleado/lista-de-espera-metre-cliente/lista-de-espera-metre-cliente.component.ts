@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../../../models/cliente';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { MesaService } from 'src/app/services/mesa.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-lista-de-espera-metre-cliente',
@@ -14,6 +15,8 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit {
 
   listado: any;
   mesasLibres: any;
+  subscriptions: Subscription[] = [];
+  
   constructor(
     private clientesService: ClientesService,
     private mesaService: MesaService,
@@ -39,8 +42,6 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit {
   // FALTARIA ASIGNAR LA MESA (CON EL USUARIO) Y CREAR EL PEDIDO DEL USUARIO
 
   //asignarMesa(c)
-
-  //cancelarCliente(c)
 
   //crearPedido
 
