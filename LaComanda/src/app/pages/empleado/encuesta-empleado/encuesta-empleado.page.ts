@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { EncuestasService } from '../../../services/encuestas.service';
 import { EmpleadosService } from '../../../services/empleados.service';
 import { Empleado } from '../../../models/empleado';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-encuesta-empleado',
@@ -20,9 +20,9 @@ export class EncuestaEmpleadoPage implements OnInit {
 
   constructor(
     private router: Router,
-    private toastCtrl: ToastController,
     private encuestasService: EncuestasService,
-    private empleadosService: EmpleadosService
+    private empleadosService: EmpleadosService,
+    private notificacionesService: NotificacionesService
   ) { 
     if(this.router.getCurrentNavigation().extras.state.empleado) {
       this.empleado = this.router.getCurrentNavigation().extras.state.empleado;
@@ -33,12 +33,9 @@ export class EncuestaEmpleadoPage implements OnInit {
   }
 
   async registrarEncuesta(): Promise<void> {
-    if(
-      !(this.calificacionGrupoTrabajo && 
-      this.feedback &&
-      this.estadoInstalaciones)
-    ) {
-      this.presentToast('Error!, Debe llenar los campos primeros');
+
+    if(!(this.calificacionGrupoTrabajo && this.feedback && this.estadoInstalaciones)) {
+      this.notificacionesService.toast('Error!, Debe llenar los campos primeros!s','bottom',1500,'warning');
       return;
     }
 
@@ -56,11 +53,11 @@ export class EncuestaEmpleadoPage implements OnInit {
       
       this.empleadosService.agregarEncuesta(encuesta);
 
-      this.presentToast('Se ha cargado la encuesta!');
+      this.notificacionesService.toast('Se ha cargado la encuesta!','bottom',1500,'success');
     } catch(err) {
-      this.presentToast('Error, No se ha podido cargar la encuesta!');
 
-      console.log(err);
+      this.notificacionesService.toast('Fallo al cargar la encuesta!','bottom',1500,'success');
+
     } finally {
       this.enEspera = false;
       this.feedback = null;
@@ -68,14 +65,7 @@ export class EncuestaEmpleadoPage implements OnInit {
       this.calificacionGrupoTrabajo = null;
       this.cerrar();
     }
-  }
 
-  async presentToast(msj: string) {
-    const toast = await this.toastCtrl.create({
-      message: msj,
-      duration: 2000
-    });
-    toast.present();
   }
 
   cerrar(): void {

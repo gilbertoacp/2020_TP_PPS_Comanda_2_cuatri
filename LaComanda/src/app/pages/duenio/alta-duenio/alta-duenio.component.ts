@@ -10,6 +10,7 @@ import { ToastController } from '@ionic/angular';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { Router } from '@angular/router';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-alta-duenio',
@@ -31,9 +32,9 @@ export class AltaDuenioComponent implements OnInit {
     private authService:AuthService,
     private storage:AngularFireStorage,
     private duenio_supervisor_svc:DuenioSupervisorService,
-    private toastController:ToastController,
     private usuariosService: UsuariosService,
-    private router: Router
+    private router: Router,
+    private notificacionesService: NotificacionesService
   ) { }
 
   ngOnInit() { }
@@ -65,22 +66,22 @@ export class AltaDuenioComponent implements OnInit {
       .then(async arrayBuffer => {
         const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
         const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
-        
         const {data}: any = await this.authService.registerWhithoutPersistance(this.correo, this.clave);
 
         this.storage.upload(storagePath, blob).then(async task => {
           await this.cargar_perfil(this.perfil,data,task);
-          this.presentToast('Cargado con exito','success')
+          this.notificacionesService.toast('Cargado con exito', 'bottom', 2000, 'success');
           this.router.navigate(['/home']);
         })
         .catch(err => {
-          this.presentToast(err,'danger')
+          this.notificacionesService.toast(err.message, 'bottom', 2000, 'danger');
+          this.notificacionesService.vibrar(1500);
         });
       });
     }
     catch(err) 
     {
-      this.presentToast(err,'danger');
+      this.notificacionesService.toast(err.message, 'bottom', 2000, 'danger');
     }
   }
 
@@ -123,12 +124,4 @@ export class AltaDuenioComponent implements OnInit {
     }
   }
 
-  async presentToast(msg: string, color: string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000,
-      color: color
-    });
-    toast.present();
-  }
 }

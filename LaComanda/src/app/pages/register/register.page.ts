@@ -13,6 +13,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-register',
@@ -56,14 +57,13 @@ export class RegisterPage implements OnInit {
     private camera: Camera,
     public toastController: ToastController,
     private barcodeScanner: BarcodeScanner,
+    private notificacionesService: NotificacionesService
     //private toastService:ToastService,
   ) {}
 
   ngOnInit() {
     this.modoRegistro = this.router.getCurrentNavigation().extras.state.modo;
-    let audio = new Audio();
-    audio.src = 'assets/audio/bubble.mp3';
-    audio.play();
+    this.notificacionesService.burbuja();
 
     if (this.modoRegistro) {
       this.title = "Registrar cliente";
@@ -119,9 +119,7 @@ export class RegisterPage implements OnInit {
 
   async register() {
     this.mostrarSpinner = true;
-    let audio = new Audio();
-    audio.src = 'assets/audio/bubble.mp3';
-    audio.play();
+    this.notificacionesService.burbuja();
 
     if(this.foto != "")
     {
@@ -160,10 +158,7 @@ export class RegisterPage implements OnInit {
                 
               this.presentToastConMensajeYColor("Se está procesando su solicitud.", "success");
 
-              let audio = new Audio();
-              audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
-              audio.play();
-
+              this.notificacionesService.exito();
               this.limpiarInputs();
 
               this.mostrarSpinner = false;
@@ -231,9 +226,7 @@ export class RegisterPage implements OnInit {
   }
 
   scan() {
-    let audio = new Audio();
-    audio.src = 'assets/audio/bubble.mp3';
-    audio.play();
+    this.notificacionesService.burbuja();
 
     this.barcodeScanner.scan({ formats: "PDF_417" }).then(barcodeData => {
       let scannedCode = barcodeData.text;

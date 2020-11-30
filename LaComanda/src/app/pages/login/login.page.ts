@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-
-import { Vibration } from '@ionic-native/vibration/ngx';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { Usuario } from 'src/app/models/usuario';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum'
 import { Subscription } from 'rxjs';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-login',
@@ -27,20 +26,13 @@ export class LoginPage implements OnInit {
   passwordShown:boolean = false;
   suscripcion:Subscription;
   
-  options = {
-    cssClass: 'popover-usuarios',
-    mode: 'ios',
-    translucent: true,
-  }
-
   constructor(
     private userService : UsuariosService,
     private clienteService : ClientesService,
     private authService: AuthService,
-    private toastCtlr: ToastController,
     private router: Router,
-    private vibration: Vibration,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public notificacionesService: NotificacionesService
   ) { }
 
   ngOnInit() {
@@ -54,79 +46,46 @@ export class LoginPage implements OnInit {
 
     this.cargando = true;
 
-    const respuesta = await this.authService.login(this.correo, this.clave);
+    try {
+      const respuesta = await this.authService.login(this.correo, this.clave);
 
-    if(respuesta)
-    {
-      this.userService.getUser(respuesta.user.uid).subscribe(async usuario =>
+      this.userService.getUser(respuesta.user.uid).subscribe(usuario => {
+
+        if(usuario.perfil == PerfilUsuario.CLIENTE && this.clienteService.correoRepetidoFB(usuario.correo))
         {
-          if(usuario.perfil == PerfilUsuario.CLIENTE && this.clienteService.correoRepetidoFB(usuario.correo))
-          {
-            this.router.navigate(['/home']);
-            setTimeout(() => this.cargando = false, 2500);
-  
-            let audio = new Audio();
-            audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
-            audio.play();
-          }
-          else if(usuario.perfil == PerfilUsuario.CLIENTE && !this.clienteService.correoRepetidoFB(usuario.correo))
-          {
-            let audio = new Audio();
-            audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
-            audio.play();
-            this.vibration.vibrate(2000);
-      
-            this.toastCtlr.create({
-              message: 'Error, todavía no se aprobo su registro',
-              position: 'top',
-              duration: 2000,
-              color: 'danger',
+          this.router.navigate(['/home']);
+          this.cargando = false;
+          this.notificacionesService.exito();
+        }
+        else if(usuario.perfil == PerfilUsuario.CLIENTE && !this.clienteService.correoRepetidoFB(usuario.correo))
+        {
+          this.notificacionesService.error();
+          this.notificacionesService.vibrar(1000);
+          this.notificacionesService.toast(
+            'Error, todavía no se aprobo su registro',
+            'top',
+            2000,
+            'danger'
+          );
+          this.cargando = false;
+        }else
+        {
+          this.router.navigate(['/home']);
+          this.cargando = false;
+          this.notificacionesService.exito();
+        }
 
-            }).then(t => {
-              this.cargando = false;
-              t.present();
-            });
-
-          }else
-          {
-
-            this.toastCtlr.create({
-              message: 'Error, todavía no se aprobo su registro',
-              position: 'top',
-              duration: 2000,
-              color: 'danger',
-
-            })
-
-            this.router.navigate(['/home']);
-            setTimeout(() => this.cargando = false, 2500);
-  
-            let audio = new Audio();
-            audio.src = 'assets/audio/login/sonidoBotonSUCESS.mp3';
-            audio.play();
-          }
-          
-        })
-      
-    }
-    else
-    {
-
-      this.toastCtlr.create({
-        message: 'Error, por favor verifique que los campos sean correctos',
-        position: 'top',
-        duration: 2000,
-        color: 'danger',
-        
-      })
-      .then(t => {
-        this.cargando = false;
-        t.present();
       });
+    } catch {
+      this.notificacionesService.toast(
+        'Error, por favor verifique que los campos sean correctos',
+        'top',
+        2000,
+        'danger',
+      );
+      this.cargando = false;
     }
-      
   }
-
 
   tooglePassword() {
     if(this.passwordShown){
@@ -142,9 +101,7 @@ export class LoginPage implements OnInit {
 
   usuarioSeleccionado({currentTarget}) {
 
-    let audio = new Audio();
-        audio.src = 'assets/audio/bubble.mp3';
-        audio.play();
+    this.notificacionesService.burbuja();
 
     switch(currentTarget.value) {
       case 'duenio':
