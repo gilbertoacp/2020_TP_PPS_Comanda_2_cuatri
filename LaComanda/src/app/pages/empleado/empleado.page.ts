@@ -8,6 +8,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { Cliente } from 'src/app/models/cliente';
+
+import { ELocalNotificationTriggerUnit, LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-empleado',
@@ -17,28 +22,48 @@ import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-clie
 export class EmpleadoPage implements OnInit, OnDestroy {
 
   empleado: Empleado;
-  private subscription: Subscription;
+  subscription: Subscription[] = [];
 
   constructor(
     private actionSheetCtlr: ActionSheetController,
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private clientesService : ClientesService,
+    private localNotifications: LocalNotifications,
+
   ) { }
   
   ngOnInit() {
-    this.subscription = this.authService.getCurrentUserData(PerfilUsuario.EMPLEADO)
-    .subscribe(empleado => {
-      if(empleado) {
-        this.empleado = empleado[0];
-        console.log(this.empleado);
+
+    this.subscription.push(this.authService.getCurrentUserData(PerfilUsuario.EMPLEADO).subscribe(emp => {
+      if(emp) (this.empleado = emp[0]);
+      console.log(this.empleado);
+      if(this.esMozoOMetre)
+      {
+        this.clientesService.clientesEnListaDeEspera().pipe(
+          distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
+            return prev && prev.length > curr.length
+          })
+        ).subscribe(clientes => {
+          if(clientes.length > 0) {
+            this.localNotifications.schedule({
+              title: 'Clientes en lista de espera!.',
+              text: 'Hay nuevos clientes en la lista de espera.',
+              icon: 'https://firebasestorage.googleapis.com/v0/b/clinicaonline-4cda1.appspot.com/o/assets%2Ficon2.png?alt=media&token=9ac298af-17a7-4d9f-bba0-bf2e53f9043e',
+              trigger: { in: 0.5, unit: ELocalNotificationTriggerUnit.SECOND }
+            });
+          }
+        })
       }
-    });
+
+    }));
+
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription.forEach(s => s.unsubscribe());
   }
 
   irALaEncuesta(empleado: Empleado): void {

@@ -101,6 +101,13 @@ export class ClientesService {
     .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
   }
 
+  ponerEnListaDeEspera(cliente: Cliente | ClienteAnonimo): void
+  {
+    this.db.collection<Cliente>('clientes')
+    .doc(cliente.docId)
+    .set({atendido: 'esperando'}, {merge: true})
+  }
+
   enviarCorreo(correo: any): void {
     this.http.post('https://us-central1-lacomanda-4960e.cloudfunctions.net/api', correo)
     .subscribe(console.log, console.log, console.log);

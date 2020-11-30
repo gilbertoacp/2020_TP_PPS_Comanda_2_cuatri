@@ -1,5 +1,7 @@
 
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cliente } from '../models/cliente';
 import { ClienteAnonimo } from '../models/clienteAnonimo';
@@ -12,7 +14,8 @@ import { FirebaseService } from './firebase.service';
 })
 export class PedidosService {
 
-  constructor(private firebaseService :FirebaseService) { }
+  constructor(private firebaseService :FirebaseService,
+    private db: AngularFirestore) { }
 
   obtenerPedidos() {
     return this.firebaseService.getDocs('pedidos').pipe(
@@ -57,6 +60,10 @@ export class PedidosService {
 
   // Obtiene los pedidos activos por cliente
   obtenerPedidosActivos(cliente: Cliente | ClienteAnonimo) {
+
+    return this.db.collection<Pedido>("pedidos", ref => ref.where("usuario.id", "==", cliente.docId)).valueChanges({idField: 'id'});
+
+    /* Tenía esto hecho y me tiraba error a la hora de traer los pedidos activos, osea los pedidos sin terminar)
     return this.firebaseService.getDocQuery('pedidos', 'usuario.id', true, cliente.docId).pipe(
       map(pedido => {
         return pedido.filter((p) => (p.payload.doc.data() as Pedido).estado !== EstadoPedido.TERMINADO)
@@ -66,7 +73,7 @@ export class PedidosService {
             return { id, ...data };
           });
       })
-    );
+    );*/
   }
 
   // Obtiene los pedidos finalizados por cliente

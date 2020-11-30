@@ -53,28 +53,45 @@ export class AltaMesaComponent implements OnInit {
     this.generarId();
 
     this.form = this.formBuilder.group({
-      numeroDeMesa: ['', Validators.compose([Validators.required, Validators.min(1)])],
-      comensales: ['', Validators.compose([Validators.required, Validators.min(2)])],
-      tipo: ['', Validators.compose([Validators.required])]
+      numeroDeMesa: ['', [Validators.required, Validators.min(1)]],
+      comensales: ['', [Validators.required, Validators.min(2)]],
+      tipo: ['', Validators.required]
     });
+  }
+
+  get nombreNoValido() {
+    return this.form.get('numeroDeMesa').invalid && this.form.get('numeroDeMesa').touched
+  }
+
+  get comensalesNoValido() {
+    return this.form.get('comensales').invalid && this.form.get('comensales').touched
+  }
+
+  get tipoNoValido() {
+    return this.form.get('tipo').invalid && this.form.get('tipo').touched
   }
 
   generarId(): void {
     this.id = Math.random().toString(36).substring(2);
   }
 
-  registrar()
+  async registrar()
   {
-    if (this.form.valid) {
-      this.mesa.numero = this.form.controls.numeroMesa.value;
-      this.mesa.cantidad = this.form.controls.cantidadComensales.value;
-      this.mesa.tipo = this.form.controls.tipoMesa.value;
+    if(this.foto != "")
+    {
+      //AL NO TENER EL FORM.VALID, ETC NO ME ESTA TOMANDO LOS DATOS(LAS DI DE ALTA HARDCODEANDO)
+        this.numeroDeMesa = this.form.get('numeroDeMesa').value
+        this.comensales = this.form.get('comensales').value;
+        this.tipo = this.form.get('tipo').value;
 
-      this.file.readAsArrayBuffer(Utils.getDirectory(this.foto), Utils.getFilename(this.foto)).then(arrayBuffer => {
+        const directorio = Utils.getDirectory(this.foto);
+        const archivo = Utils.getFilename(this.foto);
+        
+        try {
+          const arrayBuffer = await this.file.readAsArrayBuffer(directorio, archivo);
+          const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
           
-        const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
-        const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
-  
+          const storagePath = `images/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
           this.storage.upload(storagePath, blob).then(async task => {
   
             const mesa: Mesa = {
@@ -87,7 +104,7 @@ export class AltaMesaComponent implements OnInit {
               fechaModificado: null,
               fechaBaja: null,
               estado: EstadosMesa.LIBRE,
-              qr: 'mesa'+ this.numeroDeMesa,
+              qr: 'mesa' + this.numeroDeMesa,
             };
   
             this.mesaService.crearMesa(mesa);
@@ -102,17 +119,23 @@ export class AltaMesaComponent implements OnInit {
   
             this.router.navigate(["/duenio"]); //......
           }).catch((error) => {
+            console.log(error);
             this.presentToastConMensajeYColor(error.message, "danger");
           })
-          .finally(() => {
-          });
-        }).catch((e) => {
-          this.presentToastConMensajeYColor(e.message, "danger");
-        });
-     
-    } else {
-      this.vibration.vibrate(500);
-      this.form.markAllAsTouched();
+        } 
+        catch(err) {  
+          let audio = new Audio();
+            audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
+            audio.play();
+          this.presentToastConMensajeYColor(err.message, "danger");
+          this.vibration.vibrate(500);
+          console.log(err);
+        }
+        finally { 
+
+        }
+    }else {
+      this.presentToastConMensajeYColor("Debe subir una foto!", "danger");
     }
   }
 
