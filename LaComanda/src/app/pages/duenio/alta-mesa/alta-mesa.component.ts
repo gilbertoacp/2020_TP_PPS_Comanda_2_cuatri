@@ -5,7 +5,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Mesa } from 'src/app/models/mesa';
 import { MesaService } from 'src/app/services/mesa.service';
 import { ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Camera, Direction } from '@ionic-native/camera/ngx';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TipoMesa } from 'src/app/models/tipo-mesa.enum';
@@ -41,7 +41,8 @@ export class AltaMesaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private camera: Camera,
     private router: Router,
-    private vibration : Vibration
+    private vibration : Vibration,
+    private route : ActivatedRoute,
   ) { }
 
   ngOnInit()
@@ -117,7 +118,8 @@ export class AltaMesaComponent implements OnInit {
   
             this.limpiarInputs();
   
-            this.router.navigate(["/duenio"]); //......
+            this.router.navigate(["home/duenio"]);
+
           }).catch((error) => {
             console.log(error);
             this.presentToastConMensajeYColor(error.message, "danger");
@@ -216,5 +218,9 @@ export class AltaMesaComponent implements OnInit {
     toast.present();
   }
 
+  atras()
+  {
+    this.router.navigate(["home/duenio"]);
+  }
 
 }

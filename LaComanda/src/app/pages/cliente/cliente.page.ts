@@ -9,7 +9,7 @@ import { Vibration } from '@ionic-native/vibration/ngx';
 import { ToastController } from '@ionic/angular';
 import { Usuario } from 'src/app/models/usuario';
 import { PedidosService } from 'src/app/services/pedidos.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 })
 export class ClientePage implements OnInit, OnDestroy {
 
-  cliente: Cliente | ClienteAnonimo;
+  cliente: ClienteAnonimo;
   pedidosActivos: any = [];
   private subscription: Subscription;
 
@@ -30,7 +30,8 @@ export class ClientePage implements OnInit, OnDestroy {
     private toastCtlr: ToastController,
     private pedidoService : PedidosService,
     private clienteService : ClientesService,
-    private router: Router
+    private router: Router,
+    private route : ActivatedRoute
   ) { }
 
 
@@ -66,21 +67,30 @@ export class ClientePage implements OnInit, OnDestroy {
   }
 
   irListaEspera(): void {
-    this.router.navigate(["/lista-espera"])
+    this.router.navigate(["lista-espera"],
+    {
+      relativeTo: this.route
+    });
   }
 
   irPedidoActivo(): void {
-    this.router.navigate(["/pedidos"])
+    this.router.navigate(["pedidos"],
+    {
+      relativeTo: this.route
+    });
   }
 
   irFinalizados(): void {
-    this.router.navigate(["/finalizados"])
+    this.router.navigate(["finalizados"],
+    {
+      relativeTo: this.route
+    });
   }
 
   scanQR(): void {
     this.barcodeScanner.scan({ formats: 'QR_CODE' }).then((data) => {
       if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
-        this.clienteService.ponerEnListaDeEspera(this.cliente);
+        this.clienteService.ponerEnListaDeEsperaAnonimo(this.cliente);
         this.irListaEspera();
       }
       else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.qr) {

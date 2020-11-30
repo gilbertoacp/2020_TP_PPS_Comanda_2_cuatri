@@ -118,7 +118,7 @@ export class PedidosService {
   // Crear pedido (Class Pedido)
   crearPedido(pedido: Pedido) {
     pedido.fechaAlta = new Date();
-    return this.firebaseService.addDoc('pedidos', Object.assign({}, pedido));
+    return this.db.collection<Pedido>('pedidos').add(pedido);
   }
 
   // Actualizar pedidos (Class pedido)

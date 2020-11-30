@@ -61,6 +61,15 @@ export class ClientesService {
     .valueChanges({idField: 'docId'});
   }
 
+  clientesAnonimosEnListaDeEspera():Observable<Cliente[]>
+  {
+    return this.db.collection<Cliente>("clientesAnonimos", 
+      ref => ref.where("atendido", "==", 'esperando')
+    )
+    .valueChanges({idField: 'docId'});
+  }
+
+
   actualizarRegistros(id)
   {
     return this.db.collection("clientes").doc(id).update({estado: true});
@@ -101,11 +110,39 @@ export class ClientesService {
     .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
   }
 
-  ponerEnListaDeEspera(cliente: Cliente | ClienteAnonimo): void
+  cambiarEstadoDelClienteAnonimo(cliente: ClienteAnonimo, aceptado: boolean): void {
+    
+    this.db.collection<ClienteAnonimo>('clientesAnonimos')
+    .doc(cliente.docId)
+    .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
+  }
+
+  ponerEnListaDeEsperaAnonimo(cliente: ClienteAnonimo): void
+  {
+    this.db.collection<ClienteAnonimo>('clientesAnonimos')
+    .doc(cliente.docId)
+    .set({atendido: 'esperando'}, {merge: true})
+  }
+
+  ponerEnListaDeEspera(cliente: Cliente): void
   {
     this.db.collection<Cliente>('clientes')
     .doc(cliente.docId)
     .set({atendido: 'esperando'}, {merge: true})
+  }
+
+  ponerEnLaMesa(cliente: Cliente): void
+  {
+    this.db.collection<Cliente>('clientes')
+    .doc(cliente.docId)
+    .set({atendido: 'enLaMesa'}, {merge: true})
+  }
+
+  ponerEnLaMesaAnonimo(cliente: ClienteAnonimo): void
+  {
+    this.db.collection<ClienteAnonimo>('clientesAnonimos')
+    .doc(cliente.docId)
+    .set({atendido: 'enLaMesa'}, {merge: true})
   }
 
   enviarCorreo(correo: any): void {
