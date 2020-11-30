@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../../../models/cliente';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { MesaService } from 'src/app/services/mesa.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-lista-de-espera-metre-cliente',
@@ -17,6 +18,7 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit {
   constructor(
     private clientesService: ClientesService,
     private mesaService: MesaService,
+    private modalCtrl : ModalController
   ) { }
 
 

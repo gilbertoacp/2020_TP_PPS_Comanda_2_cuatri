@@ -1,0 +1,46 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color='primary'>
+    <ion-buttons slot="start">
+      <ion-button color="primary" fill="outline" routerLink="/duenio">
+        <ion-icon style="color: white" name="arrow-undo-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Alta de Mesa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<form class="form" [formGroup]="form">
+  <img class="img" [src]="imagenPrevista" alt="imagen" width="100" height="100">
+
+  <ion-item>
+    <ion-label position="floating">Número de mesa</ion-label>
+    <ion-input [(ngModel)]="numeroDeMesa" type="number" [formControl]="form.controls.numeroDeMesa"></ion-input>
+  </ion-item>
+  <ion-label *ngIf="form.controls.numeroDeMesa.invalid && (form.controls.numeroDeMesa.touched || form.controls.numeroDeMesa.dirty)">
+    <b>{{ mostrarError('numeroDeMesa') }}</b>
+  </ion-label>  
+
+  <ion-item >
+    <ion-label position="floating">Cantidad de comensales</ion-label>    
+    <ion-input [(ngModel)]="comensales" type="number" [formControl]="form.controls.comensales" maxlength='2' ></ion-input>
+  </ion-item>
+  <ion-label *ngIf="form.controls.comensales.invalid && (form.controls.comensales.touched || form.controls.comensales.dirty)">
+    <b>{{ mostrarError('comensales') }}</b>
+  </ion-label>
+
+
+  <ion-item>
+    <ion-label>Tipo de mesa</ion-label>
+    <ion-select placeholder="Seleccionar" name="tipo" [(ngModel)]="tipo" [formControl]="form.controls.tipo">
+      <ion-select-option value="NORMAL">NORMAL</ion-select-option>
+      <ion-select-option value="VIP">VIP</ion-select-option>
+      <ion-select-option value="DISCAPACITADOS">DISCAPACITADOS</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-label class="validation-errors" *ngIf="form.controls.tipo.invalid && (form.controls.tipo.touched || form.controls.tipo.dirty)">
+    <b>{{ mostrarError('tipo') }}</b> 
+  </ion-label>
+
+  <ion-button class="boton" (click)="sacarFoto()">Sacar Foto</ion-button>
+  <ion-button class="boton" expand="block" color="warning" [disabled]="!fotoCargada" (click)="registrar()">Registrar</ion-button>
+</form>

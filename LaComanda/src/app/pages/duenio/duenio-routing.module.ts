@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AltaDuenioComponent } from './alta-duenio/alta-duenio.component';
+import { AltaMesaComponent } from './alta-mesa/alta-mesa.component';
 
 import { DuenioPage } from './duenio.page';
 import { RegistrosPendientesComponent } from './registros-pendientes/registros-pendientes.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'registros-pendientes',
     component: RegistrosPendientesComponent
+  },
+  {
+    path: 'alta-mesa',
+    component: AltaMesaComponent
   }
 ];
 
