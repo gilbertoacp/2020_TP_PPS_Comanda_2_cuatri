@@ -26,10 +26,11 @@ import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { MediaCapture } from '@ionic-native/media-capture/ngx';
 
 import { HttpClientModule } from '@angular/common/http';
+import { SonidoComponent } from './components/sonido/sonido.component';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SonidoComponent],
   entryComponents: [],
   imports: [
     BrowserModule, 
