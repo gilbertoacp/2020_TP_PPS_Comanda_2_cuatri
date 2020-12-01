@@ -13,7 +13,6 @@ import { User } from 'firebase';
 import { Cliente } from '../models/cliente';
 import { Duenio } from '../models/duenio';
 import { Empleado } from '../models/empleado';
-import { ClienteAnonimo } from '../models/clienteAnonimo';
 
 @Injectable({
   providedIn: 'root'
@@ -77,25 +76,9 @@ export class AuthService {
         if(user) {
 
           if(tipoUsuario === PerfilUsuario.CLIENTE) {
-
-            if(user.isAnonymous) {
-
-              return this.db.doc<ClienteAnonimo>('clientesAnonimos/' + user.uid).snapshotChanges().pipe(map(actions => {
-                const obj: ClienteAnonimo = {
-                  docId: user.uid,
-                  ...(actions.payload.data() as ClienteAnonimo)
-                }
-                return obj;
-              }));
-
-            } else  {
-
-              return this.db.collection<Cliente>('clientes',
-                ref => ref.where('authId', '==', user.uid)
-              ).valueChanges({idField: 'docId'});
-
-            }
-
+            return this.db.collection<Cliente>('clientes',
+              ref => ref.where('authId', '==', user.uid)
+            ).valueChanges({idField: 'docId'});
           }
 
           if(tipoUsuario === PerfilUsuario.DUENIO) {

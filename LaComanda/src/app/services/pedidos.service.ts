@@ -1,10 +1,8 @@
 
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cliente } from '../models/cliente';
-import { ClienteAnonimo } from '../models/clienteAnonimo';
 import { EstadoPedido } from '../models/estadoPedido.enum';
 import { Pedido } from '../models/pedido';
 import { FirebaseService } from './firebase.service';
@@ -59,7 +57,7 @@ export class PedidosService {
   }
 
   // Obtiene los pedidos activos por cliente
-  obtenerPedidosActivos(cliente: Cliente | ClienteAnonimo) {
+  obtenerPedidosActivos(cliente: Cliente) {
 
     return this.db.collection<Pedido>("pedidos", ref => ref.where("usuario.id", "==", cliente.docId)).valueChanges({idField: 'id'});
 
@@ -77,7 +75,7 @@ export class PedidosService {
   }
 
   // Obtiene los pedidos finalizados por cliente
-  obtenerPedidosFinalizados(cliente: Cliente | ClienteAnonimo) {
+  obtenerPedidosFinalizados(cliente: Cliente) {
     return this.firebaseService.getDocQuery('pedidos', 'usuario.id', true, cliente.docId).pipe(
       map(pedido => {
         return pedido.filter((p) => (p.payload.doc.data() as Pedido).estado === EstadoPedido.TERMINADO)

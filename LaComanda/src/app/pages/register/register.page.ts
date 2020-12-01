@@ -186,17 +186,19 @@ export class RegisterPage implements OnInit {
           const blob = new Blob([arrayBuffer], { type: 'image/jpg' });
           
           const storagePath = `images/anonimos/${new Date().toLocaleDateString().split('/').join('-')}__${Math.random().toString(36).substring(2)}`;
+
           const uploadTask = await this.storage.upload(storagePath, blob);
 
           const credentials = await this.authService.loginAnonymously()
 
-          await this.cliente.registrarClienteAnonimo(
-            credentials.user.uid,
-            {
+          this.cliente.registrarCliente({
+              authId:credentials.user.uid,
               nombre: this.nombre,
               foto: await uploadTask.ref.getDownloadURL(),
-            }
-          );
+              atendido: 'libre',
+              estado: 'aceptado',
+              tipo: TipoCliente.ANONIMO
+          });
 
           this.reproducirAudio();
           this.router.navigate(['/home']);

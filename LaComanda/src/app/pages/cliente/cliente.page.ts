@@ -3,11 +3,9 @@ import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Cliente } from '../../models/cliente';
-import { ClienteAnonimo } from 'src/app/models/clienteAnonimo';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { ToastController } from '@ionic/angular';
-import { Usuario } from 'src/app/models/usuario';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
@@ -19,7 +17,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 })
 export class ClientePage implements OnInit, OnDestroy {
 
-  cliente: ClienteAnonimo;
+  cliente: Cliente;
   pedidosActivos: any = [];
   private subscription: Subscription;
   esAnonimo: boolean= true;
@@ -37,17 +35,10 @@ export class ClientePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
-      if (Array.isArray(cliente)) {
-        /** Cliente normal */
+      if (cliente) {
         this.cliente = cliente[0];
-      } else {
-        /** CLiente anónimo */
-        this.cliente = cliente;
-      }
-      //this.obtenerPedidosActivos();
+      } 
       console.log(this.cliente);
-      localStorage.setItem("idCliente",this.cliente.docId);
-      this.cliente.nombre === 'Anonimo'?this.esAnonimo=true:this.esAnonimo=false;
     });
   }
 

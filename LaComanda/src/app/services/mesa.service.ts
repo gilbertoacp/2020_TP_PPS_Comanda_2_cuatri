@@ -4,7 +4,6 @@ import { Mesa } from '../models/mesa';
 import { EstadosMesa } from '../models/estado-mesa.enum';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
-import { ClienteAnonimo } from '../models/clienteAnonimo';
 
 @Injectable({
   providedIn: 'root'

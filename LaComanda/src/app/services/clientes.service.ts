@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
-import { ClienteAnonimo } from '../models/clienteAnonimo';
 
 @Injectable({
   providedIn: 'root'
@@ -79,10 +77,6 @@ export class ClientesService {
     return this.db.collection("clientes").doc(id).delete();
   }
 
-  registrarClienteAnonimo(docId: string,cliente: ClienteAnonimo): Promise<void> {
-    return this.db.collection<ClienteAnonimo>('clientesAnonimos').doc(docId).set(cliente);
-  }
-
   /*
   * param: cliente: Cliente, desc: El cliente el cual se acepto o rechaza su accesso a la aplicación
   * param: aceptado: boolean, desc: Determina si fué aceptado o rechazado
@@ -110,19 +104,19 @@ export class ClientesService {
     .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
   }
 
-  cambiarEstadoDelClienteAnonimo(cliente: ClienteAnonimo, aceptado: boolean): void {
+  // cambiarEstadoDelClienteAnonimo(cliente: ClienteAnonimo, aceptado: boolean): void {
     
-    this.db.collection<ClienteAnonimo>('clientesAnonimos')
-    .doc(cliente.docId)
-    .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
-  }
+  //   this.db.collection<ClienteAnonimo>('clientesAnonimos')
+  //   .doc(cliente.docId)
+  //   .set({atendido: aceptado? 'enLaMesa': 'rechazado'}, {merge: true})
+  // }
 
-  ponerEnListaDeEsperaAnonimo(cliente: ClienteAnonimo): void
-  {
-    this.db.collection<ClienteAnonimo>('clientesAnonimos')
-    .doc(cliente.docId)
-    .set({atendido: 'esperando'}, {merge: true})
-  }
+  // ponerEnListaDeEsperaAnonimo(cliente: ClienteAnonimo): void
+  // {
+  //   this.db.collection<ClienteAnonimo>('clientesAnonimos')
+  //   .doc(cliente.docId)
+  //   .set({atendido: 'esperando'}, {merge: true})
+  // }
 
   ponerEnListaDeEspera(cliente: Cliente): void
   {
@@ -138,12 +132,12 @@ export class ClientesService {
     .set({atendido: 'enLaMesa'}, {merge: true})
   }
 
-  ponerEnLaMesaAnonimo(cliente: ClienteAnonimo): void
-  {
-    this.db.collection<ClienteAnonimo>('clientesAnonimos')
-    .doc(cliente.docId)
-    .set({atendido: 'enLaMesa'}, {merge: true})
-  }
+  // ponerEnLaMesaAnonimo(cliente: ClienteAnonimo): void
+  // {
+  //   this.db.collection<ClienteAnonimo>('clientesAnonimos')
+  //   .doc(cliente.docId)
+  //   .set({atendido: 'enLaMesa'}, {merge: true})
+  // }
 
   enviarCorreo(correo: any): void {
     this.http.post('https://us-central1-lacomanda-4960e.cloudfunctions.net/api', correo)
