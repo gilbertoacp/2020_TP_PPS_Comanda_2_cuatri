@@ -2,7 +2,8 @@ import { EstadosMesa } from './estado-mesa.enum';
 import { TipoMesa } from './tipo-mesa.enum';
 
 export interface Mesa {
-    id?: string;
+    id: string;
+    docId?: string;
     numero?: number;
     cantidad?: number;
     foto?: string;
@@ -12,4 +13,5 @@ export interface Mesa {
     fechaBaja: Date;
     estado: EstadosMesa;
     qr:any;
+    docIdCliente?: string;
 }

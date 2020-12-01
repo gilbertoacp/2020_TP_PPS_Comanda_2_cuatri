@@ -59,10 +59,9 @@ export class ClientePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     console.log('On destroy');
-    
   }
 
-  salir(){
+  salir(): void{
     this.authService.logout();
   }
 
@@ -90,7 +89,7 @@ export class ClientePage implements OnInit, OnDestroy {
   scanQR(): void {
     this.barcodeScanner.scan({ formats: 'QR_CODE' }).then((data) => {
       if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
-        this.clienteService.ponerEnListaDeEsperaAnonimo(this.cliente);
+        // this.clienteService.ponerEnListaDeEsperaAnonimo(this.cliente);
         this.irListaEspera();
       }
       else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.qr) {

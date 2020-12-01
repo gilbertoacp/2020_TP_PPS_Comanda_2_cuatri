@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'alta-producto',
     component: AltaProductoComponent
   },
+  {
+    path: 'lista-espera-metre-cliente',
+    component: ListaDeEsperaMetreClienteComponent
+  }
 ];
 
 @NgModule({

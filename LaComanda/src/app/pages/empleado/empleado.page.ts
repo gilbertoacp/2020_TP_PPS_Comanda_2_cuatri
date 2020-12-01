@@ -2,17 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { AuthService } from 'src/app/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Empleado } from '../../models/empleado';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
-import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, first } from 'rxjs/operators';
 import { Cliente } from 'src/app/models/cliente';
-
-import { ELocalNotificationTriggerUnit, LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-empleado',
@@ -22,7 +20,7 @@ import { ELocalNotificationTriggerUnit, LocalNotifications } from '@ionic-native
 export class EmpleadoPage implements OnInit, OnDestroy {
 
   empleado: Empleado;
-  subscription: Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private actionSheetCtlr: ActionSheetController,
@@ -31,39 +29,48 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private modalCtrl: ModalController,
     private clientesService : ClientesService,
-    private localNotifications: LocalNotifications,
-
+    private notificacionesService: NotificacionesService
   ) { }
   
   ngOnInit() {
+    const metreSubject = new Subject<Empleado>();
 
-    this.subscription.push(this.authService.getCurrentUserData(PerfilUsuario.EMPLEADO).subscribe(emp => {
-      if(emp) (this.empleado = emp[0]);
-      console.log(this.empleado);
-      if(this.esMozoOMetre)
-      {
-        this.clientesService.clientesEnListaDeEspera().pipe(
-          distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
-            return prev && prev.length > curr.length
-          })
-        ).subscribe(clientes => {
-          if(clientes.length > 0) {
-            this.localNotifications.schedule({
-              title: 'Clientes en lista de espera!.',
-              text: 'Hay nuevos clientes en la lista de espera.',
-              icon: 'https://firebasestorage.googleapis.com/v0/b/clinicaonline-4cda1.appspot.com/o/assets%2Ficon2.png?alt=media&token=9ac298af-17a7-4d9f-bba0-bf2e53f9043e',
-              trigger: { in: 0.5, unit: ELocalNotificationTriggerUnit.SECOND }
-            });
+    this.subscriptions.push(
+      this.authService.getCurrentUserData(PerfilUsuario.EMPLEADO).subscribe(emp => {
+        if(emp) {
+          this.empleado = emp[0]
+
+          if(this.esMetre(this.empleado)) {
+            metreSubject.next(this.empleado);
           }
-        })
+        }
+        console.log(this.empleado);
+      })
+    );
+
+    metreSubject.asObservable().pipe(first()).toPromise().then(metre => {
+      if(metre) {
+        this.subscriptions.push(
+          this.clientesService.clientesEnListaDeEspera().pipe(
+            distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
+              return prev && prev.length > curr.length
+            })
+          ).subscribe(clientes => {
+            if(clientes.length > 0) {
+              this.notificacionesService.push(
+                'Clientes en espera!.',
+                'Hay nuevos clientes en espera de una mesa.',
+                'https://bit.ly/39w7LJE',
+              );
+            }
+          })
+        )
       }
-
-    }));
-
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscription.forEach(s => s.unsubscribe());
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   irALaEncuesta(empleado: Empleado): void {
@@ -102,14 +109,6 @@ export class EmpleadoPage implements OnInit, OnDestroy {
       state: {empleado},
       relativeTo: this.route
     });
-  }
-
-  async irAlaListaDeEspera(): Promise<void> {
-    const m = await this.modalCtrl.create({
-      component: ListaDeEsperaMetreClienteComponent,
-    });
-
-    m.present();
   }
 
   async hacerPedido(): Promise<void> {

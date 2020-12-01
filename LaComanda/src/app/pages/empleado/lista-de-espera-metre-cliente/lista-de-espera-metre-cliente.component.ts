@@ -3,12 +3,11 @@ import { Cliente } from '../../../models/cliente';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { MesaService } from 'src/app/services/mesa.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
 import { Mesa } from 'src/app/models/mesa';
 import { Pedido } from 'src/app/models/pedido';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { EstadosMesa } from 'src/app/models/estado-mesa.enum';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-lista-de-espera-metre-cliente',
@@ -17,63 +16,56 @@ import { EstadosMesa } from 'src/app/models/estado-mesa.enum';
 })
 export class ListaDeEsperaMetreClienteComponent implements OnInit {
 
+  mesasLibres: Mesa[];
   clientesEnEspera: Cliente[];
-
-  listado: any;
-  mesasLibres: any;
-  private subscription: Subscription;
-  cliente : Cliente;
+  subscriptions: Subscription[] = [];
+  clienteSeleccionado : Cliente;
   
   constructor(
     private clientesService: ClientesService,
     private mesaService: MesaService,
-    private authService: AuthService,
     private pedidoService: PedidosService,
+    public alertController: AlertController
   ) { }
 
 
-  ngOnInit()
-  {
-    this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
-      if(Array.isArray(cliente)) {
-        /** Cliente normal */
-        this.cliente = cliente[0];
-      } else {
-        /** CLiente anónimo */
-        this.cliente = cliente;
-      }
-      console.log(this.cliente);
-    });
-    this.clientesService.clientesEnListaDeEspera().subscribe(clientes => this.clientesEnEspera = clientes);
-    this.obtenerMesasLibres();
+  ngOnInit() {
+    this.subscriptions.push(
+      this.clientesService.clientesEnListaDeEspera().subscribe(clientes => {
+        this.clientesEnEspera = clientes; 
+      }),
+      this.mesaService.getMesasLibre().subscribe(listado => {
+        this.mesasLibres = listado;
+      })
+    );
   }
 
   cancelarCliente(cliente: Cliente): void {
     this.clientesService.cambiarEstadoDelCliente(cliente, false);
   }
-
-  obtenerMesasLibres() {
-    this.mesaService.getMesasLibre().subscribe(listado => {
-      this.mesasLibres = listado;
-    });
-  }
-
   // FALTARIA ASIGNAR LA MESA (CON EL USUARIO) Y CREAR EL PEDIDO DEL USUARIO
 
   asignarMesa(cliente : Cliente) {
-    const mesasOpt = this.mesasLibres.map(m => {
-      const d =
-      {
-        name: `mesa${m.numero}`,
-        type: 'radio',
-        label: `MESA #${m.numero}`,
-        value: cliente
-      };
-      return d;
-    });
-    const callback = (data) => this.crearPedido(data);
-    //this.presentAlertRadio('Mesas libres a asignar', mesasOpt, callback);
+    this.clienteSeleccionado = cliente;
 
+    const tipoMesa = {
+      0: 'Normal',
+      1: 'VIP',
+      2: 'Discapacitados'
+    }
+    
+    const radios = this.mesasLibres
+    .sort((m1,m2) => m1.numero - m2.numero)
+    .map(m => {
+      return {
+        name: 'radio2',
+        type: 'radio',
+        label: `Nº ${m.numero} - ${m.cantidad} personas - ${tipoMesa[m.tipo]}`,
+        value: m.docId
+      }
+    });
+
+    this.mostrarMesasDisponiblesAlert(radios);
   }
 
   crearPedido(data)
@@ -98,11 +90,33 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit {
 
       this.clientesService.ponerEnLaMesa(cliente);
       this.clientesService.cambiarEstadoDelCliente(cliente, false);
-
       //this.presentToast('Mesa asignada', 'toast-info');
     }).catch
     (e => console.log(e));
 
   }
 
+  async mostrarMesasDisponiblesAlert(radios: any) {
+    const alert = await this.alertController.create({
+      cssClass: 'alert-asignar-mesa',
+      header: 'Mesas Disponibles',
+      inputs: radios,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+          }
+        }, 
+        {
+          text: 'Ok',
+          handler: (data) => {
+            this.mesaService.asignarMesaACliente(data, this.clienteSeleccionado.docId);
+          }
+        }
+      ],
+    });
+    await alert.present();
+  }
 }

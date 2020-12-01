@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/internal/operators/map';
 import { Mesa } from '../models/mesa';
 import { EstadosMesa } from '../models/estado-mesa.enum';
 import { Observable } from 'rxjs';
+import { Cliente } from '../models/cliente';
+import { ClienteAnonimo } from '../models/clienteAnonimo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MesaService {
 
-  constructor(private db:AngularFirestore) { }
+  constructor(
+    private db:AngularFirestore
+  ) { }
 
   obtenerFoto(mesa: Mesa) {
     let foto = '../../assets/defaultFotoMesa.jpg';
@@ -28,7 +31,6 @@ export class MesaService {
     return foto;
   }
 
-
   getMesas(){
     return this.db.collection("mesas").valueChanges();
   }
@@ -45,17 +47,32 @@ export class MesaService {
 
   getMesasLibre():Observable<Mesa[]>
   {
-    return this.db.collection<Mesa>("mesas", ref => ref.where("estado", "==", EstadosMesa.LIBRE)).valueChanges({idField: 'id'});
+    return this.db.collection<Mesa>("mesas", ref => ref.where("estado", "==", EstadosMesa.LIBRE)).valueChanges({idField: 'docId'});
   }
 
   getMesasAsignadas():Observable<Mesa[]>
   {
-    return this.db.collection<Mesa>("mesas", ref => ref.where("estado", "==", EstadosMesa.ASIGNADA)).valueChanges({idField: 'id'});
+    return this.db.collection<Mesa>("mesas", ref => ref.where("estado", "==", EstadosMesa.ASIGNADA)).valueChanges({idField: 'docId'});
   }
 
   actualizarMesa(id)
   {
     return this.db.collection("mesas").doc(id).update({estado: true});
+  }
+
+  async asignarMesaACliente(docId: string, docIdCliente: string): Promise<void> {
+    try {
+      await this.db.collection<Mesa>('mesas')
+      .doc(docId)
+      .set({estado: EstadosMesa.ASIGNADA, docIdCliente}, {merge: true});
+  
+      await this.db.collection<Cliente>('clientes')
+      .doc(docIdCliente)
+      .set({atendido: 'asignado'}, {merge: true});
+    }
+    catch(err) {
+      throw Error(err.message);
+    }
   }
 
   borrarMesa(id){
