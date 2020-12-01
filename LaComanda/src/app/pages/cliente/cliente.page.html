@@ -1,17 +1,17 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header class="page-header ion-no-border ion-padding">
+  <ion-toolbar class="bg-none">
     <ion-buttons slot="end">
       <ion-button color="light" (click)="salir()">
-        <ion-icon style="color: white" name="log-out-outline"></ion-icon>
+        <ion-icon slot="end" style="color: black" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Bienvenido {{cliente?.nombre}}</ion-title>
+    <ion-title>Buenas, {{cliente?.nombre}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card (click)="scanQR()" *ngIf="pedidosActivos && pedidosActivos.length === 0" class="ion-text-center ion-padding" color="000">
+  <!-- <ion-card (click)="scanQR()" *ngIf="pedidosActivos && pedidosActivos.length === 0" class="ion-text-center ion-padding" color="000">
     <ion-icon  class="icono" name="qr-code"></ion-icon>
     <h2 class="long-name"><br>Ir a Lista de Espera</h2>
   </ion-card>
@@ -24,6 +24,65 @@
   <ion-card (click)="irFinalizados()" class="ion-text-center ion-padding" color="000">
     <ion-icon  class="icono" name="list"></ion-icon>
     <h2 class="long-name"><br>Ver pedidos finalizados</h2>
-  </ion-card>
+  </ion-card> -->
+  <div class="centered">
+    <div style="width: 100%;margin-top: 150px;">
 
+      <ion-slides pager="true" [options]="slideOpts" #slides (ionSlideWillChange)="doCheck()">
+        <ion-slide *ngIf="pedidosActivos && pedidosActivos.length === 0">
+          <img src="../../../assets/img/qr_code.svg" />
+          <h2>Buscar mesa</h2>
+          <p>Escaneá el <span>codigo Qr</span> para anotarte en la lista de espera, o selecciona tu mesa si ya tenes una
+            asignada.</p>
+          <ion-button class="qr-btn " mode="ios" size="small" (click)="scanQR()">
+            <ion-icon class="icono" name="qr-code"></ion-icon>
+          </ion-button>
+        </ion-slide>
+
+        <ion-slide *ngIf="pedidosActivos && pedidosActivos.length > 0">
+          <img src="../../../assets/img/chef.svg" />
+          <h2>Ver pedido</h2>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, ratione?.</p>
+          <ion-button class="qr-btn " mode="ios" size="small" (click)="scanQR()">
+            <ion-icon class="icono" name="qr-code"></ion-icon>
+          </ion-button>
+        </ion-slide>
+
+        <ion-slide>
+          <img src="../../../assets/img/chef_isometric.svg" />
+          <h2>Ver pedidos finalizados</h2>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, ratione?.</p>
+          <ion-button class="qr-btn " mode="ios" size="small" (click)="irFinalizados()">
+            <ion-icon class="icono" name="qr-code"></ion-icon>
+          </ion-button>
+        </ion-slide>
+
+        <ion-slide *ngIf="!esAnonimo">
+          <img src="/assets/img/calendar.svg" />
+          <h2>Reserva</h2>
+          <p>Reservá una mesa desde la App. Recordá que debes estar registrado para realizar reservas.</p>
+          <ion-button class="qr-btn" mode="ios" size="small" (click)="irReserva()">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </ion-button>
+        </ion-slide>
+
+        <ion-slide>
+          <img src="../../../assets/img/scooter.svg" />
+          <h2>Delivery</h2>
+          <p>Ingresá para hacer un pedido a domicilio, recordá que debes estar <b>registrado</b> para acceder al
+            delivery.</p>
+          <ion-button class="qr-btn" mode="ios" size="small" (click)="navigationOptions()">
+            <ion-icon name="basket-outline"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+
+      <ion-button mode="ios" fill="clear" class="backBtn" *ngIf="!disablePrevBtn" (click)="slides.slidePrev()">
+        <ion-icon src="https://image.flaticon.com/icons/svg/271/271220.svg"></ion-icon>
+      </ion-button>
+      <ion-button mode="ios" fill="clear" class="nextBtn" *ngIf="!disableNextBtn" (click)="slides.slideNext()">
+        <ion-icon src="https://image.flaticon.com/icons/svg/271/271228.svg"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

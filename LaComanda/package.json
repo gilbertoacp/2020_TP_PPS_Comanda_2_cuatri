@@ -39,6 +39,8 @@
     "firebase": "^7.13.1",
     "firebase-admin": "^9.4.1",
     "howler": "^2.2.1",
+    "ion2-calendar": "^3.0.0-rc.0",
+    "moment": "^2.29.1",
     "ngx-qrcode2": "^9.0.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
