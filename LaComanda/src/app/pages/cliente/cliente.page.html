@@ -57,7 +57,7 @@
           </ion-button>
         </ion-slide>
 
-        <ion-slide>
+        <ion-slide *ngIf="!esAnonimo">
           <img src="/assets/img/calendar.svg" />
           <h2>Reserva</h2>
           <p>Reservá una mesa desde la App. Recordá que debes estar registrado para realizar reservas.</p>

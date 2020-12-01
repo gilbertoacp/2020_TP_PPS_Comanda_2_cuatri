@@ -22,22 +22,22 @@ export class ClientePage implements OnInit, OnDestroy {
   cliente: ClienteAnonimo;
   pedidosActivos: any = [];
   private subscription: Subscription;
-
+  esAnonimo: boolean= true;
   constructor(
-    private authService : AuthService,
+    private authService: AuthService,
     public barcodeScanner: BarcodeScanner,
-    public vibration : Vibration,
+    public vibration: Vibration,
     private toastCtlr: ToastController,
-    private pedidoService : PedidosService,
-    private clienteService : ClientesService,
+    private pedidoService: PedidosService,
+    private clienteService: ClientesService,
     private router: Router,
-    private route : ActivatedRoute
+    private route: ActivatedRoute
   ) { }
 
 
   ngOnInit() {
     this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
-      if(Array.isArray(cliente)) {
+      if (Array.isArray(cliente)) {
         /** Cliente normal */
         this.cliente = cliente[0];
       } else {
@@ -46,6 +46,8 @@ export class ClientePage implements OnInit, OnDestroy {
       }
       //this.obtenerPedidosActivos();
       console.log(this.cliente);
+      localStorage.setItem("idCliente",this.cliente.docId);
+      this.cliente.nombre === 'Anonimo'?this.esAnonimo=true:this.esAnonimo=false;
     });
   }
 
@@ -59,38 +61,38 @@ export class ClientePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     console.log('On destroy');
-    
+
   }
 
-  salir(){
+  salir() {
     this.authService.logout();
   }
 
   irListaEspera(): void {
     this.router.navigate(["lista-espera"],
-    {
-      relativeTo: this.route
-    });
+      {
+        relativeTo: this.route
+      });
   }
 
   irPedidoActivo(): void {
     this.router.navigate(["pedidos"],
-    {
-      relativeTo: this.route
-    });
+      {
+        relativeTo: this.route
+      });
   }
 
-  irReserva():void{
-    this.router.navigate(['reserva'],{
-      relativeTo:this.route
+  irReserva(): void {
+    this.router.navigate(['reserva'], {
+      relativeTo: this.route
     });
   }
 
   irFinalizados(): void {
     this.router.navigate(["finalizados"],
-    {
-      relativeTo: this.route
-    });
+      {
+        relativeTo: this.route
+      });
   }
 
   scanQR(): void {
@@ -118,11 +120,11 @@ export class ClientePage implements OnInit, OnDestroy {
         })
       }
     }, (err) => this.toastCtlr.create({
-      message: err ,
+      message: err,
       position: 'top',
       duration: 2000,
       color: 'danger',
     }));
- }
+  }
 
 }
