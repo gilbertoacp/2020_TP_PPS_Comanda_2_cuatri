@@ -39,19 +39,25 @@
           </ion-button>
         </ion-slide>
 
+        <ion-slide >
+          <img src="../../../assets/img/chef.svg" />
+          <h2>TEST</h2>
+          <p>Testeando pedido</p>
+          <ion-button class="qr-btn " mode="ios" size="small" (click)="irPedidoActivo()">
+            <ion-icon class="icono" name="fast-food-outline"></ion-icon>
+          </ion-button>
+        </ion-slide>
+
         <ion-slide *ngIf="pedidosActivos && pedidosActivos.length > 0">
           <img src="../../../assets/img/chef.svg" />
-          <h2>Ver pedido</h2>
+          <h2>Ver pedidos activos</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, ratione?.</p>
-          <ion-button class="qr-btn " mode="ios" size="small" (click)="scanQR()">
-            <ion-icon class="icono" name="qr-code"></ion-icon>
-          </ion-button>
         </ion-slide>
 
         <ion-slide>
           <img src="../../../assets/img/chef_isometric.svg" />
           <h2>Ver pedidos finalizados</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, ratione?.</p>
+          <p>Revisá tus anteriores pedidos.</p>
           <ion-button class="qr-btn " mode="ios" size="small" (click)="irFinalizados()">
             <ion-icon class="icono" name="qr-code"></ion-icon>
           </ion-button>

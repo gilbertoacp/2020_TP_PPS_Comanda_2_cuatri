@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cliente } from '../models/cliente';
 import { EstadoPedido } from '../models/estadoPedido.enum';
@@ -59,9 +60,9 @@ export class PedidosService {
   // Obtiene los pedidos activos por cliente
   obtenerPedidosActivos(cliente: Cliente) {
 
-    return this.db.collection<Pedido>("pedidos", ref => ref.where("usuario.id", "==", cliente.docId)).valueChanges({idField: 'id'});
+    //return this.db.collection<Pedido>("pedidos", ref => ref.where("usuario.id", "==", cliente.docId)).valueChanges({idField: 'id'});
 
-    /* Tenía esto hecho y me tiraba error a la hora de traer los pedidos activos, osea los pedidos sin terminar)
+    //Tenía esto hecho y me tiraba error a la hora de traer los pedidos activos, osea los pedidos sin terminar)
     return this.firebaseService.getDocQuery('pedidos', 'usuario.id', true, cliente.docId).pipe(
       map(pedido => {
         return pedido.filter((p) => (p.payload.doc.data() as Pedido).estado !== EstadoPedido.TERMINADO)
@@ -71,7 +72,7 @@ export class PedidosService {
             return { id, ...data };
           });
       })
-    );*/
+    );
   }
 
   // Obtiene los pedidos finalizados por cliente
@@ -111,6 +112,13 @@ export class PedidosService {
         return { id, ...data };
       })
     );
+  }
+
+  GetPedidoActivo(): Observable<Cliente[]> {
+    return this.db.collection<Cliente>("clientes", 
+      ref => ref.where("estado", "==", 'enEspera')
+    )
+    .valueChanges({idField: 'docId'});
   }
 
   // Crear pedido (Class Pedido)

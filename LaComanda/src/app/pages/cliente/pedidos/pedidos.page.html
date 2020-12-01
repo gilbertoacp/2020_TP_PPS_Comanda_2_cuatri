@@ -1,9 +1,106 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>pedidos</ion-title>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-button (click)="modalCtrl.dismiss()">
+        <ion-icon name="chevron-back-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Pedido <ion-text>  - Precio Total {{ precioTotal }}$</ion-text>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="background">
+  <div class="category-block">
+    <ion-row class="ion-no-padding ion-text-left ion-align-self-center category-banner" button="true" tappable="true">
+      <ion-col>
+        <ion-text color="dark">Platos</ion-text>
+      </ion-col>
+    </ion-row>
+  </div>
 
+  
+  <ion-slides [options]="sliderConfig">
+    <ion-slide *ngFor="let plato of platos">
+      <ion-card class="tarjeta">
+        <ion-card-header>
+          <ion-card-title>
+            {{ plato.nombre }} - {{ plato.precio }}$
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row class="ion-justify-content-center ion-no-margin ion-no-padding">
+            <img [src]="plato.fotos[0]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
+            <img [src]="plato.fotos[1]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
+            <img [src]="plato.fotos[2]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
+          </ion-row>
+          <ion-button expand="block" color="success" class="boton" (click)="agregarAlPedido(plato)">
+            Añadir&nbsp;
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+
+  <div class="category-block">
+    <ion-row class="ion-no-padding ion-text-left ion-align-self-center category-banner" button="true" tappable="true">
+      <ion-col>
+        <ion-text color="dark">Bebidas</ion-text>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-slides [options]="sliderConfig">
+    <ion-slide *ngFor="let bebida of bebidas">
+      <ion-card class="tarjeta">
+        <ion-card-header>
+          <ion-card-title>
+            {{ bebida.nombre }} - {{ bebida.precio }}$
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row class="ion-justify-content-center ion-no-margin ion-no-padding">
+            <img [src]="bebida.fotos[0]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
+            <img [src]="bebida.fotos[1]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
+            <img [src]="bebida.fotos[2]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
+          </ion-row>
+          <ion-button expand="block" color="success" class="boton" (click)="agregarAlPedido(bebida)">
+            Añadir&nbsp;
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <h3 class="ion-text-center ion-margin ion-padding" *ngIf="pedido.length === 0">No ha agregado ningún producto a la lista</h3>
+  <ion-list class="ion-margin ion-padding lista" *ngIf="pedido.length > 0">
+    <ion-item *ngFor="let item of pedido">
+      <ion-avatar slot="start">
+        <img [src]="item.fotos[0]">
+      </ion-avatar>
+      <ion-button slot="end" color="danger" (click)="eliminarUno(item)">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <ion-label>
+        <h2 style="color:black">{{ item.nombre }}</h2>
+        <p>{{ item.descripcion }}</p>
+        <p>Cantidad: {{ item.cantidad }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-row class="ion-justify-content-center">
+    <ion-button [disabled]="pedido.length === 0"
+                expand="block" 
+                color="success" 
+                class="boton" 
+                style="width: 300px;" 
+                (click)="confirmarPedido()">
+      Confirmar Pedido&nbsp;
+      <ion-icon name="checkbox-outline"></ion-icon>
+    </ion-button>
+  </ion-row>
 </ion-content>

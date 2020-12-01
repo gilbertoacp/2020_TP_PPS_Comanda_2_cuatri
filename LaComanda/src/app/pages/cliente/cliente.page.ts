@@ -37,6 +37,7 @@ export class ClientePage implements OnInit, OnDestroy {
     this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
       if (cliente) {
         this.cliente = cliente[0];
+        this.obtenerPedidosActivos();
       } 
       console.log(this.cliente);
     });
@@ -88,7 +89,7 @@ export class ClientePage implements OnInit, OnDestroy {
   scanQR(): void {
     this.barcodeScanner.scan({ formats: 'QR_CODE' }).then((data) => {
       if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
-        // this.clienteService.ponerEnListaDeEsperaAnonimo(this.cliente);
+        this.clienteService.ponerEnListaDeEspera(this.cliente);
         this.irListaEspera();
       }
       else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.qr) {

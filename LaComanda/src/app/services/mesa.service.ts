@@ -67,7 +67,7 @@ export class MesaService {
   
       await this.db.collection<Cliente>('clientes')
       .doc(docIdCliente)
-      .set({atendido: 'asignado'}, {merge: true});
+      .set({atendido: 'enLaMesa'}, {merge: true});
     }
     catch(err) {
       throw Error(err.message);
