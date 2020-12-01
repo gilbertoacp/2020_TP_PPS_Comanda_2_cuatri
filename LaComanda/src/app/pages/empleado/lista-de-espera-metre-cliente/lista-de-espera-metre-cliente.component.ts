@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Cliente } from '../../../models/cliente';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { MesaService } from 'src/app/services/mesa.service';
@@ -14,7 +14,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './lista-de-espera-metre-cliente.component.html',
   styleUrls: ['./lista-de-espera-metre-cliente.component.scss'],
 })
-export class ListaDeEsperaMetreClienteComponent implements OnInit {
+export class ListaDeEsperaMetreClienteComponent implements OnInit, OnDestroy {
 
   mesasLibres: Mesa[];
   clientesEnEspera: Cliente[];
@@ -28,7 +28,6 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit {
     public alertController: AlertController
   ) { }
 
-
   ngOnInit() {
     this.subscriptions.push(
       this.clientesService.clientesEnListaDeEspera().subscribe(clientes => {
@@ -40,10 +39,13 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
   cancelarCliente(cliente: Cliente): void {
     this.clientesService.cambiarEstadoDelCliente(cliente, false);
   }
-  // FALTARIA ASIGNAR LA MESA (CON EL USUARIO) Y CREAR EL PEDIDO DEL USUARIO
 
   asignarMesa(cliente : Cliente) {
     this.clienteSeleccionado = cliente;
