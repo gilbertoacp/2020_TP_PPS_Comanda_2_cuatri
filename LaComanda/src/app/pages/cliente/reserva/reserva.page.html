@@ -1,0 +1,28 @@
+<ion-header class="page-header ion-no-border ion-padding">
+  <ion-toolbar class="bg-none">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/cliente"></ion-back-button>
+      <!-- <ion-icon (click)="navCtrl.navigateForward('/home/cliente')" class="back-button" name="arrow-back-outline"></ion-icon> -->
+    </ion-buttons>
+    <ion-title>Hace tu reserva ...</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+
+    <ion-calendar [(ngModel)]="date" (change)="onChange($event)" [type]="type" [format]="'DD-MM-YYYY'">
+    </ion-calendar>
+    <ion-item>
+      <ion-label>Hora de la Reserva:</ion-label>
+      <ion-datetime display-format="h:mm A" picker-format="h:mm A"[(ngModel)]="time" value="{date}"></ion-datetime>
+    </ion-item>
+    <ion-button
+          mode="ios"
+          expand="block" 
+          class="ion-margin-top enter" 
+          (click)="confirmarReserva()">
+          Reservar ya!
+        </ion-button>    
+  </div>
+</ion-content>

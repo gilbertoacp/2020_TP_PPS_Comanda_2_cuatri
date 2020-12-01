@@ -80,6 +80,12 @@ export class ClientePage implements OnInit, OnDestroy {
     });
   }
 
+  irReserva():void{
+    this.router.navigate(['reserva'],{
+      relativeTo:this.route
+    });
+  }
+
   irFinalizados(): void {
     this.router.navigate(["finalizados"],
     {
