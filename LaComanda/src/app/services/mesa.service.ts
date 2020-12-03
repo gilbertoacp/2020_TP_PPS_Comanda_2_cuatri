@@ -4,7 +4,7 @@ import { Mesa } from '../models/mesa';
 import { EstadosMesa } from '../models/estado-mesa.enum';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
-import { map, take } from 'rxjs/operators';
+import { map, skip, take } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
 import { Mensaje } from '../models/mensaje';
 
@@ -36,6 +36,13 @@ export class MesaService {
               }))
             );
   }
+
+  // getChatsMesasAsignadas() {
+  //   return this.db.collection<Mesa>('mesas')
+  //         .valueChanges({idField: 'docId'})
+  //         .pipe(skip(1))
+  //         .subscribe
+  // }
 
   crearMesa(mesa: Mesa) {
     mesa.fechaAlta = new Date();

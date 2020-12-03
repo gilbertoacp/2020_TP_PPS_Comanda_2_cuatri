@@ -63,8 +63,6 @@ export class ClientePage implements OnInit, OnDestroy {
     );
   }
 
-  
-
   ngOnDestroy(): void {
     if(this.toastListaDeEspera) {
       this.toastListaDeEspera.dismiss();
@@ -120,7 +118,7 @@ export class ClientePage implements OnInit, OnDestroy {
         this.clienteService.ponerEnListaDeEspera(this.cliente);
       } else {
         await this.mesaService.irALaMesa(data.text, this.cliente);
-        // this.irALaMesa();
+        this.irALaMesa();
       }
 
     } catch(err) {

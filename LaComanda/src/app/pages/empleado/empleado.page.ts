@@ -8,9 +8,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { distinctUntilChanged, first, take } from 'rxjs/operators';
+import { distinctUntilChanged, first, skip, take } from 'rxjs/operators';
 import { Cliente } from 'src/app/models/cliente';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
+import { MesaService } from 'src/app/services/mesa.service';
 
 @Component({
   selector: 'app-empleado',
@@ -29,11 +30,12 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private modalCtrl: ModalController,
     private clientesService : ClientesService,
-    private notificacionesService: NotificacionesService
+    private notificacionesService: NotificacionesService,
+    private mesasService: MesaService
   ) { }
   
   async ngOnInit(): Promise<void> {
-    const metreSubject = new Subject<Empleado>();
+    const subject = new Subject<string>();
 
     this.subscriptions.push(
       this.authService.getCurrentUserData(PerfilUsuario.EMPLEADO).subscribe(emp => {
@@ -41,7 +43,11 @@ export class EmpleadoPage implements OnInit, OnDestroy {
           this.empleado = emp[0]
 
           if(this.esMetre(this.empleado)) {
-            metreSubject.next(this.empleado);
+            subject.next('metre');
+          }
+
+          if(this.esMozo(this.empleado)) {
+            subject.next('mozo');
           }
         }
         console.log(this.empleado);
@@ -49,33 +55,51 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     );
 
     try {
-      await metreSubject.asObservable().pipe(take(1)).toPromise();
+      
+      const info = await subject.asObservable().pipe(first()).toPromise();
 
-      this.subscriptions.push(
-        this.clientesService.clientesEnListaDeEspera().pipe(
-          distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
-            return prev && prev.length > curr.length
+      if(info === 'metre') {
+        this.subscriptions.push(
+          this.clientesService.clientesEnListaDeEspera().pipe(
+            distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
+              return prev && prev.length > curr.length
+            })
+          ).subscribe(clientes => {
+            if(clientes.length > 0) {
+              this.notificacionesService.push(
+                'Clientes en espera!.',
+                'Hay nuevos clientes en espera de una mesa.',
+                'https://bit.ly/39w7LJE',
+              );
+            }
           })
-        ).subscribe(clientes => {
-          if(clientes.length > 0) {
+        );
+      }
+
+      if(info === 'mozo') {
+        this.subscriptions.push(
+          this.mesasService.getChatsMesas()
+          .pipe(skip(1))
+          .subscribe(chats => {
             this.notificacionesService.push(
-              'Clientes en espera!.',
-              'Hay nuevos clientes en espera de una mesa.',
-              'https://bit.ly/39w7LJE',
+              'Hay un nuevo mensaje!.',
+              'hay clientes con dudas, no tardes en responder!',
+              'https://bit.ly/3qoTVPa',
             );
-          }
-        })
-      );
+          })
+        );
+      }
+      
     } catch(err) {
-
-      throw err;
-
+      console.log(err);
     }
-
   }
 
   ngOnDestroy(): void {
+    // debug
     console.log('on destroy');
+    // debug
+    console.log(this.subscriptions.length);
     
     this.subscriptions.forEach(s => s.unsubscribe());
   }

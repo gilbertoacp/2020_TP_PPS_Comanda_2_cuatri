@@ -81,7 +81,7 @@
   </div>
 
   <div *ngIf="segment === 'lista'">
-    <h3 class="ion-text-center ion-margin ion-padding" *ngIf="pedido.length === 0">No ha agregado ningún producto a la lista</h3>
+    <h3 class="ion-text-center ion-margin ion-padding" *ngIf="pedido.length === 0" style="color: white;">No ha agregado ningún producto a la lista</h3>
     <ion-list class="ion-margin ion-padding lista" *ngIf="pedido.length > 0">
       <ion-item *ngFor="let item of pedido">
         <ion-avatar slot="start">
