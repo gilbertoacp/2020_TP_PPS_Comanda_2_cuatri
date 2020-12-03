@@ -14,4 +14,5 @@ export interface Mesa {
     estado: EstadosMesa;
     qr:any;
     docIdCliente?: string;
+    chat?: any
 }

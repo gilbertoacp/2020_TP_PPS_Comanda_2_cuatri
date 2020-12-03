@@ -1,0 +1,41 @@
+<ion-header class="page-header ion-no-border ion-padding">
+  <ion-toolbar mode="ios">
+    <ion-buttons slot="start">
+      <ion-button color="light" routerLink="../">
+          <ion-icon color="dark" name="return-up-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <b>
+      <ion-title color="light">Consultas Clientes</ion-title>
+    </b>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content fullscreen="true">
+
+  <div *ngFor="let chat of chats">
+    <ion-card  *ngIf="chat[0].docIdCliente else noHabilitado" class="ion-activatable ripple-parent" (click)="irAlChat(chat[0].docIdMesa)">
+      <ion-ripple-effect></ion-ripple-effect>
+
+        <ion-card-header  mode="ios">
+          <ion-card-title class="ion-text-center" color="light">Mesa Nº {{chat[0].numeroMesa}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content mode="ios" color="light" class="ion-text-center">
+          ~ {{chat[chat.length -1].contenido}}
+        </ion-card-content>
+    </ion-card>
+
+    <ng-template #noHabilitado>
+      <ion-card disabled="true">
+        <ion-card-header  mode="ios">
+          <ion-card-title color="light" class="ion-text-center">Mesa Nº {{chat[0].numeroMesa}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content  mode="ios" color="light" class="ion-text-center">
+          El chat de esta mesa no esta habilitado, debido que no hay ninguna consulta
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </div>
+
+</ion-content>

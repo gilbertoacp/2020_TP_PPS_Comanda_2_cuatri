@@ -57,4 +57,14 @@
   Lista de espera clientes&nbsp;
   <ion-icon name="people-outline"></ion-icon>
   </ion-button>
+
+  
+  <ion-button class="boton" 
+              color="tertiary"
+              expand="block"
+              (click)="verChats()"
+              *ngIf="esMozo(empleado)">
+  Responder Consultas&nbsp;
+  <ion-icon name="people-outline"></ion-icon>
+  </ion-button>
 </ion-content>

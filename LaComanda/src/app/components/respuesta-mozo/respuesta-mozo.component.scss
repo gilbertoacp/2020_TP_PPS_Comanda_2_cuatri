@@ -1,0 +1,50 @@
+ion-header {
+  background: -webkit-linear-gradient(
+    to right,
+    #ffc837,
+    #ff8008
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffc837,
+    #ff8008
+  );
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+ion-toolbar {
+  --background: #0c0d0d;
+}
+
+ion-content{
+  --background:#0c0d0d;
+}
+
+.card-message {
+  border-radius: 22px;
+  background-color: #a929ff;
+
+}
+
+.card-message-user {
+  border-radius: 22px;
+  background-color: #5547d6;
+}
+
+.message-btn {
+  --padding-start: 0.5em;
+  --padding-end: 0.5em;
+}
+.message-input {
+  width: 100%; 
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 10px;
+  resize: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.message-input:focus {
+  outline: none;
+}

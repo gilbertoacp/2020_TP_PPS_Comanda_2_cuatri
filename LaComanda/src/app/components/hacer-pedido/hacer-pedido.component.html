@@ -1,129 +1,48 @@
-<ion-header>
-  <ion-toolbar color="secondary">
-    <!-- buttons -->
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar mode="ios">
     <ion-buttons slot="start">
-      <ion-button (click)="modalCtrl.dismiss()">
-        <ion-icon name="chevron-back-outline" color="light"></ion-icon>
+      <ion-button color="light" (click)="modalCtrl.dismiss()">
+          <ion-icon color="light" name="return-up-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- title -->
-    <ion-title>
-      Hacer Pedido
-    </ion-title>
+    <b>
+      <ion-title color="light">Listado de productos</ion-title>
+    </b>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="background">
-  <div class="category-block">
-    <ion-row class="ion-no-padding ion-text-left ion-align-self-center category-banner" button="true" tappable="true">
-      <ion-col>
-        <ion-text color="dark">Precio Total {{ precioTotal }}$</ion-text>
-      </ion-col>
-    </ion-row>
-  </div>
+<ion-content class="ion-padding" fullscreen="true">
 
-  <h3 class="ion-text-center ion-margin ion-padding" *ngIf="pedido.length === 0">No ha agregado ningún producto a la lista</h3>
-  <ion-list class="ion-margin ion-padding lista" *ngIf="pedido.length > 0">
-    <ion-item *ngFor="let item of pedido">
-      <ion-avatar slot="start">
-        <img [src]="item.fotos[0]">
-      </ion-avatar>
-      <ion-button slot="end" color="danger" (click)="eliminarUno(item)">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-      <ion-label>
-        <h2 style="color:black">{{ item.nombre }}</h2>
-        <p>{{ item.descripcion }}</p>
-        <p>Cantidad: {{ item.cantidad }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-row class="ion-justify-content-center">
-    <ion-button [disabled]="pedido.length === 0"
-                expand="block" 
-                color="success" 
-                class="boton" 
-                style="width: 300px;" 
-                (click)="confirmarPedido()">
-      Confirmar Pedido&nbsp;
-      <ion-icon name="checkbox-outline"></ion-icon>
-    </ion-button>
-  </ion-row>
+  <ion-segment color="light" [(ngModel)]="segment" class="ion-margin-bottom">
+    <ion-segment-button value="bebidas">
+      <ion-label style="font-size: 25px;" color="light"><ion-icon name="beer-outline"></ion-icon></ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="platos">
+      <ion-label style="font-size: 25px;" color="light"><ion-icon name="pizza-outline"></ion-icon></ion-label>
+    </ion-segment-button>
 
-  <div class="category-block">
-    <ion-row class="ion-no-padding ion-text-left ion-align-self-center category-banner" button="true" tappable="true">
-      <ion-col>
-        <ion-text color="dark">Escanear Plato / Bebida</ion-text>
-      </ion-col>
-    </ion-row>
-  </div>
+    <ion-segment-button value="escanear">
+      <ion-label style="font-size: 25px;" color="light"><ion-icon name="scan-outline"></ion-icon></ion-label>
+    </ion-segment-button>
 
-  <ion-row class="ion-justify-content-center ion-margin">
-    <ion-button expand="block"
-                class="boton"
-                style="width: 300px;height: 100px;font-size: 60px;"
-                (click)="escanearProducto()">
-      <ion-icon color="light" name="scan-circle-outline"></ion-icon>
-    </ion-button>
-  </ion-row>
+    <ion-segment-button value="lista">
+      <ion-label style="font-size: 25px;" color="light"><ion-icon name="list-outline"></ion-icon></ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <div class="category-block">
-    <ion-row class="ion-no-padding ion-text-left ion-align-self-center category-banner" button="true" tappable="true">
-      <ion-col>
-        <ion-text color="dark">Platos</ion-text>
-      </ion-col>
-    </ion-row>
-  </div>
-
-  
-  <ion-slides [options]="sliderConfig">
-    <ion-slide *ngFor="let plato of platos">
-      <ion-card class="tarjeta">
-        <ion-card-header>
-          <ion-card-title>
-            {{ plato.nombre }} - {{ plato.precio }}$
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-row class="ion-justify-content-center ion-no-margin ion-no-padding">
-            <img [src]="plato.fotos[0]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
-            <img [src]="plato.fotos[1]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
-            <img [src]="plato.fotos[2]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
-          </ion-row>
-          <ion-button expand="block" color="success" class="boton" (click)="agregarAlPedido(plato)">
-            Añadir&nbsp;
-            <ion-icon name="add-circle-outline"></ion-icon>
-          </ion-button>
-        </ion-card-content>
-      </ion-card>
-    </ion-slide>
-  </ion-slides>
-
-
-  <div class="category-block">
-    <ion-row class="ion-no-padding ion-text-left ion-align-self-center category-banner" button="true" tappable="true">
-      <ion-col>
-        <ion-text color="dark">Bebidas</ion-text>
-      </ion-col>
-    </ion-row>
-  </div>
-
-  <ion-slides [options]="sliderConfig">
+  <ion-slides [options]="sliderConfig" *ngIf="segment === 'bebidas'">
     <ion-slide *ngFor="let bebida of bebidas">
-      <ion-card class="tarjeta">
-        <ion-card-header>
-          <ion-card-title>
-            {{ bebida.nombre }} - {{ bebida.precio }}$
-          </ion-card-title>
+      <ion-card>
+        <ion-card-header mode="ios">
+          <ion-card-title class="ion-text-center" color="light">{{bebida.nombre}} | ${{bebida.precio}}</ion-card-title>
+            <ion-slides [options]="sliderImg"  mode="ios" pager="true">
+               <ion-slide *ngFor="let foto of bebida.fotos">
+                <img [src]="foto"  style="height:300px;width:300px">
+               </ion-slide>
+            </ion-slides>
         </ion-card-header>
-        <ion-card-content>
-          <ion-row class="ion-justify-content-center ion-no-margin ion-no-padding">
-            <img [src]="bebida.fotos[0]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
-            <img [src]="bebida.fotos[1]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
-            <img [src]="bebida.fotos[2]" alt="imagen" style="border-radius:16px;height:105px;width:105px">
-          </ion-row>
-          <ion-button expand="block" color="success" class="boton" (click)="agregarAlPedido(bebida)">
-            Añadir&nbsp;
+        <ion-card-content mode="ios">
+          <ion-button class="boton" color="success" expand="block" style="font-size: 40px;" (click)="agregarAlPedido(bebida)">
             <ion-icon name="add-circle-outline"></ion-icon>
           </ion-button>
         </ion-card-content>
@@ -131,4 +50,70 @@
     </ion-slide>
   </ion-slides>
 
+  <ion-slides [options]="sliderConfig" *ngIf="segment === 'platos'">
+    <ion-slide *ngFor="let plato of platos">
+      <ion-card>
+        <ion-card-header mode="ios">
+          <ion-card-title class="ion-text-center" color="light">{{plato.nombre}} | ${{plato.precio}}</ion-card-title>
+            <ion-slides [options]="sliderImg"  mode="ios" pager="true">
+               <ion-slide *ngFor="let foto of plato.fotos">
+                <img [src]="foto"  style="height:300px;width:300px">
+               </ion-slide>
+            </ion-slides>
+        </ion-card-header>
+        <ion-card-content mode="ios">
+          <ion-button class="boton" color="success" expand="block" style="font-size: 40px;" (click)="agregarAlPedido(plato)">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <div *ngIf="segment === 'escanear'">
+    <img src="assets/img/qr_code.svg" alt="">
+
+    <ion-row class="ion-justify-content-center">
+      <ion-button color="warning" class="ion-text-center" style="font-size: 20px;" (click)="escanearProducto()">
+          Escanear producto&nbsp;<ion-icon size="default" name="scan"></ion-icon>
+      </ion-button>
+    </ion-row>
+  </div>
+
+  <div *ngIf="segment === 'lista'">
+    <h3 class="ion-text-center ion-margin ion-padding" *ngIf="pedido.length === 0">No ha agregado ningún producto a la lista</h3>
+    <ion-list class="ion-margin ion-padding lista" *ngIf="pedido.length > 0">
+      <ion-item *ngFor="let item of pedido">
+        <ion-avatar slot="start">
+          <img [src]="item.fotos[0]">
+        </ion-avatar>
+        <ion-button slot="end" color="danger" (click)="eliminarUno(item)">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+        <ion-label>
+          <h2 style="color:black">{{ item.nombre }}</h2>
+          <p>{{ item.descripcion }}</p>
+          <p>Cantidad: {{ item.cantidad }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-row class="ion-justify-content-center">
+      <ion-button [disabled]="pedido.length === 0"
+                  expand="block" 
+                  color="success" 
+                  class="boton" 
+                  style="width: 300px;" 
+                  (click)="confirmarPedido()">
+        Confirmar Pedido&nbsp;
+        <ion-icon name="checkbox-outline"></ion-icon>
+      </ion-button>
+    </ion-row>
+  </div>
 </ion-content>
+<app-spinner *ngIf="cargando"></app-spinner>
+
+<ion-footer>
+  <ion-toolbar mode="ios" class="ion-justify-content-between ion-align-items-center">
+    <ion-title color="light">Precio: ${{precioTotal}}</ion-title>
+  </ion-toolbar>
+</ion-footer>

@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { EmpleadoPage } from './empleado.page';
 import { AltaProductoComponent } from './alta-producto/alta-producto.component';
 import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
+import { ResponderConsultasComponent } from './responder-consultas/responder-consultas.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'lista-espera-metre-cliente',
     component: ListaDeEsperaMetreClienteComponent
+  },
+  {
+    path: 'consultas-clientes',
+    component: ResponderConsultasComponent
   }
 ];
 

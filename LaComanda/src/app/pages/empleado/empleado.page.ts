@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { distinctUntilChanged, first } from 'rxjs/operators';
+import { distinctUntilChanged, first, take } from 'rxjs/operators';
 import { Cliente } from 'src/app/models/cliente';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
@@ -32,7 +32,7 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     private notificacionesService: NotificacionesService
   ) { }
   
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     const metreSubject = new Subject<Empleado>();
 
     this.subscriptions.push(
@@ -48,28 +48,35 @@ export class EmpleadoPage implements OnInit, OnDestroy {
       })
     );
 
-    metreSubject.asObservable().pipe(first()).toPromise().then(metre => {
-      if(metre) {
-        this.subscriptions.push(
-          this.clientesService.clientesEnListaDeEspera().pipe(
-            distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
-              return prev && prev.length > curr.length
-            })
-          ).subscribe(clientes => {
-            if(clientes.length > 0) {
-              this.notificacionesService.push(
-                'Clientes en espera!.',
-                'Hay nuevos clientes en espera de una mesa.',
-                'https://bit.ly/39w7LJE',
-              );
-            }
+    try {
+      await metreSubject.asObservable().pipe(take(1)).toPromise();
+
+      this.subscriptions.push(
+        this.clientesService.clientesEnListaDeEspera().pipe(
+          distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
+            return prev && prev.length > curr.length
           })
-        )
-      }
-    });
+        ).subscribe(clientes => {
+          if(clientes.length > 0) {
+            this.notificacionesService.push(
+              'Clientes en espera!.',
+              'Hay nuevos clientes en espera de una mesa.',
+              'https://bit.ly/39w7LJE',
+            );
+          }
+        })
+      );
+    } catch(err) {
+
+      throw err;
+
+    }
+
   }
 
   ngOnDestroy(): void {
+    console.log('on destroy');
+    
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
@@ -109,6 +116,15 @@ export class EmpleadoPage implements OnInit, OnDestroy {
       state: {empleado},
       relativeTo: this.route
     });
+  }
+
+  verChats(): void  {
+    this.router.navigate(['consultas-clientes'], {
+      state: {
+        mozo: this.empleado
+      },
+      relativeTo: this.route
+    })
   }
 
   async hacerPedido(): Promise<void> {

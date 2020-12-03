@@ -1,0 +1,56 @@
+<ion-header class="page-header ion-no-border ion-padding">
+  <ion-toolbar class="bg-none">
+    <ion-buttons slot="start">
+      <ion-button color="light" routerLink="/home/cliente">
+        <ion-icon style="color: black" name="return-up-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="authService.logout()">
+        <ion-icon style="color: black" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Mesa Nº {{mesa? mesa.numero: ''}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" (click)="pedirProductos()" *ngIf="mesa">
+    <ion-ripple-effect></ion-ripple-effect>
+
+    <ion-row class="ion-justify-content-center">
+      <img src="assets/img/hamburger.png" alt="hamburger" height="200">
+    </ion-row>
+    <ion-card-header mode="ios">
+      <ion-card-title class="ion-text-center">
+        <ion-text color="light">
+          <b>
+            Ver el listado de productos
+          </b>
+        </ion-text> 
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content mode="ios" class="ion-text-center">
+      Presione para hacer el pedido de la mesa
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" (click)="consultaAlMozo()" *ngIf="mesa">
+    <ion-ripple-effect></ion-ripple-effect>
+    <ion-row class="ion-justify-content-center">
+      <img src="assets/img/chat.png" alt="chat" height="200">
+    </ion-row>
+    <ion-card-header mode="ios">
+      <ion-card-title class="ion-text-center">
+        <ion-text color="light">
+          <b>
+            Consulta al mozo
+          </b>
+        </ion-text>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content mode="ios" class="ion-text-center">
+      Presione para hacer una consultar sobre alguna inquietud.
+    </ion-card-content>
+  </ion-card>
+</ion-content>

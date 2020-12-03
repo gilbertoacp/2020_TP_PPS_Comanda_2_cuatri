@@ -12,6 +12,8 @@ import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { TipoEmpleadoPipe } from '../../pipes/tipo-empleado.pipe';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
+import { ResponderConsultasComponent } from './responder-consultas/responder-consultas.component';
+import { RespuestaMozoComponent } from 'src/app/components/respuesta-mozo/respuesta-mozo.component';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-clie
     SpinnerComponent, 
     TipoEmpleadoPipe, 
     HacerPedidoComponent,
-    ListaDeEsperaMetreClienteComponent
+    ListaDeEsperaMetreClienteComponent,
+    ResponderConsultasComponent,
+    RespuestaMozoComponent
   ]
 })
 export class EmpleadoPageModule {}

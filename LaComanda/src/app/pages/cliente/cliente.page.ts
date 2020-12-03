@@ -9,6 +9,8 @@ import { ToastController } from '@ionic/angular';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { MesaService } from 'src/app/services/mesa.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-cliente',
@@ -19,40 +21,63 @@ export class ClientePage implements OnInit, OnDestroy {
 
   cliente: Cliente;
   pedidosActivos: any = [];
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
   esAnonimo: boolean= true;
+  toastListaDeEspera: HTMLIonToastElement;
+  disablePrevBtn;
+  disableNextBtn
+
+  slideOpts = {}
+
   constructor(
     private authService: AuthService,
     public barcodeScanner: BarcodeScanner,
     public vibration: Vibration,
     private toastCtlr: ToastController,
-    private pedidoService: PedidosService,
     private clienteService: ClientesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private mesaService: MesaService,
+    private notificacionesService: NotificacionesService
   ) { }
 
 
   ngOnInit() {
-    this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
-      if (cliente) {
-        this.cliente = cliente[0];
-        this.obtenerPedidosActivos();
-      } 
-      console.log(this.cliente);
-    });
+    this.subscriptions.push(
+      this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(async cliente => {
+        if (cliente) {
+          this.cliente = cliente[0];
+          console.log(this.cliente);
+
+          if(this.cliente.atendido === 'esperando') {
+            this.mostrarToastListaDeEspera();
+          } else {
+            if(this.toastListaDeEspera)
+              this.toastListaDeEspera.dismiss();
+
+            if(this.cliente.atendido === 'enLaMesa') 
+              this.irALaMesa();
+          }
+        } 
+      })
+    );
   }
 
-  obtenerPedidosActivos() {
-    this.pedidoService.obtenerPedidosActivos(this.cliente).subscribe(datos => {
-      this.pedidosActivos = datos;
-      console.log(datos);
-    });
-  }
+  
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-    console.log('On destroy');
+    if(this.toastListaDeEspera) {
+      this.toastListaDeEspera.dismiss();
+    }
+
+    // debug
+    console.log('On destroy cliente'); 
+
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  irALaMesa(): void {
+    this.router.navigate(['mesa'], {relativeTo: this.route});
   }
 
   salir(): void{
@@ -86,36 +111,35 @@ export class ClientePage implements OnInit, OnDestroy {
       });
   }
 
-  scanQR(): void {
-    this.barcodeScanner.scan({ formats: 'QR_CODE' }).then((data) => {
-      if (data.text === 'listaDeEspera') { // Si usa el QR de lista de espera lo llevamos a LE
+  
+  async scanQR(): Promise<void> {
+    try {
+      const data = await this.barcodeScanner.scan({ formats: 'QR_CODE' });
+
+      if (!data.cancelled && data.text === 'listaDeEspera' && this.cliente.atendido !== 'esperando') {
         this.clienteService.ponerEnListaDeEspera(this.cliente);
-        this.irListaEspera();
-      }
-      else if (this.pedidosActivos.length > 0 && data.text === this.pedidosActivos[0].mesa.qr) {
-        // Si tiene pedidos activos y coincide con el codigo de qr de la mesa asignada lo llevamos al pedido
-        this.irPedidoActivo();
       } else {
-        // No existe QR o no es de la mesa asignada
-        let audio = new Audio();
-        audio.src = 'assets/audio/login/sonidoBotonERROR.mp3';
-        audio.play();
-        this.vibration.vibrate(2000);
-
-        this.toastCtlr.create({
-          message: 'Error, no es la mesa asignada',
-          position: 'top',
-          duration: 2000,
-          color: 'danger',
-
-        })
+        await this.mesaService.irALaMesa(data.text, this.cliente);
+        // this.irALaMesa();
       }
-    }, (err) => this.toastCtlr.create({
-      message: err,
-      position: 'top',
-      duration: 2000,
-      color: 'danger',
-    }));
+
+    } catch(err) {
+      this.notificacionesService.error();
+      this.notificacionesService.toast(err.message, 'top', 2000, 'danger');
+    }
   }
 
+  async mostrarToastListaDeEspera(): Promise<void> {
+    this.toastListaDeEspera = await this.toastCtlr.create({
+      position:'bottom',
+      message: 'Se le va asignar una mesa pronto aguarde unos minutos.',
+      mode: 'ios',
+      color: 'warning',
+    });
+    this.toastListaDeEspera.present();
+  }
+
+  doCheck() {}
+
+  navigationOptions() {}
 }

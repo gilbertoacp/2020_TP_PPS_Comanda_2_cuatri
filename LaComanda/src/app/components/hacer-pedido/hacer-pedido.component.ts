@@ -19,11 +19,19 @@ export class HacerPedidoComponent implements OnInit {
   precioTotal: number = 0;
   platos: Producto[] = [];
   bebidas: Producto[] = [];
+  segment = 'bebidas';
+  cargando = true;
   
   sliderConfig = {
     spaceBetween: 10,
     centeredSlide: true,
-    slidesPerView: 1.2
+    slidesPerView: 1.2,
+  }
+
+  sliderImg = {
+    spaceBetween: 10,
+    centeredSlide: true,
+    slidesPerView: 1,
   }
 
   constructor(
@@ -35,20 +43,18 @@ export class HacerPedidoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // si es el mozo o el metre que hace el pedido, seteo la variable empleado
     if(this.navParams.get('empleado')) {
       this.empleado = this.navParams.get('empleado');
     }
 
-    // si es el cliente que hace el pedido, seteo la variable cliente
     if(this.navParams.get('cliente')) {
       this.cliente = this.navParams.get('cliente');
     }
 
-    // tomo los datos de la db para obtener los platos y bebidas
     this.productosService.productos.subscribe(productos => {
       this.bebidas = productos.filter(p => p.tipoProducto === 'bebida');
       this.platos = productos.filter(p => p.tipoProducto === 'plato');
+      this.cargando = false;
     });
   }
   
@@ -158,7 +164,7 @@ export class HacerPedidoComponent implements OnInit {
         }, {
           text: 'Okay',
           handler: () => {
-            console.log('Confirm Okay');
+            
           }
         }
       ]

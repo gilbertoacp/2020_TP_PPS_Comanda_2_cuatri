@@ -1,0 +1,51 @@
+ion-toolbar {
+  width: 100%;
+  margin-left: 0%;
+  display: flex;
+  justify-content: space-between;
+}
+//header
+.bg-none {
+  --background: transparent;
+}
+.page-header {
+  border-radius: 0 0 0 40px;
+  padding: 20px 30px;
+  color: black;
+  background: #ff8008; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ffc837,
+    #ff8008
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffc837,
+    #ff8008
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+ion-icon {
+    size: 4rem;
+}
+ion-title{
+  color:black;
+  // font: oblique bold 100% cursive;
+  font-weight: 500;
+  text-align: center;
+}
+
+ion-content{
+  --background: #0c0d0d;
+}
+
+.icono{
+  font-size: 5em;
+}
+
+ion-card {
+  --background: #0c0d0d ;
+  border-radius: 44px;
+  // border: 1px solid #ffc837;
+  box-shadow: 1px 1px 22px 1px #2f3333;
+}

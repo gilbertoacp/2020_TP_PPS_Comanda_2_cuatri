@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'reserva',
     loadChildren: () => import('./reserva/reserva.module').then( m => m.ReservaPageModule)
+  },
+  {
+    path: 'mesa',
+    loadChildren: () => import('./mesa/mesa.module').then( m => m.MesaPageModule)
   }
 
 ];
