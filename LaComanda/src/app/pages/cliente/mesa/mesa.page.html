@@ -16,21 +16,25 @@
 
 <ion-content>
 
-  <ion-item *ngIf="pedido && habilitar" class="ion-margin">
+  <ion-item *ngIf="pedido" class="ion-margin">
     <ion-avatar slot="start">
       <img src="assets/img/request.png">
     </ion-avatar>
     
-    <ion-label>
-      Estado del Pedido
-    </ion-label>
+    <p>
+      Pedido Nº {{pedido.codigo}}
+    </p>
 
     <ion-badge slot="end">
       {{pedido.estado}}
     </ion-badge>
   </ion-item>
 
-  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" [disabled]="pedido" (click)="pedirProductos()" *ngIf="mesa">
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" 
+            [disabled]="pedido" 
+            (click)="pedirProductos()" 
+            *ngIf="mesa"
+            >
     <ion-ripple-effect></ion-ripple-effect>
 
     <ion-row class="ion-justify-content-center">
@@ -70,7 +74,7 @@
   </ion-card>
 
 
-  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa && habilitar">
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-row class="ion-justify-content-center">
       <img src="assets/img/completed-task.png" alt="chat" height="200">
@@ -89,7 +93,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa && habilitar">
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" [disabled]="true" *ngIf="mesa">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-row class="ion-justify-content-center">
       <img src="assets/img/poker-cards.png" alt="chat" height="200">
@@ -104,7 +108,7 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content mode="ios" class="ion-text-center">
-      Presione para jugar y ganar premios.
+      Los juegos estarán habilitados proximamente.
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -7,6 +7,7 @@ import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-clie
 import { ResponderConsultasComponent } from './responder-consultas/responder-consultas.component';
 import { PedidosPendientesComponent } from 'src/app/components/empleado/pedidos-pendientes/pedidos-pendientes.component';
 import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
+import { PedidosAEntregarComponent } from 'src/app/components/empleado/pedidos-aentregar/pedidos-aentregar.component';
 
 const routes: Routes = [
   {
@@ -34,8 +35,8 @@ const routes: Routes = [
     component: PedidosPendientesComponent
   },
   {
-    path: 'lista-tareas',
-    component: ListaTareasComponent
+    path: 'pedidos-entregar',
+    component: PedidosAEntregarComponent
   }
 ];
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { EstadoPedido } from '../models/estadoPedido.enum';
 import { Mesa } from '../models/mesa';
 import { Pedido } from '../models/pedido';
@@ -34,6 +35,13 @@ export class PedidosService {
           .valueChanges({idField: 'docId'});
   }
 
+  get tareasCompletadas(): Observable<Tarea[]> {
+    return this.db.collection<Tarea>('tareas', 
+            ref => ref.where('listoParaEntregar', '==', true)
+          )
+          .valueChanges({idField: 'docId'});
+  }
+
   hacerPedido(pedido: Pedido): Promise<DocumentReference> {
     return this.pedidosCollection.add(pedido);
   }
@@ -46,22 +54,41 @@ export class PedidosService {
     }, {merge: true});
   }
 
-  traerPedidosMesa(mesa: Mesa) {
+  pedidoListo(docId: string): Promise<void> {
+    return this.pedidosCollection.doc(docId).set({
+      estado: EstadoPedido.LISTO
+    }, { merge: true });
+  }
+
+  traerPedidosMesa(mesa: Mesa): Promise<Pedido[]> {
     return this.db.collection('pedidos',
       ref => ref.where('numeroMesa', '==', mesa.numero)
     )
-    .valueChanges({idField: 'docId'});
+    .valueChanges({idField: 'docId'})
+    .pipe(
+      first()
+    )
+    .toPromise();
   }
 
-  private asignarTarea(pedido: Pedido) {
+  completarTarea(tarea: Tarea): Promise<void> {
+    return this.tareasCollection.doc(tarea.docId).set(tarea, {merge: true});
+  }
+
+  private asignarTarea(pedido: Pedido): void {
     this.db.collection<Tarea>('tareas').add({
       codigo: pedido.codigo,
       listoParaEntregar: false,
       numeroMesa: pedido.numeroMesa,
-      bebidas: pedido.productos.filter(p => p.tipoProducto === 'bebida')
-                                .map(p => Object.assign({}, {completados: false, productos: p})),
-      platos: pedido.productos.filter(p => p.tipoProducto === 'plato')
-                                .map(p => Object.assign({}, {completados: false, productos: p}))
+      bebidas: {
+        completado: false,
+        productos: pedido.productos.filter(p => p.tipoProducto === 'bebida')
+      } ,
+      platos: {
+        completado: false,
+        productos: pedido.productos.filter(p => p.tipoProducto === 'plato')
+      },
+      docIdPedido: pedido.docId
     });
   }
 

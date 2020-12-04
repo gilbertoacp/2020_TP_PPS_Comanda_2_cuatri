@@ -11,31 +11,25 @@ ion-header {
   }
 }
 
-ion-button {
-  --border-radius	: 55px
-}
-
 ion-content {
-  --background: linear-gradient(to right, #000000, #434343);
-  --color: white;
-  ion-item {
-      --background: transparent;
-      --color: white;
-      --border-color: #e03a00;
-      --border-width: 2px solid;
-      --border-radius: 5rem;
-      margin-top: 3%;
-
-      ion-input{
-          font-size: 1.3rem;
-      }
-      //--border-style: 2px solid #273B7A;
-  }
+  --background: #0c0d0d;
 }
 
-ion-content.background {
-  --background: url(../../../assets/img/menu_hamburguesa.jpg) 0 0/100% 100% no-repeat;
-  // --background: #e03a00;
+ion-button {
+  img{
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+  }
+  color: white;
+  --background: transparent;
+  box-shadow: 8px 8px 16px #050505, -8px -8px 16px #131515;
+  border-radius: 14px;
+}
+
+.imagen {
+  width: 300px;
+  height: 300px;
 }
 
 .boton {
@@ -44,11 +38,4 @@ ion-content.background {
   padding: 0.2rem;
   height: 4rem;
   color: white;
-}
-
-.imagen {
-  width: 300px;
-  height: 300px;
-  border-radius: 55px;
-  border: 3px solid var(--ion-color-warning);
 }

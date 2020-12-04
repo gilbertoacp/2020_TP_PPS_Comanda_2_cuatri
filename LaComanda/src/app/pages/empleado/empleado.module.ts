@@ -16,6 +16,7 @@ import { ResponderConsultasComponent } from './responder-consultas/responder-con
 import { RespuestaMozoComponent } from 'src/app/components/respuesta-mozo/respuesta-mozo.component';
 import { PedidosPendientesComponent } from 'src/app/components/empleado/pedidos-pendientes/pedidos-pendientes.component';
 import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
+import { PedidosAEntregarComponent } from 'src/app/components/empleado/pedidos-aentregar/pedidos-aentregar.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/l
     ResponderConsultasComponent,
     RespuestaMozoComponent,
     PedidosPendientesComponent,
-    ListaTareasComponent
+    ListaTareasComponent,
+    PedidosAEntregarComponent
   ]
 })
 export class EmpleadoPageModule {}

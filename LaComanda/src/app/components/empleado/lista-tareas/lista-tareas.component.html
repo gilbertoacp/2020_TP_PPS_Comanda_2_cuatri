@@ -4,7 +4,7 @@
       Tareas
     </ion-text></ion-title>
     <ion-buttons slot="start">
-      <ion-button routerLink="../" slot="icon-only">
+      <ion-button slot="icon-only" (click)="cerrar()">
         <ion-icon name="return-up-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -19,8 +19,10 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
+
+      <!-- si es bartender le aparecerá solo bebidas -->
       <ion-list *ngIf="tipo === 'bartender'">
-        <ion-item *ngFor="let producto of tarea.bebidas">
+        <ion-item *ngFor="let producto of tarea.bebidas.productos">
           <ion-avatar slot="start">
             <img [src]="producto.fotos[0]">
           </ion-avatar>
@@ -28,17 +30,12 @@
           <ion-label>
             {{producto.cantidad}} {{producto.nombre}}
           </ion-label>
-
-          <ion-checkbox #check 
-                        slot="end" 
-                        color="dark" 
-                        [checked]="producto.completado" 
-                        [disabled]="check.checked"></ion-checkbox>
         </ion-item>
       </ion-list>
 
+      <!-- si es cocinero le aparecera solo platos -->
       <ion-list *ngIf="tipo === 'cocinero'">
-        <ion-item *ngFor="let producto of tarea.platos">
+        <ion-item *ngFor="let producto of tarea.platos.productos">
           <ion-avatar slot="start">
             <img [src]="producto.fotos[0]">
           </ion-avatar>
@@ -46,14 +43,18 @@
           <ion-label>
             {{producto.cantidad}} {{producto.nombre}}
           </ion-label>
-
-          <ion-checkbox #check 
-                        slot="end" 
-                        color="dark" 
-                        [checked]="producto.completado" 
-                        [disabled]="check.checked"></ion-checkbox>
         </ion-item>
       </ion-list>
+
+      <ion-button [disabled]="tipo === 'cocinero'? tarea.platos.completado: tarea.bebidas.completado" 
+                  color="success" 
+                  shape="round" 
+                  expand="block" 
+                  fill="clear" 
+                  (click)="completarTarea(tarea)">
+        Completar&nbsp;
+        <ion-icon name="checkbox-outline"></ion-icon>
+      </ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

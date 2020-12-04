@@ -13,6 +13,7 @@ import { Cliente } from 'src/app/models/cliente';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { MesaService } from 'src/app/services/mesa.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
+import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
 
 @Component({
   selector: 'app-empleado',
@@ -43,7 +44,8 @@ export class EmpleadoPage implements OnInit, OnDestroy {
       this.authService.getCurrentUserData(PerfilUsuario.EMPLEADO).subscribe(emp => {
         if(emp) {
           this.empleado = emp[0]
-
+          console.log(this.empleado);
+          
           if(this.esMetre(this.empleado)) {
             subject.next('metre');
           }
@@ -95,6 +97,19 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               'Hay un nuevo mensaje!.',
               'hay clientes con dudas, no tardes en responder!',
               'https://bit.ly/3qoTVPa',
+            );
+          }),
+          this.pedidosService.tareasCompletadas
+          .pipe(
+            distinctUntilChanged((prev, curr) => {
+              return prev && prev.length > curr.length;
+            })
+          )
+          .subscribe(() => {
+            this.notificacionesService.push(
+              'Hay un pedido listo!.',
+              'hay un pedido listo para entregar, buscalo!!',
+              'https://bit.ly/37C5fPc',
             );
           })
         );
@@ -195,13 +210,15 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     })
   }
 
-  verListaTareas(): void {
-    this.router.navigate(['lista-tareas'], {
-      state : {
-        tipo: this.empleado.tipo == TipoEmpleado.COCINERO ? 'cocinero' : 'bartender'
-      },
-      relativeTo: this.route
+  async verListaTareas(): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: ListaTareasComponent,
+      componentProps:{
+        tipo: this.empleado.tipo == TipoEmpleado.BARTENDER? 'bartender': 'cocinero'
+      }
     });
+
+    modal.present();
   }
 
   async hacerPedido(): Promise<void> {

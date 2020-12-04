@@ -26,7 +26,6 @@ export class MesaPage implements OnInit {
   cliente: Cliente;
   mesa: Mesa;
   pedido: Pedido;
-  habilitar = false;
 
   constructor(
     private mesasService: MesaService,
@@ -38,6 +37,7 @@ export class MesaPage implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+
     const subject = new Subject<void>();
     this.subscriptions.push(
       this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
@@ -57,8 +57,7 @@ export class MesaPage implements OnInit {
             console.log(mesa);
             
             this.mesa = mesa[0];
-
-            this.traerPedidosMesa(this.mesa);
+            this.actualizarEstadoPedido()
           }
         }),
       );
@@ -69,17 +68,12 @@ export class MesaPage implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+  async actualizarEstadoPedido(): Promise<void> {
+    this.pedido = (await this.pedidosService.traerPedidosMesa(this.mesa))[0];
   }
 
-  traerPedidosMesa(mesa: Mesa) {
-    this.subscriptions.push(
-      this.pedidosService.traerPedidosMesa(mesa).subscribe(pedidos => {
-        this.pedido = pedidos[0];
-        console.log(pedidos);
-      })
-    );
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   async pedirProductos(): Promise<void> {
@@ -107,29 +101,25 @@ export class MesaPage implements OnInit {
   }
 
   async actualizarEstadoMesa(): Promise<void> {
-    const result: BarcodeScanResult = await this.barcodeScanner.scan({formats: 'QR_CODE'});
 
-    if(result.text === this.mesa.qr) {
+    try {
+      const result: BarcodeScanResult = await this.barcodeScanner.scan({formats: 'QR_CODE'});
 
-      this.habilitar = this.pedido.estado == EstadoPedido.CONFIRMADO;
-
-      if(!this.habilitar) {
+      if(result.text === this.mesa.qr) {
+        this.actualizarEstadoPedido();
+      }
+      else {
+        this.notificacionesService.error();
         this.notificacionesService.toast(
-          'Aun no se ha confirmado su pedido, espere!',
+          'No ha escaneado su mesa!', 
           'top',
-          2000,
+          2500, 
           'warning'
         );
       }
+    } catch(err) {
+      this.notificacionesService.toast(err.message, 'top', 3000, 'danger');
     }
-    else {
-      this.notificacionesService.error();
-      this.notificacionesService.toast(
-        'No ha escaneado su mesa!', 
-        'top',
-        2500, 
-        'warning'
-      );
-    }
+
   }
 }

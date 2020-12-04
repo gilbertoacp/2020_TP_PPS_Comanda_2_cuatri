@@ -6,5 +6,7 @@ export interface Tarea {
   listoParaEntregar: boolean,
   codigo: string,
   bebidas?: any,
-  platos?: any
+  platos?: any,
+  docId?: string,
+  docIdPedido? : string
 }
