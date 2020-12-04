@@ -90,7 +90,7 @@ export class EmpleadoPage implements OnInit, OnDestroy {
         this.subscriptions.push(
           this.mesasService.getChatsMesas()
           .pipe(skip(1))
-          .subscribe(chats => {
+          .subscribe(() => {
             this.notificacionesService.push(
               'Hay un nuevo mensaje!.',
               'hay clientes con dudas, no tardes en responder!',
@@ -107,7 +107,7 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               return prev && prev.length > curr.length;
             })
           )
-          .subscribe(tareas => {
+          .subscribe(() => {
             this.notificacionesService.push(
               'Tenes nuevas tareas!.',
               'hay clientes esperando por sus bebidas!!',
@@ -124,7 +124,7 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               return prev && prev.length > curr.length;
             })
           )
-          .subscribe(tareas => {
+          .subscribe(() => {
             this.notificacionesService.push(
               'Tenes nuevas tareas!.',
               'hay clientes esperando por sus platos!!',

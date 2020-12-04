@@ -15,7 +15,22 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" (click)="pedirProductos()" *ngIf="mesa">
+
+  <ion-item *ngIf="pedido && habilitar" class="ion-margin">
+    <ion-avatar slot="start">
+      <img src="assets/img/request.png">
+    </ion-avatar>
+    
+    <ion-label>
+      Estado del Pedido
+    </ion-label>
+
+    <ion-badge slot="end">
+      {{pedido.estado}}
+    </ion-badge>
+  </ion-item>
+
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" [disabled]="pedido" (click)="pedirProductos()" *ngIf="mesa">
     <ion-ripple-effect></ion-ripple-effect>
 
     <ion-row class="ion-justify-content-center">
@@ -53,4 +68,49 @@
       Presione para hacer una consultar sobre alguna inquietud.
     </ion-card-content>
   </ion-card>
+
+
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa && habilitar">
+    <ion-ripple-effect></ion-ripple-effect>
+    <ion-row class="ion-justify-content-center">
+      <img src="assets/img/completed-task.png" alt="chat" height="200">
+    </ion-row>
+    <ion-card-header mode="ios">
+      <ion-card-title class="ion-text-center">
+        <ion-text color="light">
+          <b>
+            Responder Encuesta
+          </b>
+        </ion-text>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content mode="ios" class="ion-text-center">
+      Presione para responder la encuesta.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa && habilitar">
+    <ion-ripple-effect></ion-ripple-effect>
+    <ion-row class="ion-justify-content-center">
+      <img src="assets/img/poker-cards.png" alt="chat" height="200">
+    </ion-row>
+    <ion-card-header mode="ios">
+      <ion-card-title class="ion-text-center">
+        <ion-text color="light">
+          <b>
+            Juegos
+          </b>
+        </ion-text>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content mode="ios" class="ion-text-center">
+      Presione para jugar y ganar premios.
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button (click)="actualizarEstadoMesa()">
+    <ion-icon name="scan"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

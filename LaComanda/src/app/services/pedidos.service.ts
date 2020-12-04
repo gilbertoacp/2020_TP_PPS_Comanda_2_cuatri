@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { EstadoPedido } from '../models/estadoPedido.enum';
+import { Mesa } from '../models/mesa';
 import { Pedido } from '../models/pedido';
 import { Producto } from '../models/producto';
 import { Tarea } from '../models/tarea';
@@ -43,6 +44,13 @@ export class PedidosService {
     return this.pedidosCollection.doc(pedido.docId).set({
       estado: EstadoPedido.CONFIRMADO
     }, {merge: true});
+  }
+
+  traerPedidosMesa(mesa: Mesa) {
+    return this.db.collection('pedidos',
+      ref => ref.where('numeroMesa', '==', mesa.numero)
+    )
+    .valueChanges({idField: 'docId'});
   }
 
   private asignarTarea(pedido: Pedido) {
