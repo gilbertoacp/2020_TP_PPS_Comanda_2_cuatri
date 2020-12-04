@@ -14,6 +14,8 @@ import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido
 import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
 import { ResponderConsultasComponent } from './responder-consultas/responder-consultas.component';
 import { RespuestaMozoComponent } from 'src/app/components/respuesta-mozo/respuesta-mozo.component';
+import { PedidosPendientesComponent } from 'src/app/components/empleado/pedidos-pendientes/pedidos-pendientes.component';
+import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
 
 @NgModule({
   imports: [
@@ -30,7 +32,9 @@ import { RespuestaMozoComponent } from 'src/app/components/respuesta-mozo/respue
     HacerPedidoComponent,
     ListaDeEsperaMetreClienteComponent,
     ResponderConsultasComponent,
-    RespuestaMozoComponent
+    RespuestaMozoComponent,
+    PedidosPendientesComponent,
+    ListaTareasComponent
   ]
 })
 export class EmpleadoPageModule {}

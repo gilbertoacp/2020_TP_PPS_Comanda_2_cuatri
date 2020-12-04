@@ -4,5 +4,5 @@ export enum EstadoPedido {
     LISTO = 'LISTO',
     ENTREGADO = 'ENTREGADO',
     PAGANDO = 'PAGANDO',
-    TERMINADO = 'TERMINADO'
+    TERMINADO = 'TERMINADO',
 }

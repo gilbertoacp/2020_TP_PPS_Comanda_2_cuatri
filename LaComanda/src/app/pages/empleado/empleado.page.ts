@@ -8,10 +8,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TipoEmpleado } from 'src/app/models/tipo-empleado.enum';
 import { HacerPedidoComponent } from '../../components/hacer-pedido/hacer-pedido.component';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { distinctUntilChanged, first, skip, take } from 'rxjs/operators';
+import { distinctUntilChanged, first, ignoreElements, skip, take } from 'rxjs/operators';
 import { Cliente } from 'src/app/models/cliente';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { MesaService } from 'src/app/services/mesa.service';
+import { PedidosService } from 'src/app/services/pedidos.service';
 
 @Component({
   selector: 'app-empleado',
@@ -31,7 +32,8 @@ export class EmpleadoPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private clientesService : ClientesService,
     private notificacionesService: NotificacionesService,
-    private mesasService: MesaService
+    private mesasService: MesaService,
+    private pedidosService: PedidosService
   ) { }
   
   async ngOnInit(): Promise<void> {
@@ -48,6 +50,14 @@ export class EmpleadoPage implements OnInit, OnDestroy {
 
           if(this.esMozo(this.empleado)) {
             subject.next('mozo');
+          }
+
+          if(this.esBartender(this.empleado)) {
+            subject.next('bartender');
+          }
+
+          if(this.esCocinero(this.empleado)) {
+            subject.next('cocinero');
           }
         }
         console.log(this.empleado);
@@ -85,6 +95,40 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               'Hay un nuevo mensaje!.',
               'hay clientes con dudas, no tardes en responder!',
               'https://bit.ly/3qoTVPa',
+            );
+          })
+        );
+      }
+
+      if(info === 'bartender') {
+        this.subscriptions.push(
+          this.pedidosService.tareas.pipe(
+            distinctUntilChanged((prev, curr) => {
+              return prev && prev.length > curr.length;
+            })
+          )
+          .subscribe(tareas => {
+            this.notificacionesService.push(
+              'Tenes nuevas tareas!.',
+              'hay clientes esperando por sus bebidas!!',
+              'https://bit.ly/3ggKvAv',
+            );
+          })
+        );
+      }
+
+      if(info === 'cocinero') {
+        this.subscriptions.push(
+          this.pedidosService.tareas.pipe(
+            distinctUntilChanged((prev, curr) => {
+              return prev && prev.length > curr.length;
+            })
+          )
+          .subscribe(tareas => {
+            this.notificacionesService.push(
+              'Tenes nuevas tareas!.',
+              'hay clientes esperando por sus platos!!',
+              'https://bit.ly/37C5fPc',
             );
           })
         );
@@ -149,6 +193,15 @@ export class EmpleadoPage implements OnInit, OnDestroy {
       },
       relativeTo: this.route
     })
+  }
+
+  verListaTareas(): void {
+    this.router.navigate(['lista-tareas'], {
+      state : {
+        tipo: this.empleado.tipo == TipoEmpleado.COCINERO ? 'cocinero' : 'bartender'
+      },
+      relativeTo: this.route
+    });
   }
 
   async hacerPedido(): Promise<void> {

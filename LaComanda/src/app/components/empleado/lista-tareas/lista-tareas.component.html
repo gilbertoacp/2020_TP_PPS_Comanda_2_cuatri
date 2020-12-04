@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-title><ion-text>
+      Tareas
+    </ion-text></ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="../" slot="icon-only">
+        <ion-icon name="return-up-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-card *ngFor="let tarea of tareas">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">
+        Pedido - Nº {{tarea.codigo}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="tipo === 'bartender'">
+        <ion-item *ngFor="let producto of tarea.bebidas">
+          <ion-avatar slot="start">
+            <img [src]="producto.fotos[0]">
+          </ion-avatar>
+          
+          <ion-label>
+            {{producto.cantidad}} {{producto.nombre}}
+          </ion-label>
+
+          <ion-checkbox #check 
+                        slot="end" 
+                        color="dark" 
+                        [checked]="producto.completado" 
+                        [disabled]="check.checked"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="tipo === 'cocinero'">
+        <ion-item *ngFor="let producto of tarea.platos">
+          <ion-avatar slot="start">
+            <img [src]="producto.fotos[0]">
+          </ion-avatar>
+          
+          <ion-label>
+            {{producto.cantidad}} {{producto.nombre}}
+          </ion-label>
+
+          <ion-checkbox #check 
+                        slot="end" 
+                        color="dark" 
+                        [checked]="producto.completado" 
+                        [disabled]="check.checked"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

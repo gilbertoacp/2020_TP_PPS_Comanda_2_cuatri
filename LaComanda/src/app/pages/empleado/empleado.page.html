@@ -67,4 +67,23 @@
   Responder Consultas&nbsp;
   <ion-icon name="people-outline"></ion-icon>
   </ion-button>
+
+  <ion-button class="boton" 
+              color="tertiary"
+              expand="block"
+              routerLink="pedidos-pendientes"
+              *ngIf="esMozo(empleado)">
+      Pedidos Pendientes&nbsp;
+    <ion-icon name="timer-outline"></ion-icon>
+  </ion-button>
+
+  
+  <ion-button class="boton" 
+              color="secondary"
+              expand="block"
+              (click)="verListaTareas()"
+              *ngIf="!esMozoOMetre(empleado)">
+    Ver Tareas&nbsp;
+    <ion-icon name="list-outline"></ion-icon>
+  </ion-button>
 </ion-content>

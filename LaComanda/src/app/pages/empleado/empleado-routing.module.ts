@@ -5,6 +5,8 @@ import { EmpleadoPage } from './empleado.page';
 import { AltaProductoComponent } from './alta-producto/alta-producto.component';
 import { ListaDeEsperaMetreClienteComponent } from './lista-de-espera-metre-cliente/lista-de-espera-metre-cliente.component';
 import { ResponderConsultasComponent } from './responder-consultas/responder-consultas.component';
+import { PedidosPendientesComponent } from 'src/app/components/empleado/pedidos-pendientes/pedidos-pendientes.component';
+import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,14 @@ const routes: Routes = [
   {
     path: 'consultas-clientes',
     component: ResponderConsultasComponent
+  },
+  {
+    path: 'pedidos-pendientes',
+    component: PedidosPendientesComponent
+  },
+  {
+    path: 'lista-tareas',
+    component: ListaTareasComponent
   }
 ];
 

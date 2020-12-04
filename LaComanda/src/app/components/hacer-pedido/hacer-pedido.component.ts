@@ -5,6 +5,11 @@ import { Cliente } from '../../models/cliente';
 import { ProductoService } from '../../services/producto.service';
 import { Producto } from '../../models/producto';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { PedidosService } from 'src/app/services/pedidos.service';
+import { Pedido } from 'src/app/models/pedido';
+import { Mesa } from 'src/app/models/mesa';
+import { EstadoPedido } from 'src/app/models/estadoPedido.enum';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-hacer-pedido',
@@ -13,14 +18,15 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 })
 export class HacerPedidoComponent implements OnInit {
 
-  pedido: Producto[] = [];
+  mesa: Mesa;
+  cargando = true;
   cliente: Cliente;
   empleado: Empleado;
+  segment = 'bebidas';
   precioTotal: number = 0;
+  pedido: Producto[] = [];
   platos: Producto[] = [];
   bebidas: Producto[] = [];
-  segment = 'bebidas';
-  cargando = true;
   
   sliderConfig = {
     spaceBetween: 10,
@@ -39,18 +45,15 @@ export class HacerPedidoComponent implements OnInit {
     private navParams: NavParams,
     private productosService: ProductoService,
     private bs: BarcodeScanner,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private pedidosService: PedidosService,
+    private notificacionesService: NotificacionesService
   ) { }
 
   ngOnInit() {
-    if(this.navParams.get('empleado')) {
-      this.empleado = this.navParams.get('empleado');
-    }
-
-    if(this.navParams.get('cliente')) {
-      this.cliente = this.navParams.get('cliente');
-    }
-
+    this.empleado = this.navParams.get('empleado')?? null;
+    this.cliente = this.navParams.get('cliente')?? null;
+    
     this.productosService.productos.subscribe(productos => {
       this.bebidas = productos.filter(p => p.tipoProducto === 'bebida');
       this.platos = productos.filter(p => p.tipoProducto === 'plato');
@@ -99,7 +102,6 @@ export class HacerPedidoComponent implements OnInit {
   escanearProducto(): void {
     this.bs.scan({formats: 'QR_CODE'}).then(data => {
       if(data.text) {
-        console.log(data.text);
         const productoData = data.text.split('@');
         if(productoData[5] === 'bebida' || productoData[5] === 'plato') {
 
@@ -159,12 +161,36 @@ export class HacerPedidoComponent implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Okay',
-          handler: () => {
-            
+          handler: async () => {
+            const pedido: Pedido = {
+              productos: this.pedido,
+              numeroMesa: this.mesa.numero,
+              estado: EstadoPedido.PENDIENTE,
+              codigo: Math.random().toString(36).substring(2),
+            }
+
+            try {
+              await this.pedidosService.hacerPedido(pedido);
+
+              this.notificacionesService.toast(
+                'Se ha realizado el pedido, espere que el mozo lo confirme!!', 
+                'bottom', 
+                2500, 
+                'success'
+              );
+            } catch {
+              this.notificacionesService.toast(
+                'Ocurrio un error, al hacer el pedido!, intentelo de nuevo', 
+                'top', 
+                2500, 
+                'danger'
+              );
+            } finally {
+              this.modalCtrl.dismiss();
+            }
           }
         }
       ]

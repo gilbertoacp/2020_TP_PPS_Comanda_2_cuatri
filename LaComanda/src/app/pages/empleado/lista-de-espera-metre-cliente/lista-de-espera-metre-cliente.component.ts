@@ -4,9 +4,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 import { MesaService } from 'src/app/services/mesa.service';
 import { Subscription } from 'rxjs';
 import { Mesa } from 'src/app/models/mesa';
-import { Pedido } from 'src/app/models/pedido';
 import { PedidosService } from 'src/app/services/pedidos.service';
-import { EstadosMesa } from 'src/app/models/estado-mesa.enum';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -68,34 +66,6 @@ export class ListaDeEsperaMetreClienteComponent implements OnInit, OnDestroy {
     });
 
     this.mostrarMesasDisponiblesAlert(radios);
-  }
-
-  crearPedido(data)
-  {
-    const mesa = data.mesa as Mesa;
-    const cliente = data.cliente as Cliente;
-
-    console.log(mesa);
-    console.log(cliente)
-
-    const pedido = new Pedido();
-    
-    console.log(pedido);
-
-    pedido.mesa = { id: mesa.id, numero: mesa.numero };
-    pedido.usuario = { id: cliente.docId, nombre: cliente.nombre };
-
-    this.pedidoService.crearPedido(pedido).then(resp => {
-     // Actualizo el estado de la mesa luego de crear el pedido
-      mesa.estado = EstadosMesa.ASIGNADA;
-      this.mesaService.actualizarMesa(mesa);
-
-      this.clientesService.ponerEnLaMesa(cliente);
-      this.clientesService.cambiarEstadoDelCliente(cliente, false);
-      //this.presentToast('Mesa asignada', 'toast-info');
-    }).catch
-    (e => console.log(e));
-
   }
 
   async mostrarMesasDisponiblesAlert(radios: any) {

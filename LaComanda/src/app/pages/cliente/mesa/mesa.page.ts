@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { ModalController } from '@ionic/angular';
 import { Subject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -68,7 +67,8 @@ export class MesaPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: HacerPedidoComponent,
       componentProps:  {
-        cliente: this.cliente
+        cliente: this.cliente,
+        mesa: this.mesa
       }
     });
 

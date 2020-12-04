@@ -34,16 +34,16 @@ export class ListaEsperaPage implements OnInit {
       this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
         if (cliente) {
           this.cliente = cliente[0];
-          this.obtenerEstado
+          // this.obtenerEstado
         } 
         console.log(this.cliente);
       });
     }
   
     obtenerEstado() {
-      this.pedidoService.obtenerPedidosActivos(this.cliente).subscribe(pedidos => {
-          this.pedido = pedidos;
-      });
+      // this.pedidoService.obtenerPedidosActivos(this.cliente).subscribe(pedidos => {
+      //     this.pedido = pedidos;
+      // });
     }
   
     ngOnDestroy(): void {
