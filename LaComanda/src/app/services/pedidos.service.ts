@@ -60,6 +60,14 @@ export class PedidosService {
     }, { merge: true });
   }
 
+  entregarPedido(docId: string, docIdTarea: string): Promise<void> {
+    this.eliminarTarea(docIdTarea);
+
+    return this.pedidosCollection.doc(docId).set({
+      estado: EstadoPedido.ENTREGADO
+    }, { merge: true });
+  }
+
   traerPedidosMesa(mesa: Mesa): Promise<Pedido[]> {
     return this.db.collection('pedidos',
       ref => ref.where('numeroMesa', '==', mesa.numero)
@@ -90,6 +98,10 @@ export class PedidosService {
       },
       docIdPedido: pedido.docId
     });
+  }
+
+  private eliminarTarea(docId: string): Promise<void> {
+    return this.tareasCollection.doc(docId).delete();
   }
 
 } 

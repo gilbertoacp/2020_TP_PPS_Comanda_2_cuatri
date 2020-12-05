@@ -26,7 +26,7 @@ export class PedidosAEntregarComponent implements OnInit {
   }
 
   entregarPedido(tarea: Tarea) {
-    
+    this.pedidosService.entregarPedido(tarea.docIdPedido, tarea.docId);
   }
 
   cerrar(): void {

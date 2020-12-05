@@ -15,25 +15,50 @@
 </ion-header>
 
 <ion-content>
-
   <ion-item *ngIf="pedido" class="ion-margin">
-    <ion-avatar slot="start">
-      <img src="assets/img/request.png">
-    </ion-avatar>
-    
-    <p>
+    <p slot="start">
       Pedido Nº {{pedido.codigo}}
     </p>
 
-    <ion-badge slot="end">
-      {{pedido.estado}}
+    <ion-badge slot="end" *ngIf="pedido.estado !== 'ENTREGANDO' else confirmar">
+      {{
+        pedido.estado === 'CONFIRMADO_CLIENTE'? 'RECIBIDO': pedido.estado
+      }}
     </ion-badge>
+    <ng-template #confirmar>
+      <ion-button #btn slot="end" (click)="btn.disabled = true">
+        <ion-icon name="checkbox-outline"></ion-icon>
+      </ion-button>
+    </ng-template>
   </ion-item>
+
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" 
+            *ngIf="mesa && pedido && pedido.estado === 'CONFIRMADO_CLIENTE'"
+  >
+    <ion-ripple-effect></ion-ripple-effect>
+
+    <ion-row class="ion-justify-content-center">
+      <img src="assets/img/debit-card.png" alt="hamburger" height="200">
+    </ion-row>
+    <ion-card-header mode="ios">
+      <ion-card-title class="ion-text-center">
+        <ion-text color="light">
+          <b>
+            Pedir Cuenta
+          </b>
+        </ion-text>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content mode="ios" class="ion-text-center">
+      Presione para hacer el pedido de la cuenta
+    </ion-card-content>
+  </ion-card>
+
 
   <ion-card class="ion-padding-vertical ion-activatable ripple-parent" 
             [disabled]="pedido" 
             (click)="pedirProductos()" 
-            *ngIf="mesa"
+            *ngIf="mesa && pedido && pedido.estado !== 'CONFIRMADO_CLIENTE'"
             >
     <ion-ripple-effect></ion-ripple-effect>
 
@@ -46,7 +71,7 @@
           <b>
             Ver el listado de productos
           </b>
-        </ion-text> 
+        </ion-text>
       </ion-card-title>
     </ion-card-header>
     <ion-card-content mode="ios" class="ion-text-center">
