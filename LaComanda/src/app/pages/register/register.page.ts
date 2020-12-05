@@ -162,19 +162,16 @@ export class RegisterPage implements OnInit {
               this.limpiarInputs();
 
               this.mostrarSpinner = false;
-
               this.router.navigate(["/login"]); //......
             }).catch((error) => {
               this.presentToastConMensajeYColor(error.message, "danger");
             })
             .finally(() => {
-              this.mostrarSpinner = false;
             });
           }).catch((e) => {
             this.presentToastConMensajeYColor(e.message, "danger");
           })
           .finally(() => {
-            this.mostrarSpinner = false;
           });
         });
       } else {
@@ -323,6 +320,7 @@ export class RegisterPage implements OnInit {
   }
 
   async presentToastConMensajeYColor(mensaje : string, color : string) {
+    this.mostrarSpinner = false;
     const toast = await this.toastController.create({
       message: mensaje,
       position: 'bottom',
