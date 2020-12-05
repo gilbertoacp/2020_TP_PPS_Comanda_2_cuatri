@@ -98,9 +98,7 @@ export class PedidosService {
   }
 
   confirmarPago(docId: string): Promise<void> {
-    return this.pedidosCollection.doc(docId).set({
-      estado: EstadoPedido.TERMINADO
-    }, {merge: true});
+    return this.pedidosCollection.doc(docId).delete();
   }
 
   private asignarTarea(pedido: Pedido): void {

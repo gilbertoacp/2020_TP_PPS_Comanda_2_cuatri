@@ -28,6 +28,8 @@ export class MesaPage implements OnInit {
   mesa: Mesa;
   pedido: Pedido;
 
+  mostrarPedido = false;
+
   constructor(
     private mesasService: MesaService,
     public authService: AuthService,
@@ -126,7 +128,12 @@ export class MesaPage implements OnInit {
       const result: BarcodeScanResult = await this.barcodeScanner.scan({formats: 'QR_CODE'});
 
       if(result.text === this.mesa.qr) {
-        this.actualizarEstadoPedido();
+
+        if(!this.pedido) {
+          this.mostrarPedido = true;
+        } else {
+          this.actualizarEstadoPedido();
+        }
       }
       else {
         this.notificacionesService.error();
