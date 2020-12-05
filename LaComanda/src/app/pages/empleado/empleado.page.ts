@@ -111,12 +111,14 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               return prev && prev.length > curr.length;
             })
           )
-          .subscribe(() => {
-            this.notificacionesService.push(
-              'Hay un pedido listo!.',
-              'hay un pedido listo para entregar, buscalo!!',
-              'https://bit.ly/37C5fPc',
-            );
+          .subscribe((tareas) => {
+            if(tareas.length > 0 )   {
+              this.notificacionesService.push(
+                'Hay un pedido listo!.',
+                'hay un pedido listo para entregar, buscalo!!',
+                'https://bit.ly/37C5fPc',
+              );
+            }
           })
         );
       }
@@ -128,12 +130,14 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               return prev && prev.length > curr.length;
             })
           )
-          .subscribe(() => {
-            this.notificacionesService.push(
-              'Tenes nuevas tareas!.',
-              'hay clientes esperando por sus bebidas!!',
-              'https://bit.ly/3ggKvAv',
-            );
+          .subscribe((tareas) => {
+            if(tareas.length > 0) {
+              this.notificacionesService.push(
+                'Tenes nuevas tareas!.',
+                'hay clientes esperando por sus bebidas!!',
+                'https://bit.ly/3ggKvAv',
+              );
+            }
           })
         );
       }
@@ -145,12 +149,14 @@ export class EmpleadoPage implements OnInit, OnDestroy {
               return prev && prev.length > curr.length;
             })
           )
-          .subscribe(() => {
-            this.notificacionesService.push(
-              'Tenes nuevas tareas!.',
-              'hay clientes esperando por sus platos!!',
-              'https://bit.ly/37C5fPc',
-            );
+          .subscribe((tareas) => {
+            if(tareas.length > 0) {
+              this.notificacionesService.push(
+                'Tenes nuevas tareas!.',
+                'hay clientes esperando por sus platos!!',
+                'https://bit.ly/37C5fPc',
+              );
+            }
           })
         );
       }
