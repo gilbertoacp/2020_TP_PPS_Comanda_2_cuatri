@@ -151,7 +151,7 @@ export class RegisterPage implements OnInit {
                 foto: await task.ref.getDownloadURL(),
                 tipo : this.tipo,
                 estado : 'enEspera',
-                atendido: 'esperando',
+                atendido: 'libre',
                 reserva: 'no',
                 horaReserva: ''
               };
