@@ -60,7 +60,7 @@
   <ion-card class="ion-padding-vertical ion-activatable ripple-parent" 
             [disabled]="pedido" 
             (click)="pedirProductos()" 
-            *ngIf="mesa && mostrarPedido"
+            *ngIf="mesa && pedido && pedido.estado !== 'CONFIRMADO_CLIENTE'"
             >
     <ion-ripple-effect></ion-ripple-effect>
 
