@@ -89,6 +89,11 @@ export class MesaPage implements OnInit {
     });
 
     modal.present();
+
+
+    modal.onDidDismiss().then(_ => {
+      this.actualizarEstadoPedido();
+    })
   }
 
   async consultaAlMozo(): Promise<void> {
@@ -132,6 +137,8 @@ export class MesaPage implements OnInit {
         if(!this.pedido) {
           this.mostrarPedido = true;
         } else {
+          console.log('entra al else');
+          
           this.actualizarEstadoPedido();
         }
       }
