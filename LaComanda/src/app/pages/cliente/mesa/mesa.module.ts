@@ -10,6 +10,7 @@ import { MesaPage } from './mesa.page';
 import { HacerPedidoComponent } from 'src/app/components/hacer-pedido/hacer-pedido.component';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { ConsultaMozoComponent } from 'src/app/components/consulta-mozo/consulta-mozo.component';
+import { SolicitarCuentaComponent } from 'src/app/components/solicitar-cuenta/solicitar-cuenta.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ConsultaMozoComponent } from 'src/app/components/consulta-mozo/consulta
     MesaPage, 
     HacerPedidoComponent, 
     SpinnerComponent,
-    ConsultaMozoComponent
+    ConsultaMozoComponent,
+    SolicitarCuentaComponent
   ]
 })
 export class MesaPageModule {}

@@ -5,6 +5,7 @@ import { Subject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ConsultaMozoComponent } from 'src/app/components/consulta-mozo/consulta-mozo.component';
 import { HacerPedidoComponent } from 'src/app/components/hacer-pedido/hacer-pedido.component';
+import { SolicitarCuentaComponent } from 'src/app/components/solicitar-cuenta/solicitar-cuenta.component';
 import { Cliente } from 'src/app/models/cliente';
 import { EstadoPedido } from 'src/app/models/estadoPedido.enum';
 import { Mesa } from 'src/app/models/mesa';
@@ -94,6 +95,19 @@ export class MesaPage implements OnInit {
       componentProps:  {
         cliente: this.cliente,
         mesa: this.mesa
+      }
+    });
+
+    modal.present();
+  }
+
+  async pedirCuenta(): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: SolicitarCuentaComponent,
+      componentProps:  {
+        cliente: this.cliente,
+        mesa: this.mesa,
+        pedido: this.pedido
       }
     });
 
