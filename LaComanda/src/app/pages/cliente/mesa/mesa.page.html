@@ -34,6 +34,7 @@
 
   <ion-card class="ion-padding-vertical ion-activatable ripple-parent" 
             *ngIf="mesa && pedido && pedido.estado === 'CONFIRMADO_CLIENTE'"
+            [disabled]="pedido.estado === 'PAGANDO'"
             (click)="pedirCuenta()"
   >
     <ion-ripple-effect></ion-ripple-effect>

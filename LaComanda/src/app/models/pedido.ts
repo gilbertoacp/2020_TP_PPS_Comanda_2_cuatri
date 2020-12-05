@@ -7,5 +7,7 @@ export interface Pedido {
   descuento?: number
   estado?: EstadoPedido
   numeroMesa?: number,
-  codigo?: string
+  codigo?: string,
+  docIdMesa?: string,
+  docIdCliente?: string
 }   

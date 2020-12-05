@@ -132,6 +132,12 @@ export class ClientesService {
     .set({atendido: 'enLaMesa'}, {merge: true})
   }
 
+  liberarCliente(docId: string) {
+    return this.db.collection('clientes').doc(docId).set({
+      atendido: 'libre'
+    }, { merge: true });
+  }
+
   // ponerEnLaMesaAnonimo(cliente: ClienteAnonimo): void
   // {
   //   this.db.collection<ClienteAnonimo>('clientesAnonimos')

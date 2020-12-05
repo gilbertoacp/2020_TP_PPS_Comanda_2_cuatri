@@ -8,6 +8,7 @@ import { ResponderConsultasComponent } from './responder-consultas/responder-con
 import { PedidosPendientesComponent } from 'src/app/components/empleado/pedidos-pendientes/pedidos-pendientes.component';
 import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
 import { PedidosAEntregarComponent } from 'src/app/components/empleado/pedidos-aentregar/pedidos-aentregar.component';
+import { ConfirmarPagoComponent } from 'src/app/components/empleado/confirmar-pago/confirmar-pago.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'pedidos-entregar',
     component: PedidosAEntregarComponent
+  },
+  {
+    path: 'confirmar-pagos',
+    component: ConfirmarPagoComponent
   }
 ];
 

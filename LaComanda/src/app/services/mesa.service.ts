@@ -37,6 +37,14 @@ export class MesaService {
             );
   }
 
+  liberarMesa(docId: string): Promise<void> {
+    return this.db.collection('mesas').doc(docId).set({
+      estado: EstadosMesa.LIBRE,
+      chat: null,
+      docIdCliente: null
+    }, {merge: true});
+  }
+
   // getChatsMesasAsignadas() {
   //   return this.db.collection<Mesa>('mesas')
   //         .valueChanges({idField: 'docId'})

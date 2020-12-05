@@ -39,19 +39,22 @@
           </ion-badge>
         </ion-item>
 
+        <ion-text class="ion-text-end">
+          <b>Propina: {{propina? propina: 0}}</b>
+        </ion-text> 
         
-        <ion-item>
-          <ion-label class="ion-text-end">
-            Precio total: <b>$ {{precioTotal}}</b> 
-          </ion-label>
-        </ion-item>
+        <br>
+
+        <ion-text class="ion-text-end">
+          <b>Precio total: $ {{precioTotal}}</b> 
+        </ion-text>
 
       </ion-list>
-      <ion-button expand="full">
+      <ion-button expand="full" (click)="escanearPropina()">
         Escanear propina
       </ion-button>
 
-      <ion-button color="success" expand="full">
+      <ion-button color="success" expand="full" (click)="pagar()">
         Pagar
       </ion-button>
     </ion-card-content>
