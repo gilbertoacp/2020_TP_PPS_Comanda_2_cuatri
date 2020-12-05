@@ -91,13 +91,19 @@ export class EmpleadoPage implements OnInit, OnDestroy {
       if(info === 'mozo') {
         this.subscriptions.push(
           this.mesasService.getChatsMesas()
-          .pipe(skip(1))
-          .subscribe(() => {
-            this.notificacionesService.push(
-              'Hay un nuevo mensaje!.',
-              'hay clientes con dudas, no tardes en responder!',
-              'https://bit.ly/3qoTVPa',
-            );
+          // .pipe(skip(1))
+          .subscribe((chats) => {
+            const mensajeNuevo = chats.some(chats => {
+              return chats[chats.length - 1].docIdCliente;
+            });
+
+            if(mensajeNuevo)  {
+              this.notificacionesService.push(
+                'Hay un nuevo mensaje!.',
+                'hay clientes con dudas, no tardes en responder!',
+                'https://bit.ly/3qoTVPa',
+              );
+            }
           }),
           this.pedidosService.tareasCompletadas
           .pipe(
