@@ -17,6 +17,7 @@ import { RespuestaMozoComponent } from 'src/app/components/respuesta-mozo/respue
 import { PedidosPendientesComponent } from 'src/app/components/empleado/pedidos-pendientes/pedidos-pendientes.component';
 import { ListaTareasComponent } from 'src/app/components/empleado/lista-tareas/lista-tareas.component';
 import { PedidosAEntregarComponent } from 'src/app/components/empleado/pedidos-aentregar/pedidos-aentregar.component';
+import { ConfirmarPagoComponent } from 'src/app/components/empleado/confirmar-pago/confirmar-pago.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { PedidosAEntregarComponent } from 'src/app/components/empleado/pedidos-a
     RespuestaMozoComponent,
     PedidosPendientesComponent,
     ListaTareasComponent,
-    PedidosAEntregarComponent
+    PedidosAEntregarComponent,
+    ConfirmarPagoComponent
   ]
 })
 export class EmpleadoPageModule {}

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="warning">
+    <ion-title><ion-text>
+      Pagos a confirmar
+    </ion-text></ion-title>
+    <ion-buttons slot="start">
+      <ion-button slot="icon-only" routerLink="../">
+        <ion-icon name="return-up-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let pedido of pedidos">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Pago mesa nº {{pedido.numeroMesa}}</ion-card-title>
+    </ion-card-header>
+    <!-- <ion-card-content class="ion-text-center">
+    </ion-card-content> -->
+
+    <ion-button expand="full" (click)="confirmarPago(pedido)">
+      Confirmar Pago
+    </ion-button>
+  </ion-card>
+</ion-content>

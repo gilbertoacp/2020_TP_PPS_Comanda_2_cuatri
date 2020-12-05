@@ -112,6 +112,12 @@ export class MesaPage implements OnInit {
     });
 
     modal.present();
+
+    modal.onDidDismiss().then(data => {
+      if(data.data === 'pagando') {
+        this.actualizarEstadoPedido();
+      }
+    });
   }
 
   async actualizarEstadoMesa(): Promise<void> {

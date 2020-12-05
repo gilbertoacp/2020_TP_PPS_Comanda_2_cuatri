@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { EstadoPedido } from '../models/estadoPedido.enum';
 import { Mesa } from '../models/mesa';
 import { Pedido } from '../models/pedido';
-import { Producto } from '../models/producto';
 import { Tarea } from '../models/tarea';
 
 @Injectable({
@@ -81,6 +80,27 @@ export class PedidosService {
 
   completarTarea(tarea: Tarea): Promise<void> {
     return this.tareasCollection.doc(tarea.docId).set(tarea, {merge: true});
+  }
+
+  pagoCliente(docId: string, docIdMesa: string, docIdCliente: string) {
+    return this.pedidosCollection.doc(docId).set({
+      estado: EstadoPedido.PAGANDO,
+      docIdMesa,
+      docIdCliente
+    }, { merge: true });
+  }
+
+  pagosAConfirmar(): Observable<Pedido[]> {
+    return this.db.collection('pedidos', 
+      ref => ref.where('estado', '==', EstadoPedido.PAGANDO)
+    )
+    .valueChanges({idField: 'docId'});
+  }
+
+  confirmarPago(docId: string): Promise<void> {
+    return this.pedidosCollection.doc(docId).set({
+      estado: EstadoPedido.TERMINADO
+    }, {merge: true});
   }
 
   private asignarTarea(pedido: Pedido): void {
