@@ -101,7 +101,7 @@
   </ion-card>
 
 
-  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa">
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" *ngIf="mesa && pedido.estado !== 'PENDIENTE'">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-row class="ion-justify-content-center">
       <img src="assets/img/completed-task.png" alt="chat" height="200">
@@ -120,7 +120,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" [disabled]="true" *ngIf="mesa">
+  <ion-card class="ion-padding-vertical ion-activatable ripple-parent" [disabled]="true" *ngIf="mesa && pedido.estado !== 'PENDIENTE'">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-row class="ion-justify-content-center">
       <img src="assets/img/poker-cards.png" alt="chat" height="200">
