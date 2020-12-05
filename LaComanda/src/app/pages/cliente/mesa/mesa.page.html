@@ -26,12 +26,14 @@
       }}
     </ion-badge>
     <ng-template #confirmar>
-      <ion-button #btn slot="end" (click)="btn.disabled = true">
+      <ion-button #btn slot="end" (click)="confirmarRecepcion()">
         <ion-icon name="checkbox-outline"></ion-icon>
       </ion-button>
     </ng-template>
   </ion-item>
-
+  <ion-text color="light">
+    {{pedido? pedido.estado: ''}}
+  </ion-text>
   <ion-card class="ion-padding-vertical ion-activatable ripple-parent" 
             *ngIf="mesa && pedido && pedido.estado === 'CONFIRMADO_CLIENTE'"
             [disabled]="pedido.estado === 'PAGANDO'"

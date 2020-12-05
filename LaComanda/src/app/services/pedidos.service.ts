@@ -118,6 +118,12 @@ export class PedidosService {
     });
   }
 
+  confirmarRecepcionPedido(docId: string) {
+    return this.db.collection('pedidos').doc(docId).set({
+      estado: EstadoPedido.CONFIRMADO_CLIENTE
+    } , {merge: true})
+  }
+
   private eliminarTarea(docId: string): Promise<void> {
     return this.tareasCollection.doc(docId).delete();
   }
