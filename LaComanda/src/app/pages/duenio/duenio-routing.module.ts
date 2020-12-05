@@ -5,6 +5,7 @@ import { AltaMesaComponent } from './alta-mesa/alta-mesa.component';
 
 import { DuenioPage } from './duenio.page';
 import { RegistrosPendientesComponent } from './registros-pendientes/registros-pendientes.component';
+import { ReservasPendientesComponent } from './reservas-pendientes/reservas-pendientes.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'registros-pendientes',
     component: RegistrosPendientesComponent
+  },
+  {
+    path: 'reservas-pendientes',
+    component: ReservasPendientesComponent
   },
   {
     path: 'alta-mesa',

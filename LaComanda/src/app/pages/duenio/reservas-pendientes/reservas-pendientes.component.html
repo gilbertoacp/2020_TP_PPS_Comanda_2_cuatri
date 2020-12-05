@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color='primary' color="dark">
+    <ion-buttons slot="start">
+      <ion-button routerLink="../">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title text-center slot="start">
+      <b>Reservas Pendientes</b>  
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-item *ngFor="let c of clientesConReserva">
+    <ion-avatar slot="start">
+      <img [src]="c.foto">
+    </ion-avatar>
+
+    <div slot="end">
+      <ion-button (click)="asignarMesa(c)" color="light" size="small">Asignar</ion-button>
+      <ion-button color="danger" (click)="cancelarReserva(c)">
+        <ion-icon slot="icon-only" color="light" name="close"></ion-icon>
+      </ion-button>
+    </div>
+    
+
+    <ion-label>
+      <h4>{{c.nombre}}</h4>
+      <h4>{{c.apellido}}</h4>
+      <p style="font-size: 11px;font-weight: bold;">{{c.correo}}</p>
+      <h4 style="font-size: 6px;font-weight: bold;">{{c.horaReserva}}</h4>
+    </ion-label>
+  </ion-item>
+</ion-content>

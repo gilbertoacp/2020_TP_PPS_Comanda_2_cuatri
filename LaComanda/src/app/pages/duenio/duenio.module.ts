@@ -11,6 +11,7 @@ import { QrLectorComponent } from 'src/app/components/qr-lector/qr-lector.compon
 import { CameraSelectorComponent } from 'src/app/components/camera-selector/camera-selector.component';
 import { AltaDuenioComponent } from './alta-duenio/alta-duenio.component';
 import { RegistrosPendientesComponent } from './registros-pendientes/registros-pendientes.component';
+import { ReservasPendientesComponent } from './reservas-pendientes/reservas-pendientes.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { RegistrosPendientesComponent } from './registros-pendientes/registros-p
     QrLectorComponent,
     CameraSelectorComponent,
     AltaDuenioComponent,
-    RegistrosPendientesComponent
+    RegistrosPendientesComponent,
+    ReservasPendientesComponent
   ]
 })
 export class DuenioPageModule {}

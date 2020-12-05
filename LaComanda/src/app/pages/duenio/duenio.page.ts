@@ -39,8 +39,21 @@ export class DuenioPage implements OnInit, OnDestroy {
       ).subscribe(clientes => {
         if(clientes.length > 0) {
           this.notificacionesService.push(
-            'Clientes en espera!.',
-            'hay nuevos clientes en la lista de espera.',
+            'Clientes en espera!',
+            'Hay nuevos clientes en la lista de espera.',
+            'https://bit.ly/2HSh7nm',
+          );
+        }
+      }),
+      this.clientesService.clientesConReserva().pipe(
+        distinctUntilChanged((prev: Cliente[], curr: Cliente[]) =>  {
+          return prev && prev.length > curr.length
+        })
+      ).subscribe(clientes => {
+        if(clientes.length > 0) {
+          this.notificacionesService.push(
+            'Clientes con reserva en espera!',
+            'Hay clientes esperando la confirmación de su reserva.',
             'https://bit.ly/2HSh7nm',
           );
         }
