@@ -11,5 +11,7 @@ export interface Cliente {
   foto: string,
   tipo: TipoCliente,
   estado : 'enEspera' | 'rechazado' | 'aceptado',
-  atendido: 'esperando' | 'asignado' |'enLaMesa' | 'rechazado' | 'libre'
+  atendido: 'esperando' | 'asignado' |'enLaMesa' | 'rechazado' | 'libre',
+  reserva?: 'si' | 'no',
+  horaReserva?: string,
 }

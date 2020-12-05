@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { MesaService } from 'src/app/services/mesa.service';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
+import { TipoCliente } from 'src/app/models/tipo-cliente.enum';
 
 @Component({
   selector: 'app-cliente',
@@ -48,6 +49,11 @@ export class ClientePage implements OnInit, OnDestroy {
         if (cliente) {
           this.cliente = cliente[0];
           console.log(this.cliente);
+
+          if(this.cliente.tipo == TipoCliente.REGISTRADO)
+          {
+            this.esAnonimo = false;
+          }
 
           if(this.cliente.atendido === 'esperando') {
             this.mostrarToastListaDeEspera();

@@ -3,8 +3,11 @@ import { NavController } from '@ionic/angular';
 import { CalendarComponentOptions } from 'ion2-calendar'
 
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
-import { IReserva } from 'src/app/models/reserva';
-import { ReservasService } from 'src/app/services/reservas.service';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { Subscription } from 'rxjs';
+import { Cliente } from 'src/app/models/cliente';
+import { PerfilUsuario } from 'src/app/models/perfil-usuario.enum';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-reserva',
@@ -15,17 +18,23 @@ export class ReservaPage implements OnInit {
   date: string;
   time: string;
   day: string;
-  reserva: IReserva;
-  idCliente: string;
+  subscription: Subscription;
+  cliente: Cliente;
+  fecha: Date;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
-  constructor(private alertCtrl: AlertController,private reservaSvc:ReservasService) { }
+  constructor(private alertCtrl: AlertController,private clienteService:ClientesService, private authService: AuthService) { }
 
   onChange($event) {
     this.day = new Date($event._d).toLocaleDateString();
   }
 
   ngOnInit() {
-    this.idCliente = localStorage.getItem('idCliente');
+    this.subscription = this.authService.getCurrentUserData(PerfilUsuario.CLIENTE).subscribe(cliente => {
+      if (cliente) {
+        this.cliente = cliente[0];
+      } 
+      console.log(this.cliente);
+    });
   }
 
 
@@ -35,14 +44,10 @@ export class ReservaPage implements OnInit {
     hours = hours.split('-')[0];
     let fechaReserva = new Date(this.day + " " + hours);
     this.date = '';
+    this.cliente.horaReserva = fechaReserva.toString();
     console.log(fechaReserva);
-    this.reserva = {
-      idCliente: this.idCliente,
-      fecha: fechaReserva,
-    }
+    console.log('hora cliente: ' + this.cliente.horaReserva);
     let htmlTemplate = `<h4>${fechaReserva}</h4>`;
-
-    console.log(this.reserva);
     this.mostrarConfirm('Su reserva sera: ', htmlTemplate);
   }
 
@@ -53,19 +58,17 @@ export class ReservaPage implements OnInit {
       message: msj,
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm Cancel: blah');
           }
         }, {
-          text: 'Okay',
+          text: 'OK',
           handler: () => {
             console.log('Confirm Okay');
-            this.reservaSvc.crearReserva(this.reserva).then(()=>{
-              console.log('reserva con exito');}
-            ).catch(err=>{ console.log(err)})
+            this.clienteService.asignarReserva(this.cliente);
           }
         }
       ]

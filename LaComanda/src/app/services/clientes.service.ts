@@ -125,6 +125,28 @@ export class ClientesService {
     .set({atendido: 'esperando'}, {merge: true})
   }
 
+  asignarReserva(cliente: Cliente): void
+  {
+    this.db.collection<Cliente>('clientes')
+    .doc(cliente.docId)
+    .set({reserva: 'si', horaReserva: cliente.horaReserva}, {merge: true})
+  }
+
+  cancelarReserva(cliente: Cliente): void
+  {
+    this.db.collection<Cliente>('clientes')
+    .doc(cliente.docId)
+    .set({reserva: 'no'}, {merge: true})
+  }
+
+  clientesConReserva():Observable<Cliente[]>
+  {
+    return this.db.collection<Cliente>("clientes", 
+      ref => ref.where("reserva", "==", 'si')
+    )
+    .valueChanges({idField: 'docId'});
+  }
+
   ponerEnLaMesa(cliente: Cliente): void
   {
     this.db.collection<Cliente>('clientes')
