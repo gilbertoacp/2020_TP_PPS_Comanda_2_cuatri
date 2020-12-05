@@ -149,4 +149,8 @@ export class MesaPage implements OnInit {
     }
 
   }
+
+  confirmarRecepcion() {
+    this.pedidosService.confirmarRecepcionPedido(this.pedido.docId);
+  }
 }
