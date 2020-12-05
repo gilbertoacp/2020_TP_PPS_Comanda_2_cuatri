@@ -17,45 +17,31 @@
 
 <div align="center">
   <img src="./docs/gif/splash.gif" width="200" height="400">
-  <img src="./docs/gif/spinner.gif" width="200" height="400" style="margin:0 auto">
+  <img src="./docs/img/spinner02.jpg" width="200" height="400" style="margin:0 auto">
 </div>
 
 ---
 
-# Sprint # 1 :pushpin:
+# SPRINT 01
 
-#### GILBERTO CALDERÓN
+<p align="center"> 
+	<img src="./docs/img/sprints/sprint.png" style="margin:0 auto">
+</p>
 
-- Alta empleados - Completado :white_check_mark:
-- Alta productos - Completado :white_check_mark:
-- Qr ingreso local - En proceso :arrows_clockwise:
+# SPRINT 02
 
-#### Nicolás Navarro
+<p align="center"> 
+	<img src="./docs/img/sprints/sprint02.png" style="margin:0 auto">
+</p>
 
-- Alta dueño / supervisor - Completado :white_check_mark:
-- Qr propina - Completado :white_check_mark:
+# SPRINT 03
 
-#### Lautaro Aubele
+<p align="center"> 
+	<img src="./docs/img/sprints/sprint03.png" style="margin:0 auto">
+</p>
 
-- Alta cliente - No completado :x:
-- Alta mesa - No competado :x:
-- Qr mesa - No completado :x:
+# SPRINT 04
 
----
-
-#####  Tareas Secundarias Sprint #1 :clipboard:
-
-#### GILBERTO CALDERÓN
-
-- Splash Animado :white_check_mark:
-- Spinner :white_check_mark:
-
-#### Nicolás Navarro
-
-- Estilos y Colores :white_check_mark:
-- Diseño logo y splash :white_check_mark:
-
---- 
-
-##### Motivo de la falta de Lautaro Aubele :interrobang:
-* PC Dañada
+<p align="center"> 
+	<img src="./docs/img/sprints/sprint04.png" style="margin:0 auto">
+</p>
